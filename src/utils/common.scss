@@ -1,0 +1,294 @@
+.card {
+    margin: 30rpx 30rpx 0;
+    border-radius: 30rpx;
+    background-color: white;
+}
+.base-border-primary {
+	border: 2px dotted #FB5226 ;
+}
+.disable-input {
+    pointer-events: none;
+}
+.text-primary {
+	color: #FB5226 !important;
+}
+.card2 {
+    margin: 0rpx 20rpx 0;
+    border-radius: 40rpx;
+    background-color: white;
+}
+$pt-values: (
+);
+
+@for $i from 1 through 40 {
+    .r-#{$i} {
+        border-radius: #{$i* 2 }rpx;
+    }
+}
+
+@for $i from 2 through 40 {
+    $value: $i * 2;
+    $pt-values: append($pt-values, $value) !global;
+}
+
+@each $value in $pt-values {
+
+    .t-#{$value} {
+        font-size: #{$value* 2 }rpx;
+    }
+
+    .br-#{$value} {
+        border-radius: #{$value* 2 }rpx;
+    }
+
+    .pt-#{$value} {
+        padding-top: #{$value* 2 }rpx;
+    }
+
+    .pb-#{$value} {
+        padding-bottom: #{$value* 2 }rpx;
+    }
+
+    .pl-#{$value} {
+        padding-left: #{$value* 2 }rpx;
+    }
+
+    .pr-#{$value} {
+        padding-right: #{$value* 2 }rpx;
+    }
+
+    .px-#{$value} {
+        padding-left: #{$value* 2 }rpx;
+        padding-right: #{$value* 2 }rpx;
+    }
+
+    .py-#{$value} {
+        padding-top: #{$value* 2 }rpx;
+        padding-bottom: #{$value* 2 }rpx;
+    }
+
+
+    .mt-#{$value} {
+        margin-top: #{$value* 2 }rpx;
+    }
+
+    .mb-#{$value} {
+        margin-bottom: #{$value* 2 }rpx;
+    }
+
+    .ml-#{$value} {
+        margin-left: #{$value* 2 }rpx;
+    }
+
+    .mr-#{$value} {
+        margin-right: #{$value* 2 }rpx;
+    }
+
+    .mx-#{$value} {
+        margin-left: #{$value* 2 }rpx;
+        margin-right: #{$value* 2 }rpx;
+    }
+
+    .my-#{$value} {
+        margin-top: #{$value* 2 }rpx;
+        margin-bottom: #{$value* 2 }rpx;
+    }
+
+    .r-#{$value} {
+        border-radius: #{$value* 2 }rpx;
+    }
+
+
+}
+.hide-button{
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    border: 0;
+    box-shadow: none;
+}
+.w-full {
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+.baseline {
+    align-items: baseline;
+}
+.flex-1 {
+    flex: 1;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.justify-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.justify-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+.item2{
+    flex-basis: calc(50%); /* 50%减去一些间距，以确保每行只有两个元素 */
+   
+}
+.flex-center-column {
+    display: flex;
+    align-items: center;
+}
+
+.flex-center-row {
+    display: flex;
+    justify-content: center;
+}
+
+.self-center {
+    align-self: center;
+}
+
+.ft {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.relative {
+    position: relative;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.f-c {
+    display: flex;
+    justify-content: center;
+}
+
+.f-c-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-b-c {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.w-330 {
+  width: 330rpx;
+}
+
+.text-overflow-1 {
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.text-overflow-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-overflow-3 {
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.bold-1 {
+    font-weight: 100;
+}
+
+.bold0 {
+    font-weight: 500;
+}
+
+.bold1 {
+    font-weight: 600;
+}
+
+.divider {
+    
+    margin-top:30rpx;
+    margin-bottom:30rpx;
+    width: 150%;
+    margin-left: -100rpx; 
+    height: 2px;
+    background-color: #f3f3f3;
+    
+  }
+.bold2 {
+    font-weight: 700;
+}
+
+.bg-gray2 {
+    background: #ededee;
+}
+
+.bg-gray {
+    background: linear-gradient(to right, #d6d9df, #d3f8ff);
+}
+
+.bg-primary {
+    background-color: #FFEEE9;
+}
+
+.bg-primary {
+    background-color: #FFEEE9;
+}
+
+.bg-protect {
+    background-color: #C7EDCC;
+}
+
+.text-gray {
+    color: #9298a5;
+}
