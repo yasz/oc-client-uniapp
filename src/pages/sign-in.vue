@@ -14,6 +14,7 @@
             <button class="sign-in-button" :disabled="loading" @click="handleSignIn">
                 登录
             </button>
+            <up-avatar shape="circle" size="55" class=""></up-avatar>
         </view>
     </view>
 </template>

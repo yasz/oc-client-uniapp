@@ -4,7 +4,7 @@
 		
 		{
 			"path": "pages/sign-in",
-			"name":"sign-in",
+		
 			"style": {
 					"navigationStyle": "custom",
 					"enablePullDownRefresh": true
@@ -12,12 +12,28 @@
 		},
 		{
 			"path": "pages/index/index",
-			"name":"index",
+		
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/courses/index",
+		
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
 		}
 	],
+	"easycom": {
+		"autoscan": true,
+		
+		"custom": {
+			"^u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+	        "^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
+		}
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

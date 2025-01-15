@@ -4,12 +4,15 @@
     <view class="text-area">
       <text class="title">{{ t("pages.new activities") }}</text>
     </view>
+    <button @click="() => { go('/pages/courses/index') }">Go to Courses Index</button>
     <LangSwitch />
   </view>
 </template>
 
 <script setup lang="ts">
-
+import {
+  go
+} from "@/utils/common";
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n';
 import LangSwitch from "@/components/langSwitch.vue";
