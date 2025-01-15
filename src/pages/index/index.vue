@@ -2,14 +2,17 @@
   <view class="content">
     <image class="logo" src="/static/logo.png" />
     <view class="text-area">
-      <text class="title">{{ title }}</text>
+      <text class="title">{{ t("pages.new activities") }}</text>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+
 import { ref } from 'vue'
-const title = ref('Hello')
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
 </script>
 
 <style>
