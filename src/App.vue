@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { checkAuth } from "./router/interceptor";
+import { checkAuth } from "./router";
 onLaunch(() => {
   const pages = getCurrentPages();
   const currentPage = pages[pages.length - 1];

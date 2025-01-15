@@ -1,4 +1,24 @@
-export function checkAuth(e) {
+import { createRouter, __dynamicImportComponent__ } from "@/uni-simple-router";
+
+const platform: any = process.env.VUE_APP_PLATFORM ?? "h5";
+const router = createRouter({
+  platform: platform,
+  routes: [
+    {
+      path: `/`,
+      component: __dynamicImportComponent__(`@/pages/index.vue`, {
+        pageType: `top`,
+        style: {
+          navigationBarTitleText: `uni-simple-router`,
+          navigationBarBackgroundColor: `#42b883`,
+          navigationBarTextStyle: `white`,
+        },
+      }),
+    },
+  ],
+});
+export default router;
+export function checkAuth(e: any) {
   let url = e.url.replace(/\?.*$/, "");
 
   // 白名单页面，不需要校验
@@ -28,11 +48,3 @@ export function checkAuth(e) {
 
   return e;
 }
-
-["navigateTo", "redirectTo", "reLaunch", "switchTab"].forEach((item) => {
-  uni.addInterceptor(item, {
-    invoke(e) {
-      return checkAuth(e);
-    },
-  });
-});

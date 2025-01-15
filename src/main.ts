@@ -6,7 +6,7 @@ import { createI18n } from "vue-i18n";
 import { createPinia } from "pinia";
 import uviewPlus from "uview-plus";
 import "@/utils/common.scss";
-import "@/router/interceptor";
+import router from "@/router/index";
 let lang = uni.getStorageSync("lang");
 if (lang == "") uni.setStorageSync("lang", (lang = "zh-CN")); //默认中文
 
@@ -23,6 +23,8 @@ const pinia = createPinia();
 
 export function createApp() {
   const app = createSSRApp(App);
+
+  app.use(router);
   app.use(pinia);
   app.use(uviewPlus);
   app.use(i18n);
