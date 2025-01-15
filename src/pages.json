@@ -1,8 +1,18 @@
 {
 
 	"pages": [ 
+		
+		{
+			"path": "pages/sign-in",
+			"name":"sign-in",
+			"style": {
+					"navigationStyle": "custom",
+					"enablePullDownRefresh": true
+				}
+		},
 		{
 			"path": "pages/index/index",
+			"name":"index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
