@@ -4,6 +4,7 @@
     <view class="text-area">
       <text class="title">{{ t("pages.new activities") }}</text>
     </view>
+    <LangSwitch />
   </view>
 </template>
 
@@ -11,6 +12,7 @@
 
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n';
+import LangSwitch from "@/components/langSwitch.vue";
 
 const { t, locale } = useI18n();
 </script>
