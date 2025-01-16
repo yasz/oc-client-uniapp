@@ -2,10 +2,6 @@
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-const props = defineProps({
-  initialIndex: Number, // 父组件传递的初始值
-});
-
 
 const route = useRoute();
 const urls = ["index", "courses", "my"];
@@ -16,7 +12,7 @@ const routeIndexMap: Record<string, number> = {
 };
 
 // 设置初始值
-const index = ref(routeIndexMap[route.path] || props.initialIndex || 0);
+const index = ref(routeIndexMap[route.path] || 0);
 
 // 路由变化时更新 index
 watch(
