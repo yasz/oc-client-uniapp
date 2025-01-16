@@ -11,15 +11,17 @@
             <input class="input" v-model="password" type="password" placeholder="请输入密码" />
 
             <!-- 登录按钮 -->
+
             <button class="sign-in-button" :disabled="loading" @click="handleSignIn">
-                登录
+                {{ $t("sign in") }}
             </button>
-            <up-avatar shape="circle" size="55" class=""></up-avatar>
+
         </view>
     </view>
 </template>
 
 <script setup lang="ts">
+import useModal from '@/hooks/useModal';
 import { useAuthStore } from '@/stores/authStore';
 import axios from 'axios';
 import { ref } from 'vue';
@@ -64,14 +66,12 @@ const handleSignIn = async () => {
         // alert('提示', '请输入邮箱和密码');
         return;
     }
-
     loading.value = true;
     try {
         const { token, id, nickname, role } = await axiosSignIn(email.value, password.value);
         authStore.signIn(token, id, nickname, role);
-
-    } catch (err) {
-        // MyAlert('登录失败', err.message);
+    } catch (err: any) {
+        await useModal().modal(err.message);
     } finally {
         loading.value = false;
     }
@@ -107,7 +107,7 @@ const handleSignIn = async () => {
 }
 
 .input {
-    width: 100%;
+    width: 80%;
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -116,7 +116,7 @@ const handleSignIn = async () => {
 }
 
 .sign-in-button {
-    width: 100%;
+    width: 60%;
     height: 40px;
     background-color: #f59e0b;
     color: white;

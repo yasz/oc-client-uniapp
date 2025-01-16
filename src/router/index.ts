@@ -99,7 +99,7 @@ export default router;
 function checkAuth(url: string) {
   // 白名单页面，不需要校验
   console.log("【调试】:【to", url, "】");
-  if (["/", "/sign-in", "/my"].includes(url)) {
+  if (["/index", "/sign-in", "/my"].includes(url)) {
     return true;
   }
 

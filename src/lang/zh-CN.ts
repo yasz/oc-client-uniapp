@@ -99,6 +99,7 @@ const zhCN: Record<string, any> = {
   Thu: "周四",
   Fri: "周五",
   Sat: "周六",
+  "sign in": "登录",
   "The new version is ready. Do you want to restart the application?":
     "新版本已经准备好，是否重启应用？",
   "Update Prompt": "更新提示",
