@@ -195,9 +195,8 @@ export function patch(url: string, data: any) {
 }
 
 export function postAPI(url: string, data: any) {
-  return http("POST", `${apiURL}/${url}`, data);
+  return http("POST", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
 }
-export const apiURL = "https://a.praise.site:3001/api";
 
 function http(method: any, url: string, data: any) {
   return new Promise((resolve, reject) => {

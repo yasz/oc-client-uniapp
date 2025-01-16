@@ -1,3 +1,4 @@
+import { Configuration } from "@/generated-client";
 import { defineStore } from "pinia";
 import { watch } from "vue";
 
@@ -13,14 +14,14 @@ export const useAuthStore = defineStore("authStore", {
   getters: {
     // 动态生成 API 配置，确保始终使用最新的 token
     apiConfig: (state) => {
-      return {
-        basePath: "https://a.praise.site:3002/api",
+      return new Configuration({
+        basePath: process.env.VITE_API_ENDPOINT,
         baseOptions: {
           headers: {
             Authorization: `Bearer ${state.token}`,
           },
         },
-      };
+      });
     },
   },
 

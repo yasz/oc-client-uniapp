@@ -39,7 +39,7 @@ async function axiosSignIn(email: string, password: string) {
     try {
         // 使用 axios 发送 POST 请求
         const response = await axios.post(
-            'https://a.praise.site:3002/api/auth:signIn',
+            `${import.meta.env.VITE_API_ENDPOINT}/auth:signIn`,
             { email, password },
             {
                 headers: {
@@ -50,11 +50,12 @@ async function axiosSignIn(email: string, password: string) {
         );
 
         // 从响应中提取数据
-        const { token, id, nickname, role } = response.data.data;
-        console.log('登录成功，获取的 Token:', token);
+        const { token, user } = response.data.data;
+        const { id, nickname, role } = user
+        console.log('【调试】:【', role, '】');
+        //查询若在student表里就是
 
-        // 返回所需的值
-        return { token, id, nickname, role };
+        return { token, id, nickname, role: "student" };
     } catch (error) {
         console.error('登录失败:', error);
         throw new Error('登录失败，请检查用户名和密码。');

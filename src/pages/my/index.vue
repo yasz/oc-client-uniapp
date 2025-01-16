@@ -45,4 +45,5 @@ import { bucketURL, go, go2 } from "@/utils/common";
 const logout = () => {
     useAuthStore().signOut();
 };
+console.log('【调试】~~~~~:【', process.env.VITE_SOME_KEY, import.meta.env.VITE_API_ENDPOINT, '】');
 </script>

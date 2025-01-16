@@ -1,0 +1,4328 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NocoBase API documentation",
+    "description": "",
+    "contact": {
+      "url": "https://github.com/nocobase/nocobase/issues"
+    },
+    "license": {
+      "name": "Core packages are Apache 2.0 & Plugins packages are AGPL 3.0 licensed.",
+      "url": "https://github.com/nocobase/nocobase#license"
+    },
+    "version": "1.4.0-alpha.20241027230531"
+  },
+  "externalDocs": {
+    "description": "Find out more about NocoBase",
+    "url": "https://docs.nocobase.com/api/http"
+  },
+  "components": {
+    "securitySchemes": {
+      "api-key": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "error": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "description": "错误信息",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "assignment_submission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "content": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "assignment_submission.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/assignment_submission"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "Students": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "passwordChangeTz": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "appLang": {
+            "type": "string"
+          },
+          "resetToken": {
+            "type": "string"
+          },
+          "systemSettings": {
+            "type": "string"
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "f_hsjzjzn6l8x": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "f_o089cumcica": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Students.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Students"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "sort": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_c0g3r37sldd": {
+        "type": "object",
+        "properties": {
+          "f_kwm7xya6fer": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_c0g3r37sldd.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_c0g3r37sldd"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_c5coid7xey7": {
+        "type": "object",
+        "properties": {
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "f_3crqn3heezb": {
+            "type": "string"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_c5coid7xey7.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_c5coid7xey7"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_ddwvgf4ywsr": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "f_y4trwksreco": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "f_5tptmxgrb5w": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "f_x8c8cugpxyf": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "course_intro": {
+            "type": "string"
+          },
+          "fk_teacher_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_ddwvgf4ywsr.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_ddwvgf4ywsr"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_8lupz9qsl11": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "f_ty2p7znp6bx": {
+            "type": "string"
+          },
+          "f_b05xllkd440": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_8lupz9qsl11.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_8lupz9qsl11"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_rimzhwu9spr": {
+        "type": "object",
+        "properties": {
+          "f_ae0a67d11gc": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "f_3xhxfoocwfr": {
+            "type": "string"
+          },
+          "md": {
+            "type": "string"
+          },
+          "seq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_rimzhwu9spr.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_rimzhwu9spr"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "seq": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "t_peybod5ojl2": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "passwordChangeTz": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "appLang": {
+            "type": "string"
+          },
+          "resetToken": {
+            "type": "string"
+          },
+          "systemSettings": {
+            "type": "string"
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "f_24skxux03zr": {
+            "type": "string"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "t_peybod5ojl2.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/t_peybod5ojl2"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "sort": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "nas_bucket": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "extname": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "mimetype": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "nas_bucket.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/nas_bucket"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      },
+      "assignment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedById": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "is_public": {
+            "type": "string"
+          }
+        }
+      },
+      "assignment.form": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/assignment"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "readOnly": true
+              },
+              "createdAt": {
+                "readOnly": true
+              },
+              "updatedAt": {
+                "readOnly": true
+              },
+              "createdById": {
+                "readOnly": true
+              },
+              "updatedById": {
+                "readOnly": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    "parameters": {
+      "collectionIndex": {
+        "required": true,
+        "name": "collectionIndex",
+        "in": "path",
+        "description": "collection index",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "filterByTk": {
+        "name": "filterByTk",
+        "in": "query",
+        "description": "filter by TK(default by ID)",
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "filterByTks": {
+        "name": "filterByTk",
+        "in": "query",
+        "description": "filter by TKs(default by ID), example: `1,2,3`",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "filter": {
+        "name": "filter",
+        "in": "query",
+        "description": "filter items",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "sort": {
+        "name": "sort",
+        "in": "query",
+        "description": "sort items by fields, example: `-field1,-field2,field3`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "-id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "-id,createdAt"
+            }
+          ]
+        }
+      },
+      "fields": {
+        "name": "fields",
+        "in": "query",
+        "description": "select fields, example: `field1,field2`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            }
+          ]
+        }
+      },
+      "except": {
+        "name": "except",
+        "in": "query",
+        "description": "except fields in results, example: `field1,field2`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            }
+          ]
+        }
+      },
+      "appends": {
+        "name": "appends",
+        "in": "query",
+        "description": "append associations in results, example: `assoc1,assoc2`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            }
+          ]
+        }
+      },
+      "whitelist": {
+        "name": "whitelist",
+        "in": "query",
+        "description": "whitelist for fields changes, example: `field1,field2`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            }
+          ]
+        }
+      },
+      "blacklist": {
+        "name": "blacklist",
+        "in": "query",
+        "description": "blacklist for fields changes, example: `field1,field2`",
+        "schema": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "id",
+                "createdAt"
+              ]
+            },
+            {
+              "type": "string",
+              "example": "id,createdAt"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "api-key": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "/api/"
+    }
+  ],
+  "paths": {
+    "/assignment_submission:list": {
+      "get": {
+        "tags": [
+          "assignment_submission"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/assignment_submission"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment_submission:get": {
+      "get": {
+        "tags": [
+          "assignment_submission"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment_submission"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment_submission:create": {
+      "post": {
+        "tags": [
+          "assignment_submission"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignment_submission.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment_submission"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment_submission:update": {
+      "post": {
+        "tags": [
+          "assignment_submission"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignment_submission.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment_submission"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment_submission:destroy": {
+      "post": {
+        "tags": [
+          "assignment_submission"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Students:list": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Students"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Students:get": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Students"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Students:create": {
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Students.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Students"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Students:update": {
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Students.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Students"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Students:destroy": {
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Students:move": {
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Move record",
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "query",
+            "description": "source id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "query",
+            "description": "move target id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "move method, insertAfter or insertBefore",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "description": "sort field name, default is sort",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetScope",
+            "in": "query",
+            "description": "move target scope",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sticky",
+            "in": "query",
+            "description": "sticky to top",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_c0g3r37sldd:list": {
+      "get": {
+        "tags": [
+          "t_c0g3r37sldd"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_c0g3r37sldd"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c0g3r37sldd:get": {
+      "get": {
+        "tags": [
+          "t_c0g3r37sldd"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c0g3r37sldd"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c0g3r37sldd:create": {
+      "post": {
+        "tags": [
+          "t_c0g3r37sldd"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_c0g3r37sldd.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c0g3r37sldd"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c0g3r37sldd:update": {
+      "post": {
+        "tags": [
+          "t_c0g3r37sldd"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_c0g3r37sldd.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c0g3r37sldd"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c0g3r37sldd:destroy": {
+      "post": {
+        "tags": [
+          "t_c0g3r37sldd"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_c5coid7xey7:list": {
+      "get": {
+        "tags": [
+          "t_c5coid7xey7"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_c5coid7xey7"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c5coid7xey7:get": {
+      "get": {
+        "tags": [
+          "t_c5coid7xey7"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c5coid7xey7"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c5coid7xey7:create": {
+      "post": {
+        "tags": [
+          "t_c5coid7xey7"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_c5coid7xey7.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c5coid7xey7"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c5coid7xey7:update": {
+      "post": {
+        "tags": [
+          "t_c5coid7xey7"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_c5coid7xey7.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_c5coid7xey7"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_c5coid7xey7:destroy": {
+      "post": {
+        "tags": [
+          "t_c5coid7xey7"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_ddwvgf4ywsr:list": {
+      "get": {
+        "tags": [
+          "t_ddwvgf4ywsr"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_ddwvgf4ywsr"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_ddwvgf4ywsr:get": {
+      "get": {
+        "tags": [
+          "t_ddwvgf4ywsr"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_ddwvgf4ywsr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_ddwvgf4ywsr:create": {
+      "post": {
+        "tags": [
+          "t_ddwvgf4ywsr"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_ddwvgf4ywsr.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_ddwvgf4ywsr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_ddwvgf4ywsr:update": {
+      "post": {
+        "tags": [
+          "t_ddwvgf4ywsr"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_ddwvgf4ywsr.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_ddwvgf4ywsr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_ddwvgf4ywsr:destroy": {
+      "post": {
+        "tags": [
+          "t_ddwvgf4ywsr"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_8lupz9qsl11:list": {
+      "get": {
+        "tags": [
+          "t_8lupz9qsl11"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_8lupz9qsl11"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_8lupz9qsl11:get": {
+      "get": {
+        "tags": [
+          "t_8lupz9qsl11"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_8lupz9qsl11"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_8lupz9qsl11:create": {
+      "post": {
+        "tags": [
+          "t_8lupz9qsl11"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_8lupz9qsl11.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_8lupz9qsl11"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_8lupz9qsl11:update": {
+      "post": {
+        "tags": [
+          "t_8lupz9qsl11"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_8lupz9qsl11.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_8lupz9qsl11"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_8lupz9qsl11:destroy": {
+      "post": {
+        "tags": [
+          "t_8lupz9qsl11"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:list": {
+      "get": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_rimzhwu9spr"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:get": {
+      "get": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_rimzhwu9spr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:create": {
+      "post": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_rimzhwu9spr.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_rimzhwu9spr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:update": {
+      "post": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_rimzhwu9spr.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_rimzhwu9spr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:destroy": {
+      "post": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_rimzhwu9spr:move": {
+      "post": {
+        "tags": [
+          "t_rimzhwu9spr"
+        ],
+        "summary": "Move record",
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "query",
+            "description": "source id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "query",
+            "description": "move target id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "move method, insertAfter or insertBefore",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "description": "sort field name, default is sort",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetScope",
+            "in": "query",
+            "description": "move target scope",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sticky",
+            "in": "query",
+            "description": "sticky to top",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:list": {
+      "get": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/t_peybod5ojl2"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:get": {
+      "get": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_peybod5ojl2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:create": {
+      "post": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_peybod5ojl2.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_peybod5ojl2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:update": {
+      "post": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/t_peybod5ojl2.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/t_peybod5ojl2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:destroy": {
+      "post": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/t_peybod5ojl2:move": {
+      "post": {
+        "tags": [
+          "t_peybod5ojl2"
+        ],
+        "summary": "Move record",
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "query",
+            "description": "source id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetId",
+            "in": "query",
+            "description": "move target id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "description": "move method, insertAfter or insertBefore",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortField",
+            "in": "query",
+            "description": "sort field name, default is sort",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "targetScope",
+            "in": "query",
+            "description": "move target scope",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sticky",
+            "in": "query",
+            "description": "sticky to top",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/nas_bucket:list": {
+      "get": {
+        "tags": [
+          "nas_bucket"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/nas_bucket"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nas_bucket:get": {
+      "get": {
+        "tags": [
+          "nas_bucket"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/nas_bucket"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nas_bucket:create": {
+      "post": {
+        "tags": [
+          "nas_bucket"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/nas_bucket.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/nas_bucket"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nas_bucket:update": {
+      "post": {
+        "tags": [
+          "nas_bucket"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/nas_bucket.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/nas_bucket"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nas_bucket:destroy": {
+      "post": {
+        "tags": [
+          "nas_bucket"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assignment:list": {
+      "get": {
+        "tags": [
+          "assignment"
+        ],
+        "summary": "Returns a list of the collection",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/assignment"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "total count"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "current page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "items count per page"
+                        },
+                        "totalPage": {
+                          "type": "integer",
+                          "description": "total page"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment:get": {
+      "get": {
+        "tags": [
+          "assignment"
+        ],
+        "summary": "Return a record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/sort"
+          },
+          {
+            "$ref": "#/components/parameters/fields"
+          },
+          {
+            "$ref": "#/components/parameters/appends"
+          },
+          {
+            "$ref": "#/components/parameters/except"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment:create": {
+      "post": {
+        "tags": [
+          "assignment"
+        ],
+        "summary": "Create record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignment.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment:update": {
+      "post": {
+        "tags": [
+          "assignment"
+        ],
+        "summary": "Update record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/whitelist"
+          },
+          {
+            "$ref": "#/components/parameters/blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/assignment.form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/assignment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assignment:destroy": {
+      "post": {
+        "tags": [
+          "assignment"
+        ],
+        "summary": "Delete record",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterByTk"
+          },
+          {
+            "$ref": "#/components/parameters/filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "assignment",
+      "description": "作业"
+    },
+    {
+      "name": "nas_bucket",
+      "description": "nas_bucket"
+    },
+    {
+      "name": "t_peybod5ojl2",
+      "description": "Teachers"
+    },
+    {
+      "name": "t_rimzhwu9spr",
+      "description": "Courses"
+    },
+    {
+      "name": "t_8lupz9qsl11",
+      "description": "Timezone"
+    },
+    {
+      "name": "t_ddwvgf4ywsr",
+      "description": "CourseSessions"
+    },
+    {
+      "name": "t_c5coid7xey7",
+      "description": "Classes"
+    },
+    {
+      "name": "t_c0g3r37sldd",
+      "description": "Subjects"
+    },
+    {
+      "name": "Students",
+      "description": "Students"
+    },
+    {
+      "name": "assignment_submission",
+      "description": "作业提交记录"
+    }
+  ]
+}
