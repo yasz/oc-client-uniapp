@@ -5,11 +5,12 @@
       <text class="title">{{ t("pages.new activities") }}</text>
     </view>
     <button @click="() => { go('/pages/courses/index') }">Go to Courses Index</button>
-    <LangSwitch />
+
   </view>
 </template>
 
 <script setup lang="ts">
+import Tabbar from "@/components/tabbar.vue";
 import {
   go
 } from "@/utils/common";

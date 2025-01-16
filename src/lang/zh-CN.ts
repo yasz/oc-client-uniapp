@@ -110,5 +110,6 @@ const zhCN: Record<string, any> = {
     "new group": "创建小组",
     "edit group": "编辑小组",
   },
+  courses: "课程",
 };
 export default zhCN;

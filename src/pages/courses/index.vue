@@ -5,14 +5,15 @@
             <text class="title">{{ t("courses") }}</text>
         </view>
         <LangSwitch />
+
     </view>
 </template>
 
 <script setup lang="ts">
-
+import Tabbar from "@/components/tabbar.vue";
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n';
+const { t, locale } = useI18n();
 import LangSwitch from "@/components/langSwitch.vue";
 
-const { t, locale } = useI18n();
 </script>

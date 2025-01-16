@@ -1,56 +1,83 @@
+import i18n from "@/lang";
 import { createRouter, __dynamicImportComponent__ } from "@/uni-simple-router";
-
+const { t }: any = i18n.global;
+console.log("【调试】:【", t("courses"), "】");
 const platform: any = process.env.VUE_APP_PLATFORM ?? "h5";
+const soliRoutes = [
+  {
+    path: `/index`,
+    component: __dynamicImportComponent__(`@/pages/index/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `index`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "index",
+      },
+    }),
+  },
+  {
+    path: `/courses`,
+    component: __dynamicImportComponent__(`@/pages/courses/index.vue`, {
+      pageType: `top`,
+      style: {
+        // navigationBarTitleText: i18n.global.t("courses"),
+        navigationBarTitleText: "courses",
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "courses",
+      },
+    }),
+  },
+  {
+    path: `/sign-in`,
+    component: __dynamicImportComponent__(`@/pages/sign-in.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `sign-in`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "sign-in",
+      },
+    }),
+  },
+  {
+    path: `/my`,
+    component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `%my%`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "my",
+      },
+    }),
+  },
+];
+
 const router = createRouter({
   platform: platform,
   routes: [
+    ...soliRoutes,
     {
-      path: `/`,
-      component: __dynamicImportComponent__(`@/pages/index/index.vue`, {
+      path: "/",
+      component: __dynamicImportComponent__(`@/pages/layout.vue`, {
         pageType: `top`,
-        style: {
-          navigationBarTitleText: `uni-simple-router`,
-          navigationBarBackgroundColor: `#42b883`,
-          navigationBarTextStyle: `white`,
-          name: "index",
-        },
       }),
-    },
-    {
-      path: `/courses`,
-      component: __dynamicImportComponent__(`@/pages/courses/index.vue`, {
-        pageType: `top`,
-        style: {
-          navigationBarTitleText: `uni-simple-router`,
-          navigationBarBackgroundColor: `#42b883`,
-          navigationBarTextStyle: `white`,
-          name: "courses",
+      children: [
+        {
+          path: "index",
+          component: __dynamicImportComponent__(`@/pages/index/index.vue`),
         },
-      }),
-    },
-    {
-      path: `/sign-in`,
-      component: __dynamicImportComponent__(`@/pages/sign-in.vue`, {
-        pageType: `top`,
-        style: {
-          navigationBarTitleText: `sign-in`,
-          navigationBarBackgroundColor: `#42b883`,
-          navigationBarTextStyle: `white`,
-          name: "sign-in",
+        {
+          path: "my",
+          component: __dynamicImportComponent__(`@/pages/my/index.vue`),
         },
-      }),
-    },
-    {
-      path: `/my`,
-      component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
-        pageType: `top`,
-        style: {
-          navigationBarTitleText: `my`,
-          navigationBarBackgroundColor: `#42b883`,
-          navigationBarTextStyle: `white`,
-          name: "my",
+        {
+          path: "courses",
+          component: __dynamicImportComponent__(`@/pages/courses/index.vue`),
         },
-      }),
+      ],
     },
   ],
 });

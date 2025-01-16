@@ -34,7 +34,7 @@
                 </view>
             </view>
         </view>
-        <Tabbar :initialIndex="3" />
+
     </view>
 </template>
 <script setup lang="ts">
