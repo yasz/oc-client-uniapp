@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { checkAuth } from "./router";
-onLaunch(() => {
-  const pages = getCurrentPages();
-  const currentPage = pages[pages.length - 1];
-  const url = currentPage?.route ? `/${currentPage.route}` : "/";
 
-  // 执行校验逻辑
-  checkAuth({ url });
+onLaunch(() => {
   console.log("App Launch");
 });
 onShow(() => {

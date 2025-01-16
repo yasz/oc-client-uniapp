@@ -24,11 +24,11 @@ const pinia = createPinia();
 export function createApp() {
   const app = createSSRApp(App);
 
-  app.use(router);
   app.use(pinia);
   app.use(uviewPlus);
   app.use(i18n);
   return {
     app,
+    router,
   };
 }
