@@ -61,6 +61,7 @@ const router = createRouter({
     ...soliRoutes,
     {
       path: "/",
+      redirect: "/index",
       component: __dynamicImportComponent__(`@/pages/layout.vue`, {
         pageType: `top`,
       }),
@@ -80,11 +81,16 @@ const router = createRouter({
       ],
     },
   ],
+  routeNotFound: (to) => {
+    console.log(to);
+    return {
+      path: `/index`,
+    };
+  },
 });
 router.beforeEach((to, from) => {
   if (!checkAuth(to.path)) {
     //如果目表页未通过验证，则跳向登录页
-
     return { path: "/sign-in" };
   }
   // 用户已经登录，继续导航
