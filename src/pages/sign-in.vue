@@ -22,7 +22,9 @@
 
 <script setup lang="ts">
 import useModal from '@/hooks/useModal';
+import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
+import { go } from '@/utils/common';
 import axios from 'axios';
 import { ref } from 'vue';
 
@@ -71,10 +73,11 @@ const handleSignIn = async () => {
         const { token, id, nickname, role } = await axiosSignIn(email.value, password.value);
         authStore.signIn(token, id, nickname, role);
     } catch (err: any) {
-        await useModal().modal(err.message);
-    } finally {
-        loading.value = false;
+        useModal().modal(err.message);
+        return
     }
+    go("/index")
+
 };
 
 </script>
