@@ -5,7 +5,7 @@
             <image class="logo" src="@/static/images/logo.jpg" />
 
             <!-- 输入邮箱 -->
-            <input class="input" v-model="email" type="text" placeholder="请输入邮箱" />
+            <input class="input" v-model="username" type="text" placeholder="请输入账号" />
 
             <!-- 输入密码 -->
             <input class="input" v-model="password" type="password" placeholder="请输入密码" />
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { Configuration, StudentsApiFactory } from '@/generated-client';
 import useModal from '@/hooks/useModal';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
@@ -29,18 +30,21 @@ import axios from 'axios';
 import { ref } from 'vue';
 
 // 定义状态
-const email = ref('admin@nocobase.com');
+const username = ref('nocobase');
 const password = ref('admin123');
 const loading = ref(false);
 const authStore = useAuthStore();
-
-
-async function axiosSignIn(email: string, password: string) {
+// 登录处理
+const handleSignIn = async () => {
+    if (!username.value || !password.value) {
+        // alert('提示', '请输入邮箱和密码');
+        return;
+    }
+    loading.value = true;
     try {
-        // 使用 axios 发送 POST 请求
         const response = await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/auth:signIn`,
-            { email, password },
+            { account: username.value, password: password.value },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,37 +52,14 @@ async function axiosSignIn(email: string, password: string) {
                 }
             }
         );
-
-        // 从响应中提取数据
-        const { token, user } = response.data.data;
-        const { id, nickname, role } = user
-        console.log('【调试】:【', role, '】');
-        //查询若在student表里就是
-
-        return { token, id, nickname, role: "student" };
-    } catch (error) {
-        console.error('登录失败:', error);
-        throw new Error('登录失败，请检查用户名和密码。');
-    }
-}
-
-
-// 登录处理
-const handleSignIn = async () => {
-    if (!email.value || !password.value) {
-        // alert('提示', '请输入邮箱和密码');
-        return;
-    }
-    loading.value = true;
-    try {
-        const { token, id, nickname, role } = await axiosSignIn(email.value, password.value);
-        authStore.signIn(token, id, nickname, role);
+        const { token } = response.data.data;
+        authStore.token = token;
+        await authStore.refreshAuthStore();
     } catch (err: any) {
         useModal().modal(err.message);
         return
     }
     go("/index")
-
 };
 
 </script>

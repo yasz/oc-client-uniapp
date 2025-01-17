@@ -103,7 +103,7 @@ function checkAuth(url: string) {
     return true;
   }
 
-  const token = JSON.parse(uni.getStorageSync("authStore") || "{}").token;
+  const token = uni.getStorageSync("authToken");
 
   // 如果没有 token，跳转到登录页
   if (!token || token === "") {

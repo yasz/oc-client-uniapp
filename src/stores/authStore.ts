@@ -1,21 +1,22 @@
 import { Configuration } from "@/generated-client";
+import axios from "axios";
 import { defineStore } from "pinia";
 import { watch } from "vue";
 
-// 创建 Pinia store 来管理认证状态、token、userId、nickname 和 role
+// 创建 Pinia store 来管理认证状态
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
-    token: null as string | null,
-    userId: null as string | null,
-    nickname: null as string | null,
-    role: "" as string, // 新增 role
+    token: null as string | null, // token
+    userId: null as string | null, // 用户 ID
+    nickname: null as string | null, // 昵称
+    role: "" as string, // 用户角色
   }),
 
   getters: {
     // 动态生成 API 配置，确保始终使用最新的 token
     apiConfig: (state) => {
       return new Configuration({
-        basePath: process.env.VITE_API_ENDPOINT,
+        basePath: import.meta.env.VITE_API_ENDPOINT,
         baseOptions: {
           headers: {
             Authorization: `Bearer ${state.token}`,
@@ -26,13 +27,33 @@ export const useAuthStore = defineStore("authStore", {
   },
 
   actions: {
-    // 登录逻辑
-    signIn(token: string, userId: string, nickname: string, role: string) {
-      this.token = token;
-      this.userId = userId;
-      this.nickname = nickname;
-      this.role = role; // 设置 role
-      console.log("【调试】:~~~【", role, "】");
+    // 检查 token 是否有效
+    async refreshAuthStore() {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/auth:check`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        if (response.data) {
+          // 更新 store 数据
+          const { userId, nickname, roles } = response.data.data;
+          this.userId = userId;
+          this.nickname = nickname;
+          this.role = roles.map((e: any) => {
+            return e.name;
+          });
+        }
+        return response.data;
+      } catch (error) {
+        console.error("Token 检查失败:", error);
+        this.signOut(); // Token 无效，清除状态
+        return null;
+      }
     },
 
     // 登出逻辑
@@ -40,57 +61,45 @@ export const useAuthStore = defineStore("authStore", {
       this.token = null;
       this.userId = null;
       this.nickname = null;
-      this.role = ""; // 清空 role
-
-      uni.removeStorageSync("authStore");
+      this.role = ""; // 清空状态
     },
 
-    // 用于同步 token、userId、nickname 和 role 到 AsyncStorage 或 localStorage
-    async saveAuthDataToStorage() {
+    // 从存储中加载 token 并验证
+    async loadTokenFromStorage() {
       try {
-        const authStoreInstance = JSON.stringify({
-          token: this.token,
-          userId: this.userId,
-          nickname: this.nickname,
-          role: this.role, // 保存 role
-        });
-        uni.setStorageSync("authStore", authStoreInstance);
-      } catch (error) {
-        console.error("Error saving auth data to storage:", error);
-      }
-    },
-
-    // 从存储恢复数据
-    loadAuthDataFromStorage() {
-      try {
-        const storageData = uni.getStorageSync("authStore");
-        if (storageData) {
-          const { token, userId, nickname, role } = JSON.parse(storageData);
+        //程序每次启动检验一下token是否过期
+        const token = uni.getStorageSync("authToken");
+        if (token) {
           this.token = token;
-          this.userId = userId;
-          this.nickname = nickname;
-          this.role = role; // 恢复 role
+          // 检查 token 是否有效
+          const checkResponse = await this.refreshAuthStore();
+          if (!checkResponse) {
+            this.signOut(); // 如果无效，登出并清理状态
+          }
         }
       } catch (error) {
-        console.error("Error loading auth data from storage:", error);
+        console.error("加载 token 失败:", error);
       }
     },
   },
 });
 
-// 创建实例后，初始化时从 storage 加载状态
+// 初始化 AuthStore
 export const initAuthStore = () => {
-  console.log("【调试】:【", "initAuthStore", "】");
+  console.log("【调试】: 初始化 AuthStore");
   const authStore = useAuthStore();
-  authStore.loadAuthDataFromStorage();
+  authStore.loadTokenFromStorage();
 
-  // 监听 authStore 的状态变化并保存到 storage
+  // 监听 token 状态变化，仅在 token 变化时更新 storage
   watch(
-    authStore.$state,
-    () => {
-      authStore.saveAuthDataToStorage();
-    },
-    { deep: true }
+    () => authStore.token,
+    (newToken) => {
+      if (newToken) {
+        uni.setStorageSync("authToken", newToken);
+      } else {
+        uni.removeStorageSync("authToken");
+      }
+    }
   );
 };
 initAuthStore();
