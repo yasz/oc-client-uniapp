@@ -35,7 +35,7 @@ const change = (e: number) => {
   <view>
     <view class="mytab">
       <u-tabbar :border="false" :value="index" @change="change" fixed :placeholder="false" safeAreaInsetBottom
-        activeColor="#d81e06">
+        activeColor="orange">
         <u-tabbar-item :text="$t('index')" icon="star"></u-tabbar-item>
         <u-tabbar-item :text="$t('courses')" icon="pushpin"></u-tabbar-item>
         <u-tabbar-item :text="$t('my')" icon="account"></u-tabbar-item>

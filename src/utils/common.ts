@@ -200,7 +200,7 @@ export function postAPI(url: string, data: any) {
 
 function http(method: any, url: string, data: any) {
   return new Promise((resolve, reject) => {
-    const token = useAuthStore().token || uni.getStorageSync("settings").token;
+    const token = useAuthStore().token || uni.getStorageSync("authToken");
     uni.request({
       url: url,
       data,
@@ -213,7 +213,7 @@ function http(method: any, url: string, data: any) {
       timeout: 5000,
       success: (res: any) => {
         if (res.data.code === 401) {
-          uni.redirectTo({ url: "/pages/login" });
+          uni.redirectTo({ url: "/pages/sign-in" });
         }
         resolve(res.data);
       },

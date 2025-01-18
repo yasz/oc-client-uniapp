@@ -24,6 +24,10 @@ $pt-values: (
     .r-#{$i} {
         border-radius: #{$i* 2 }rpx;
     }
+    .ur-#{$i} {
+        border-top-left-radius: #{ $i * 2 }rpx;
+        border-top-right-radius: #{ $i * 2 }rpx;
+    }
 }
 
 @for $i from 2 through 40 {
@@ -32,7 +36,6 @@ $pt-values: (
 }
 
 @each $value in $pt-values {
-
     .t-#{$value} {
         font-size: #{$value* 2 }rpx;
     }
@@ -66,7 +69,12 @@ $pt-values: (
         padding-top: #{$value* 2 }rpx;
         padding-bottom: #{$value* 2 }rpx;
     }
-
+    .pd-#{$value} {
+        padding-left: #{$value* 2 }rpx;
+        padding-right: #{$value* 2 }rpx;
+        padding-top: #{$value* 2 }rpx;
+        padding-bottom: #{$value* 2 }rpx;
+    }
 
     .mt-#{$value} {
         margin-top: #{$value* 2 }rpx;
@@ -257,8 +265,8 @@ $pt-values: (
 
 .divider {
     
-    margin-top:30rpx;
-    margin-bottom:30rpx;
+    margin-top:15rpx;
+    margin-bottom:15rpx;
     width: 150%;
     margin-left: -100rpx; 
     height: 2px;
@@ -267,6 +275,9 @@ $pt-values: (
   }
 .bold2 {
     font-weight: 700;
+}
+.bg-white {
+    background: #fff;
 }
 
 .bg-gray2 {

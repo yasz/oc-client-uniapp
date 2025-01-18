@@ -5,7 +5,12 @@ const zhCN: Record<string, any> = {
   "no records": "没有记录了",
   groups: "小组",
   " group": "小组",
-
+  introduction: "课程介绍",
+  syllabus: "目录",
+  assignments: "作业",
+  discussions: "讨论区",
+  "Latest Students": "最新学生",
+  Instructor: "指导老师",
   Create: "创建",
   Save: "保存",
   "group members": "小组成员",

@@ -85,7 +85,7 @@ export const useAuthStore = defineStore("authStore", {
 });
 
 // 初始化 AuthStore
-export const initAuthStore = () => {
+const initAuthStore = () => {
   console.log("【调试】: 初始化 AuthStore");
   const authStore = useAuthStore();
   authStore.loadTokenFromStorage();
