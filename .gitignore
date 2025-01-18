@@ -11,7 +11,7 @@ node_modules
 .DS_Store
 dist
 *.local
-
+src/static/cover
 # Editor directories and files
 .idea
 *.suo

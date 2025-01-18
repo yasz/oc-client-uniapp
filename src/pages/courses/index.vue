@@ -1,173 +1,95 @@
 <template>
-    <view>
-        <view class="container pd-20">
-
-            <!-- 学习进度部分 -->
-            <view class="section">
-                <text class="title">小学语文（部编版）一上</text>
-                <view class="pt-10 progress-wrapper">
-                    <up-line-progress :percentage="progressPercent" height="20" activeColor="orange"
-                        :show-text="false" />
-                    <text class="progress-text">{{ progressPercent }}% ({{ completedChapters }}/{{ totalChapters
-                        }})</text>
-                </view>
+    <view class="pd-14">
+        <!-- 遍历课程数据，生成卡片列表 -->
+        <view v-for="(course, index) in courses" :key="index" class="course-card">
+            <!-- 左侧课程封面 -->
+            <view class="course-cover bg-gray2">
+                <u-image height="120" :src="course.cover" mode="aspectFit" />
             </view>
-
-            <!-- 授课老师 -->
-            <view class="section">
-                <text class="title">{{ $t("Instructor") }}</text>
-                <view class="pt-20 teacher-info">
-                    <u-avatar :src="'https://via.placeholder.com/100'" size="80" />
-                    <view class="teacher-detail">
-                        <text class="teacher-name">赵岳 Panto</text>
-                        <text class="teacher-description"> 专业授课老师，擅长中文教学及课程设计。</text>
-                    </view>
-                </view>
+            <!-- 右侧课程信息 -->
+            <view class="course-info">
+                <!-- 课程名称 -->
+                <view class="text-bold t-14">{{ course.name }}</view>
+                <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
+                <view class="pt-6 text-12 text-primary">¥ {{ course.price }}.00</view>
             </view>
-
-            <!-- 最新学员 -->
-            <view class="section">
-                <view class="pb-10">
-                    <text class="title">{{ $t('Latest Students') }}</text>
-                </view>
-                <scroll-view scroll-x class="students-list">
-                    <u-avatar-group :urls="students.map(student => student.avatar)" :maxCount="20" gap=""
-                        @click="showStudentName"></u-avatar-group>
-                </scroll-view>
-            </view>
-        </view>
-
-
-        <view class="container">
-            <up-sticky bgColor="#fff" class="f-b-c ur-10">
-                <up-tabs :list="tabs" itemStyle="height:50px;width:120rpx;" lineWidth="50"></up-tabs>
-            </up-sticky>
         </view>
     </view>
-
 </template>
 
-<script setup>
-import { ref, onMounted, computed } from 'vue';
+<script lang="ts" setup>
+import { reactive } from 'vue';
 
-const completedChapters = ref(0); // 已学章节数
-const totalChapters = ref(1); // 避免除以 0
-const students = ref([]);
-const coursesIntro = ref('课程介绍');
-const activeTab = ref('introduction');
-
-const progressPercent = computed(() => {
-    return Math.round((completedChapters.value / totalChapters.value) * 100);
-});
-function showStudentName(event) {
-    const index = event.detail.index;
-    const student = students.value[index];
-    if (student) {
-        uni.showToast({
-            title: student.name,
-            icon: 'none',
-        });
-    }
-}
-const tabs = [
-    { key: 'introduction', name: '课程介绍' },
-    { key: 'syllabus', name: '目录', badge: 3 },
-    { key: 'assignments', name: '作业' },
-    { key: 'discussions', name: '讨论区' },
-];
-
-onMounted(() => {
-
-    completedChapters.value = 9;
-    totalChapters.value = 10;
-
-    students.value = [
-        { id: 1, name: '学生A', avatar: 'https://via.placeholder.com/50' },
-        { id: 2, name: '学生B', avatar: 'https://via.placeholder.com/50' },
-        { id: 3, name: '学生C', avatar: 'https://via.placeholder.com/50' },
-        { id: 4, name: '学生D', avatar: 'https://via.placeholder.com/50' },
-        { id: 5, name: '学生E', avatar: 'https://via.placeholder.com/50' },
-        { id: 6, name: '学生F', avatar: 'https://via.placeholder.com/50' },
-        { id: 7, name: '学生G', avatar: 'https://via.placeholder.com/50' },
-    ];
-
-    // 模拟获取课程介绍数据
-    coursesIntro.value = '<p>这是一个关于日语50音的课程介绍...</p>';
-});
+// 课程数据
+const courses = reactive([
+    {
+        cover: '/static/cover/1a.jpg',
+        name: '人教',
+        subject: '中文',
+        teacher: '张老师',
+        price: 199,
+    },
+    {
+        cover: '/static/cover/2a.jpg',
+        name: '英语语法课程',
+        subject: '英语',
+        teacher: '李老师',
+        price: 299,
+    },
+    {
+        cover: '/static/cover/piano.jpg',
+        name: '钢琴入门课程',
+        subject: '音乐',
+        teacher: '王老师',
+        price: 399,
+    },
+    {
+        cover: '/static/course-history.jpg',
+        name: '历史入门课程',
+        subject: '历史',
+        teacher: '赵老师',
+        price: 249,
+    },
+    {
+        cover: '/static/course-science.jpg',
+        name: '科学实验课程',
+        subject: '科学',
+        teacher: '钱老师',
+        price: 349,
+    },
+]);
 </script>
 
-<style scoped>
-.f-b-c {
+<style lang="scss" scoped>
+/* 外部容器样式 */
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.container {
-
-    background-color: #f5f5f5;
-}
-
-.section {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-}
-
-.title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.progress-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.progress-text {
-    margin-left: 10px;
-    color: #333;
-}
-
-.teacher-info {
-    display: flex;
-    align-items: center;
-}
-
-.teacher-detail {
-    margin-left: 15px;
-}
-
-.teacher-name {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.teacher-description {
-    margin-top: 5px;
-    color: #666;
-}
-
-.students-list {
+/* 单个课程卡片样式 */
+.course-card {
     display: flex;
     flex-direction: row;
-    padding: 10px 0;
+    margin-bottom: 20rpx;
+    border-radius: 16rpx;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
 }
 
-.student-card {
+/* 左侧课程封面 */
+.course-cover {
+    width: 600rpx;
+    height: 200rpx;
+    overflow: hidden;
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-right: 15px;
 }
 
-.student-name {
-    margin-top: 5px;
-    font-size: 12px;
-    text-align: center;
+/* 右侧课程信息 */
+.course-info {
+    padding: 16rpx;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 </style>

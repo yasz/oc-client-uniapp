@@ -5,6 +5,7 @@ const zhCN: Record<string, any> = {
   "no records": "没有记录了",
   groups: "小组",
   " group": "小组",
+  Hi: "您好",
   introduction: "课程介绍",
   syllabus: "目录",
   assignments: "作业",

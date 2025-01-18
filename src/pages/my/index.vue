@@ -12,8 +12,8 @@
             </view>
         </view>
     </view>
-
-    <view class="flex-col pt-10 px-20">
+    <view class="pt-10 flex justify-between"> </view>
+    <view class="flex-col px-20">
         <view class="flex py-10 baseline fixed-height" style="align-items: center;">
             <view class="mr-20">
                 <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
