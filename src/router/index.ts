@@ -30,6 +30,19 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/courses/details`,
+    component: __dynamicImportComponent__(`@/pages/courses/details.vue`, {
+      pageType: `top`,
+      style: {
+        // navigationBarTitleText: i18n.global.t("courses"),
+        navigationBarTitleText: "coursesDetails",
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "coursesDetails",
+      },
+    }),
+  },
+  {
     path: `/sign-in`,
     component: __dynamicImportComponent__(`@/pages/sign-in.vue`, {
       pageType: `top`,

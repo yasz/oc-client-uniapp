@@ -2,42 +2,23 @@ import { useAuthStore } from "@/stores/authStore";
 
 export const bucketURL = "https://a.praise.site:3003/ps13";
 
-export function uploadFile(filePath: string) {
-  const token =
-    useSettingsStore().token || uni.getStorageSync("settings").token;
-  return new Promise(async (resolve, reject) => {
-    uni.uploadFile({
-      url: `${apiURL}/minio`,
-      name: "file",
-      filePath,
-      header: {
-        // Accept: 'application/json', // 需要注释，解决h5文件上传问题
-        // 'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-
-      timeout: 5000,
-      success: (res) => {
-        const data = JSON.parse(res.data);
-        if (data.code === 401) {
-          uni.redirectTo({ url: "/pages/login" });
-        }
-        resolve(data);
-      },
-      fail: (e) => {
-        reject(e);
-      },
-      complete: () => {},
-    });
-  });
-}
-
 /**
  * 解析页面参数
  * @param { String } url 待解析地址，可为空（默认解析当前url)
  *
  */
-
+function getSystemInfoAsync() {
+  return new Promise((resolve, reject) => {
+    uni.getSystemInfo({
+      success: resolve,
+      fail: reject,
+    });
+  });
+}
+export const getViewportWidth = async () => {
+  let res: any = await getSystemInfoAsync();
+  return res.screenWidth;
+};
 export function getQueryParams(
   url: string = window.location.href
 ): Record<string, string | number | boolean | null> {

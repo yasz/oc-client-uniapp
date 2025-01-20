@@ -19,3 +19,4 @@ src/static/cover
 *.njsproj
 *.sln
 *.sw?
+swagger-docs.json

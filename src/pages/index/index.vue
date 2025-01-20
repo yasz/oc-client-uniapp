@@ -4,7 +4,7 @@
     <view class="text-area">
       <text class="title">{{ t("pages.new activities") }}</text>
     </view>
-    <button @click="() => { go('/pages/courses/index') }">Go to Courses Index</button>
+    <button @click="() => { go('/courses') }">Go to Courses Index</button>
 
   </view>
 </template>
