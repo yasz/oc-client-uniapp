@@ -97,10 +97,6 @@ export const go2 = (url: string) => {
       // uni.switchTab({ url });
     });
 };
-export function getAPI(url: any, data: any) {
-  const queryParams = data ? "?" + new MySearchParams(data).toString() : "";
-  return http("GET", `${apiURL}/${url}${queryParams}`, queryParams);
-}
 
 class MySearchParams {
   private params: Map<string, string>;
@@ -178,18 +174,20 @@ export function patch(url: string, data: any) {
 export function postAPI(url: string, data: any) {
   return http("POST", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
 }
-
-function http(method: any, url: string, data: any) {
+export function getAPI(url: string, data: any) {
+  return http("GET", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
+}
+export function http(method: any, url: string, data: any) {
   return new Promise((resolve, reject) => {
     const token = useAuthStore().token || uni.getStorageSync("authToken");
     uni.request({
       url: url,
       data,
-      // header: {
-      //   Accept: "application/json",
-      //   "Content-Type": "application/json",
-      //   ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      // },
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       method,
       timeout: 5000,
       success: (res: any) => {

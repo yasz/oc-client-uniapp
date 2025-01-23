@@ -9,7 +9,7 @@
             <view v-for="(course, index) in courses" :key="index" class="card-wrapper">
 
                 <!-- 卡片内容 -->
-                <view class="course-card" @click="go('/courses/details')">
+                <view class="course-card" @click="go(`/courses/details?id=${course.id}`)">
                     <!-- 左侧课程封面 -->
                     <view class="course-cover ">
                         <u-image height="120" :src="course.cover" mode="aspectFit" />
@@ -31,60 +31,43 @@
 
 <script lang="ts" setup>
 import DotSwiper from '@/components/dotSwiper.vue';
+import { fetchCourseSessions } from '@/utils/api';
 import { go } from '@/utils/common';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
+interface Course {
+    id: number;
+    name: string;
+    teacher: string;
+    subject: string;
+    cover: string;
+    price: number;
+}
+const courses = reactive<Course[]>([]);
 
+onMounted(async () => {
+    const response: any = await fetchCourseSessions();
+
+    if (response.data) {
+        // 转换数据格式
+        courses.push(
+            ...response.data.map((item: any) => {
+                const res = {
+                    id: item.id,
+                    name: item.course_id.name,
+                    teacher: item.teacher_id.nickname,
+                    subject: item.subject_id.name,
+                    cover: import.meta.env.VITE_BUCKET_ENDPOINT + item.cover?.[0]?.url || '/static/images/default-cover.jpg',
+                    price: item.price || 0 // 假设有价格字段
+                }
+                console.log('【调试~~】:【', res, '】');
+                return res
+
+            })
+        );
+    }
+});
 // 课程数据
-const courses = reactive([
-    {
-        cover: '/static/cover/ct.jpg',
-        name: '圣约神学历史',
-        subject: '改革宗神学',
-        teacher: '姚凯',
-        price: 29,
-    },
-    {
-        cover: '/static/cover/dt.jpg',
-        name: '《多特信经》领读',
-        subject: '改革宗神学',
-        teacher: '王一',
-        price: 29,
-    },
-    {
-        cover: '/static/cover/piano.jpg',
-        name: '现代和声编配——实战',
-        subject: '音乐',
-        teacher: '王老师',
-        price: 399,
-    },
-    {
-        cover: '/static/course-history.jpg',
-        name: '历史入门课程',
-        subject: '历史',
-        teacher: '赵老师',
-        price: 249,
-    },
-    {
-        cover: '/static/course-science.jpg',
-        name: '科学实验课程',
-        subject: '科学',
-        teacher: '钱老师',
-        price: 349,
-    }, {
-        cover: '/static/cover/dt.jpg',
-        name: '《多特信经》领读',
-        subject: '改革宗神学',
-        teacher: '王一',
-        price: 29,
-    },
-    {
-        cover: '/static/cover/piano.jpg',
-        name: '现代和声编配——实战',
-        subject: '音乐',
-        teacher: '王老师',
-        price: 399,
-    },
-]);
+
 </script>
 
 <style lang="scss" scoped>

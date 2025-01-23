@@ -12,7 +12,7 @@ for (const key in result.parsed) {
 // 模拟登录的函数
 export async function signIn(email, password) {
   try {
-    const response = await axios.post(`${process.env.VITE_API_ENDPOINT}/auth:signIn`, {
+    const response = await axios.post(`${import.meta.env.VITE_API_ENDPOINT}/auth:signIn`, {
       email,     // 将用户名改为 email
       password,  // 密码字段
     }, {

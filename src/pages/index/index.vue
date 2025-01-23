@@ -10,13 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import Tabbar from "@/components/tabbar.vue";
 import {
   go
 } from "@/utils/common";
-import { ref } from 'vue'
+
 import { useI18n } from 'vue-i18n';
-import LangSwitch from "@/components/langSwitch.vue";
 
 const { t, locale } = useI18n();
 </script>
