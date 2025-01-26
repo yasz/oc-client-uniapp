@@ -11,6 +11,7 @@
                 <!-- 卡片内容 -->
                 <view class="course-card" @click="go(`/courses/details?id=${course.id}`)">
                     <!-- 左侧课程封面 -->
+
                     <view class="course-cover ">
                         <u-image height="120" :src="course.cover" mode="aspectFit" />
                     </view>
@@ -20,7 +21,11 @@
                         <view class="text-bold t-14">{{ course.name }}</view>
                         <view class="pt-4 t-12 text-gray">{{ course.teacher }}</view>
                         <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
-                        <view class="pt-6 text-12 text-primary">¥ {{ course.price }}.00</view>
+                        <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
+                            course.price
+                            }}.00</view>
+                        <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view>
+
                     </view>
                 </view>
             </view>
@@ -53,7 +58,7 @@ onMounted(async () => {
             ...response.data.map((item: any) => {
                 const res = {
                     id: item.id,
-                    name: item.course_id.name,
+                    name: item.name,
                     teacher: item.teacher_id.nickname,
                     subject: item.subject_id.name,
                     cover: import.meta.env.VITE_BUCKET_ENDPOINT + item.cover?.[0]?.url || '/static/images/default-cover.jpg',

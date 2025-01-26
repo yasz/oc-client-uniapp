@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/stores/authStore";
+import axios from "axios";
 
 export const bucketURL = "https://a.praise.site:3003/ps13";
 
@@ -177,6 +178,7 @@ export function postAPI(url: string, data: any) {
 export function getAPI(url: string, data: any) {
   return http("GET", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
 }
+
 export function http(method: any, url: string, data: any) {
   return new Promise((resolve, reject) => {
     const token = useAuthStore().token || uni.getStorageSync("authToken");
@@ -203,6 +205,31 @@ export function http(method: any, url: string, data: any) {
     });
   });
 }
+export async function getAPIAxios(url: string, data: any) {
+  const token = useAuthStore().token || uni.getStorageSync("authToken");
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
+      {
+        params: data, // GET 请求应使用 params 传递参数
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        timeout: 5000,
+      }
+    );
+    const res = response.data;
+    if (res.code === 401) {
+      uni.redirectTo({ url: "/pages/sign-in" });
+    }
+    return res;
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+}
+
 export function getCurrentPageUrl() {
   const pages = getCurrentPages(); // 获取页面栈
   const currentPage = pages[pages.length - 1]; // 获取当前页面

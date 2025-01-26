@@ -1,6 +1,6 @@
 <template>
     <view class="flex items-center pt-80 pb-40 px-30 bg-primary">
-        <u-avatar :src="'avaters/wechat/defaultAvater.png'" size="106rpx" shape="circle"></u-avatar>
+        <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="106rpx" shape="circle"></u-avatar>
         <view v-if="useAuthStore().token" class="pl-20 fixed-height">
             {{ $t("Hi") }} , {{ useAuthStore().nickname }}
         </view>

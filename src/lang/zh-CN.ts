@@ -8,6 +8,7 @@ const zhCN: Record<string, any> = {
   Hi: "您好",
   introduction: "课程介绍",
   syllabus: "目录",
+
   assignments: "作业",
   discussions: "讨论区",
   "Latest Students": "最新学生",
@@ -33,12 +34,13 @@ const zhCN: Record<string, any> = {
   "apply logoff": "申请注销",
   logout: "退出登录",
   cancel: "取消",
+  assignment: "作业",
   confirm: "确认",
   "Automatic logout if no login within 7 days after applying for cancellation.":
     "申请注销后7天内未登入自动注销 ",
   Username: "账号",
   Password: "密码",
-  "group avater": "小组头像",
+  "group avatar": "小组头像",
   Today: "今日",
   index: "首页",
   calendar: "日历",
