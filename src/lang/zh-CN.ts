@@ -34,6 +34,7 @@ const zhCN: Record<string, any> = {
   "apply logoff": "申请注销",
   logout: "退出登录",
   cancel: "取消",
+
   assignment: "作业",
   confirm: "确认",
   "Automatic logout if no login within 7 days after applying for cancellation.":

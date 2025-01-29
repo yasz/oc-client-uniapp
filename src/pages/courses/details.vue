@@ -12,14 +12,17 @@
                     <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('courses') }}</text>
                     <up-line-progress :percentage="progressPercent" height="20" activeColor="orange"
                         :show-text="false" />
-                    <text class="progress-text">{{ progressPercent }}% ({{ completedChapters }}/{{ totalChapters
-                        }})</text>
+                    <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ completedChapters }}/{{
+                        totalChapters
+                    }})</text>
                 </view>
                 <view class="pt-10 progress-wrapper">
                     <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('assignment') }}</text>
-                    <up-line-progress :percentage="progressPercent" height="20" activeColor="green"
+                    <up-line-progress :percentage="asgProgressPercent" height="20" activeColor="green"
                         :show-text="false" />
-                    <text class="progress-text">{{ progressPercent }}% ({{ completedChapters }}/{{ totalChapters
+                    <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ asgCompletedChapters
+                        }}/{{
+                            asgTotalChapters
                         }})</text>
                 </view>
             </view>
@@ -52,11 +55,11 @@
         <view class="container">
             <up-sticky bgColor="#fff" class="f-b-c ur-10" offset-top="-30">
                 <up-tabs v-model:current="currentTabIndex" @change="handleTabChange" :list="tabs"
-                    itemStyle="height:50px;width:120rpx" lineWidth="50"></up-tabs>
+                    itemStyle="height:55px;width:130rpx" lineWidth="50"></up-tabs>
             </up-sticky>
         </view>
         <view class="tab-content">
-            <component :is="components[currentTabIndex]" :content="courseData.course_intro"
+            <component :is="components[currentTabIndex]" :content="getTabContent(currentTabIndex)"
                 v-if="currentTabIndex !== null" />
         </view>
     </view>
@@ -78,12 +81,20 @@ const courseData: any = ref({});
 const students: any = ref([]);
 const completedChapters = ref(0); // 已学章节数
 const totalChapters = ref(1); // 避免除以 0
+
+const asgCompletedChapters = ref(1); // 已学章节数
+const asgTotalChapters = ref(3); // 避免除以 0
+
 const teacherAvatar = ref('');
 const isDataLoaded = ref(false); // 数据加载完成标志
 
 // 计算学习进度百分比
 const progressPercent = computed(() => {
     return Math.round((completedChapters.value / totalChapters.value) * 100);
+});
+
+const asgProgressPercent = computed(() => {
+    return Math.round((asgCompletedChapters.value / asgTotalChapters.value) * 100);
 });
 function handleTabChange(event: any) {
     currentTabIndex.value = event.index
@@ -95,7 +106,20 @@ const components = [
     AssignmentsComponent,  // 序号 2
     DiscussionsComponent,  // 序号 3
 ];
-
+const getTabContent = (index: number) => {
+    switch (index) {
+        case 0:
+            return courseData.value.course_intro; // 课程简介
+        case 1:
+            return courseData.value.syllabus; // 课程大纲
+        case 2:
+            return courseData.value.assignments; // 作业数据
+        case 3:
+            return courseData.value.discussions; // 讨论区数据
+        default:
+            return null;
+    }
+};
 // 模拟学员点击行为
 function showStudentName(event: any) {
     const index = event.detail.index;
@@ -107,14 +131,16 @@ function showStudentName(event: any) {
         });
     }
 }
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 // 定义 Tab 选项
 const tabs = [
-    { key: 'introduction', name: '课程介绍' },
-    { key: 'syllabus', name: '目录', badge: 3 },
-    { key: 'assignments', name: '作业' },
-    { key: 'discussions', name: '讨论区' },
+    { key: 'introduction', name: t('introduction') },
+    { key: 'syllabus', name: t('syllabus') },
+    { key: 'assignments', name: t('assignments') },
+    { key: 'discussions', name: t('discussions') },
 ];
+
 const currentTabIndex = ref(1)
 
 const id = ref(0);
@@ -130,10 +156,10 @@ onLoad(async (e: any) => {
             || 'https://via.placeholder.com/100';
 
         // 示例学习进度数据
-        completedChapters.value = 9; // 示例值
-        totalChapters.value = 10;   // 示例值
+        completedChapters.value = 1; // 示例值
+        totalChapters.value = 2;   // 示例值
 
-        isDataLoaded.value = true;
+
         const sessionUsersResponse: any = await fetchSessionUsersBySessionId(id.value);
         const sessionUsers = sessionUsersResponse.data || [];
 
@@ -144,8 +170,12 @@ onLoad(async (e: any) => {
                 avatar: import.meta.env.VITE_BUCKET_ENDPOINT + (item.user_id.avatar[0]?.url || 'https://via.placeholder.com/50')
             };
         });
-        console.log('【调试】:【', students.value, '】');
 
+        const courseResponse: any = await fetchCourseById(courseData.value.course_id.id);
+
+        courseData.value.syllabus = courseResponse.data
+        console.log('【调试】:【', students.value, '】');
+        isDataLoaded.value = true;
     } catch (error) {
         console.error('数据加载失败', error);
     }

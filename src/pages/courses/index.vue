@@ -23,7 +23,7 @@
                         <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
                         <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
                             course.price
-                            }}.00</view>
+                        }}.00</view>
                         <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view>
 
                     </view>
@@ -64,7 +64,7 @@ onMounted(async () => {
                     cover: import.meta.env.VITE_BUCKET_ENDPOINT + item.cover?.[0]?.url || '/static/images/default-cover.jpg',
                     price: item.price || 0 // 假设有价格字段
                 }
-                console.log('【调试~~】:【', res, '】');
+
                 return res
 
             })
