@@ -23,7 +23,7 @@
                         <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
                         <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
                             course.price
-                        }}.00</view>
+                            }}.00</view>
                         <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view>
 
                     </view>
@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
 import DotSwiper from '@/components/dotSwiper.vue';
-import { fetchCourseSessions } from '@/utils/api';
+import { listCourseSessions } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive } from 'vue';
 interface Course {
@@ -50,7 +50,7 @@ interface Course {
 const courses = reactive<Course[]>([]);
 
 onMounted(async () => {
-    const response: any = await fetchCourseSessions();
+    const response: any = await listCourseSessions();
 
     if (response.data) {
         // 转换数据格式

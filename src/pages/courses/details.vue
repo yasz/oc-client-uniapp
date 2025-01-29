@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { fetchCourseById, fetchCourseSessionsById, fetchSessionUsersBySessionId } from '@/utils/api';
+import { listCourseById, getCourseSessionsById, listSessionUsersBySessionId, listCourseProgressByUserIdAndSessionId } from '@/utils/api';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref, onMounted, computed } from 'vue';
 import IntroductionComponent from './components/introduction.vue';
@@ -87,6 +87,7 @@ const asgTotalChapters = ref(3); // 避免除以 0
 
 const teacherAvatar = ref('');
 const isDataLoaded = ref(false); // 数据加载完成标志
+const userId = useAuthStore().userId;
 
 // 计算学习进度百分比
 const progressPercent = computed(() => {
@@ -132,6 +133,7 @@ function showStudentName(event: any) {
     }
 }
 import { useI18n } from "vue-i18n";
+import { useAuthStore } from '@/stores/authStore';
 const { t } = useI18n();
 // 定义 Tab 选项
 const tabs = [
@@ -142,13 +144,27 @@ const tabs = [
 ];
 
 const currentTabIndex = ref(1)
+function countLeafNodes(data: any[]): number {
+    let count = 0;
 
+    for (const node of data) {
+        // 如果没有 children 或者 children 是空数组，计为叶子节点
+        if (!node.children || node.children.length === 0) {
+            count++;
+        } else {
+            // 递归统计子节点
+            count += countLeafNodes(node.children);
+        }
+    }
+
+    return count;
+}
 const id = ref(0);
 onLoad(async (e: any) => {
     id.value = +e.id;
 
     try {
-        let response: any = await fetchCourseSessionsById(id.value);
+        let response: any = await getCourseSessionsById(id.value);
         courseData.value = response.data;
 
         // 动态绑定老师头像
@@ -157,10 +173,9 @@ onLoad(async (e: any) => {
 
         // 示例学习进度数据
         completedChapters.value = 1; // 示例值
-        totalChapters.value = 2;   // 示例值
 
 
-        const sessionUsersResponse: any = await fetchSessionUsersBySessionId(id.value);
+        const sessionUsersResponse: any = await listSessionUsersBySessionId(id.value);
         const sessionUsers = sessionUsersResponse.data || [];
 
         students.value = sessionUsers.map((item: any) => {
@@ -171,10 +186,18 @@ onLoad(async (e: any) => {
             };
         });
 
-        const courseResponse: any = await fetchCourseById(courseData.value.course_id.id);
-
+        const courseResponse: any = await listCourseById(courseData.value.course_id.id);
+        totalChapters.value = countLeafNodes(courseResponse.data);   // 示例值
         courseData.value.syllabus = courseResponse.data
-        console.log('【调试】:【', students.value, '】');
+        //将已完成的课程，设置关联起来；
+
+        const completedChaptersResponse = await listCourseProgressByUserIdAndSessionId(userId, id.value);
+        console.log('completedChaptersResponse:【', completedChaptersResponse.data.length, '】');
+        completedChapters.value = completedChaptersResponse.data.length
+
+
+
+        // console.log('【调试】:【', students.value, courseData.value, '】');
         isDataLoaded.value = true;
     } catch (error) {
         console.error('数据加载失败', error);

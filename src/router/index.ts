@@ -1,7 +1,7 @@
 import i18n from "@/lang";
+
 import { createRouter, __dynamicImportComponent__ } from "@/uni-simple-router";
-const { t }: any = i18n.global;
-console.log("【调试】:【", t("courses"), "】");
+
 const platform: any = process.env.VUE_APP_PLATFORM ?? "h5";
 const soliRoutes = [
   {
@@ -110,14 +110,17 @@ router.beforeEach((to, from) => {
 });
 export default router;
 function checkAuth(url: string) {
-  // 白名单页面，不需要校验
-  console.log("【调试】:【to", url, "】");
+  // while (!(getActivePinia() && useAuthStore().isAuthInitialized)) {
+  //   console.log("【调试】: 等待 AuthStore 初始化...");
+  //   await new Promise((resolve) => setTimeout(resolve, 100)); // 等待 100ms 再检查
+  // }
   if (["/index", "/sign-in", "/my"].includes(url)) {
+    // 白名单页面，不需要校验token
     return true;
   }
 
+  //对于其他页面
   const token = uni.getStorageSync("authToken");
-
   // 如果没有 token，跳转到登录页
   if (!token || token === "") {
     return false;

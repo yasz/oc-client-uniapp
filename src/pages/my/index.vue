@@ -3,6 +3,7 @@
         <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="106rpx" shape="circle"></u-avatar>
         <view v-if="useAuthStore().token" class="pl-20 fixed-height">
             {{ $t("Hi") }} , {{ useAuthStore().nickname }}
+            {{ useAuthStore().userId }}
         </view>
         <view v-if="!useAuthStore().token">
             <view class="pl-20 fixed-height" @click="go('/sign-in')">
@@ -60,5 +61,4 @@ import { bucketURL, go } from "@/utils/common";
 const logout = () => {
     useAuthStore().signOut();
 };
-console.log('【调试】~~~~~:【', process.env.VITE_SOME_KEY, import.meta.env.VITE_API_ENDPOINT, '】');
 </script>

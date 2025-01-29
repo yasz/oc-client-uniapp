@@ -1,6 +1,6 @@
-import { getAPI, getAPIAxios, postAPI } from "./common";
+import { getAPI, getAPIAxios, postAPI, postAPIAxios } from "./common";
 
-export const fetchCourseSessions = async () => {
+export const listCourseSessions = async () => {
   const url =
     "course_sessions:list?pageSize=20&appends[]=teacher_id&appends[]=teacher_id.avatar&appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&appends[]=subject_id&appends[]=cover&filter=%7B%7D";
 
@@ -12,7 +12,7 @@ export const fetchCourseSessions = async () => {
     console.error("Error:", error);
   }
 };
-export const fetchCourseSessionsById = async (id: any) => {
+export const getCourseSessionsById = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");
     return Promise.reject("Missing required parameter 'id'");
@@ -29,8 +29,35 @@ export const fetchCourseSessionsById = async (id: any) => {
     throw error;
   }
 };
+export const listCourseProgressByUserIdAndSessionId = async (
+  userId: any,
+  courseSesssionId: any
+) => {
+  const filter = `{"$and":[{"user_id":{"id":{"$eq":${userId}}}},{"course_session_id":{"id":{"$eq":${courseSesssionId}}}}]}`;
+  const url = `course_progress:list?pageSize=20&appends[]=course_id&appends[]=user_id&appends[]=course_session_id&page=1&filter=${filter}`;
+  try {
+    const response = await getAPIAxios(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 
-export const fetchCourseById = async (id: any) => {
+export const createCourseProgress = async (data: any) => {
+  const url = `course_progress:create`;
+  try {
+    const response = await postAPIAxios(url, data);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const listCourseById = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");
     return Promise.reject("Missing required parameter 'id'");
@@ -49,7 +76,7 @@ export const fetchCourseById = async (id: any) => {
   }
 };
 
-export const fetchSessionUsersBySessionId = async (id: any) => {
+export const listSessionUsersBySessionId = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");
     return Promise.reject("Missing required parameter 'id'");

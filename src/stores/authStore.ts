@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("authStore", {
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
     role: "" as string, // 用户角色
+    isAuthInitialized: false,
   }),
 
   getters: {
@@ -41,8 +42,8 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
-          const { userId, nickname, roles } = response.data.data;
-          this.userId = userId;
+          const { id, nickname, roles } = response.data.data;
+          this.userId = id;
           this.nickname = nickname;
           this.role = roles.map((e: any) => {
             return e.name;
@@ -73,6 +74,7 @@ export const useAuthStore = defineStore("authStore", {
           this.token = token;
           // 检查 token 是否有效
           const checkResponse = await this.refreshAuthStore();
+
           if (!checkResponse) {
             this.signOut(); // 如果无效，登出并清理状态
           }
@@ -85,7 +87,7 @@ export const useAuthStore = defineStore("authStore", {
 });
 
 // 初始化 AuthStore
-const initAuthStore = () => {
+const initAuthStore = async () => {
   console.log("【调试】: 初始化 AuthStore");
   const authStore = useAuthStore();
   authStore.loadTokenFromStorage();

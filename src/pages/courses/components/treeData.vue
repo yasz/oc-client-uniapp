@@ -12,13 +12,16 @@
                 <!-- <uni-icons type="checkbox" size="22" color="#9298a5"></uni-icons> -->
                 <uni-icons type="circle" size="22" color="#9298a5"></uni-icons>
                 <text class="children-item py-10 pl-10">{{ item.name }}</text>
-                <up-icon @click="openAttachment(item.file_id?.url)" :name="getIconByType(item.file_id?.url)" size="22"
-                    color="#9298a5" class="ml pr-40"></up-icon>
+                <up-icon @click="openAttachment(item.file_id?.url, item)" :name="getIconByType(item.file_id?.url)"
+                    size="22" color="#9298a5" class="ml pr-40"></up-icon>
             </view>
         </template>
     </template>
 </template>
 <script lang="ts" setup>
+import { useAuthStore } from "@/stores/authStore";
+import { createCourseProgress } from "@/utils/api";
+import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 
 // Props
@@ -42,12 +45,24 @@ const documentExtensions = ["pdf", "doc", "docx"];
  * 打开附件
  * @param url 文件 URL
  */
-const openAttachment = (url: string | undefined) => {
+const sessesionId = ref(0);
+onLoad(async (e: any) => {
+    sessesionId.value = +e.id;
+})
+const openAttachment = async (url: string | undefined, item: any) => {
     if (!url) {
         console.warn("文件 URL 为空");
         return;
     }
-
+    //更新当前进度
+    await createCourseProgress(
+        {
+            course_id: { id: item.id },
+            course_session_id: { id: sessesionId.value },
+            progress_percentage: 1,
+            user_id: { id: useAuthStore().userId },
+        }
+    );
     const extension = getFileExtension(url);
 
     if (audioExtensions.includes(extension)) {
