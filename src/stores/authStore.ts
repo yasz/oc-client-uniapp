@@ -90,7 +90,7 @@ export const useAuthStore = defineStore("authStore", {
 const initAuthStore = async () => {
   console.log("【调试】: 初始化 AuthStore");
   const authStore = useAuthStore();
-  authStore.loadTokenFromStorage();
+  await authStore.loadTokenFromStorage();
 
   // 监听 token 状态变化，仅在 token 变化时更新 storage
   watch(
@@ -104,4 +104,4 @@ const initAuthStore = async () => {
     }
   );
 };
-initAuthStore();
+await initAuthStore();
