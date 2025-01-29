@@ -12,15 +12,15 @@
                     <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('courses') }}</text>
                     <up-line-progress :percentage="progressPercent" height="20" activeColor="orange"
                         :show-text="false" />
-                    <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ completedChapters }}/{{
+                    <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ courseProgress }}/{{
                         totalChapters
-                    }})</text>
+                        }})</text>
                 </view>
                 <view class="pt-10 progress-wrapper">
                     <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('assignment') }}</text>
                     <up-line-progress :percentage="asgProgressPercent" height="20" activeColor="green"
                         :show-text="false" />
-                    <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ asgCompletedChapters
+                    <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ asgcourseProgress
                         }}/{{
                             asgTotalChapters
                         }})</text>
@@ -79,10 +79,10 @@ import DiscussionsComponent from './components/discussions.vue';
 // 定义响应式变量
 const courseData: any = ref({});
 const students: any = ref([]);
-const completedChapters = ref(0); // 已学章节数
+const courseProgress = ref(0); // 已学章节数
 const totalChapters = ref(1); // 避免除以 0
 
-const asgCompletedChapters = ref(1); // 已学章节数
+const asgcourseProgress = ref(1); // 已学章节数
 const asgTotalChapters = ref(3); // 避免除以 0
 
 const teacherAvatar = ref('');
@@ -91,11 +91,11 @@ const userId = useAuthStore().userId;
 
 // 计算学习进度百分比
 const progressPercent = computed(() => {
-    return Math.round((completedChapters.value / totalChapters.value) * 100);
+    return Math.round((courseProgress.value / totalChapters.value) * 100);
 });
 
 const asgProgressPercent = computed(() => {
-    return Math.round((asgCompletedChapters.value / asgTotalChapters.value) * 100);
+    return Math.round((asgcourseProgress.value / asgTotalChapters.value) * 100);
 });
 function handleTabChange(event: any) {
     currentTabIndex.value = event.index
@@ -159,6 +159,27 @@ function countLeafNodes(data: any[]): number {
 
     return count;
 }
+function mergeProgress(courseProgressResponse: any, courseResponse: any) {
+    const progressMap = new Map();
+
+    // 构建课程 ID 到进度的映射
+    courseProgressResponse.data.forEach((progress: any) => {
+        progressMap.set(progress.fk_course_id, progress.progress_percentage);
+    });
+
+    function attachProgress(course: any) {
+        if (progressMap.has(course.id)) {
+            course.progress_percentage = progressMap.get(course.id);
+        }
+        if (course.children && course.children.length > 0) {
+            course.children.forEach(attachProgress);
+        }
+    }
+
+    courseResponse.data.forEach(attachProgress);
+    return courseResponse;
+}
+
 const id = ref(0);
 onLoad(async (e: any) => {
     id.value = +e.id;
@@ -172,7 +193,7 @@ onLoad(async (e: any) => {
             || 'https://via.placeholder.com/100';
 
         // 示例学习进度数据
-        completedChapters.value = 1; // 示例值
+        courseProgress.value = 1; // 示例值
 
 
         const sessionUsersResponse: any = await listSessionUsersBySessionId(id.value);
@@ -188,14 +209,12 @@ onLoad(async (e: any) => {
 
         const courseResponse: any = await listCourseById(courseData.value.course_id.id);
         totalChapters.value = countLeafNodes(courseResponse.data);   // 示例值
-        courseData.value.syllabus = courseResponse.data
+
+        const courseProgressResponse = await listCourseProgressByUserIdAndSessionId(userId, id.value);
+        courseProgress.value = courseProgressResponse.data.length
+
+        courseData.value.syllabus = mergeProgress(courseProgressResponse, courseResponse).data
         //将已完成的课程，设置关联起来；
-
-        const completedChaptersResponse = await listCourseProgressByUserIdAndSessionId(userId, id.value);
-        console.log('completedChaptersResponse:【', completedChaptersResponse.data.length, '】');
-        completedChapters.value = completedChaptersResponse.data.length
-
-
 
         // console.log('【调试】:【', students.value, courseData.value, '】');
         isDataLoaded.value = true;

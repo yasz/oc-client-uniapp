@@ -1,5 +1,5 @@
 <template>
-    <template v-for="(item, index) in items" :key="item.id">
+    <template v-for="(item, index) in localItems" :key="item.id">
         <template v-if="item.children && item.children.length">
             <!-- 存在子节点 -->
             <uni-collapse-item class="children-item" :title="item.name" :open="true">
@@ -9,8 +9,8 @@
         <template v-else>
             <!-- 叶子节点 -->
             <view class="flex baseline pl-20">
-                <!-- <uni-icons type="checkbox" size="22" color="#9298a5"></uni-icons> -->
-                <uni-icons type="circle" size="22" color="#9298a5"></uni-icons>
+                <uni-icons type="checkbox" v-if="item.progress_percentage == 1" size="22" color="#9298a5"></uni-icons>
+                <uni-icons type="circle" v-else size="22" color="#9298a5"></uni-icons>
                 <text class="children-item py-10 pl-10">{{ item.name }}</text>
                 <up-icon @click="openAttachment(item.file_id?.url, item)" :name="getIconByType(item.file_id?.url)"
                     size="22" color="#9298a5" class="ml pr-40"></up-icon>
@@ -30,12 +30,13 @@ interface TreeDataItem {
     name: string;
     children?: TreeDataItem[];
     file_id?: { url: string };
+    progress_percentage?: number;
 }
 
 const props = defineProps<{
     items: TreeDataItem[];
 }>();
-
+const localItems = ref<TreeDataItem[]>(JSON.parse(JSON.stringify(props.items)));
 // 静态文件类型数组
 const audioExtensions = ["mp3", "wav", "aac"];
 const videoExtensions = ["mp4", "mov", "avi"];
@@ -63,6 +64,18 @@ const openAttachment = async (url: string | undefined, item: any) => {
             user_id: { id: useAuthStore().userId },
         }
     );
+    const updateItemProgress = (items: TreeDataItem[]) => {
+        for (const node of items) {
+            if (node.id === item.id) {
+                node.progress_percentage = 1;
+                return;
+            }
+            if (node.children) updateItemProgress(node.children);
+        }
+    };
+
+    updateItemProgress(localItems.value);
+
     const extension = getFileExtension(url);
 
     if (audioExtensions.includes(extension)) {
