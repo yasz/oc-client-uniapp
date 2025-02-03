@@ -43,6 +43,38 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/courses/assignmentDetails`,
+    component: __dynamicImportComponent__(
+      `@/pages/courses/assignmentDetails.vue`,
+      {
+        pageType: `top`,
+        style: {
+          // navigationBarTitleText: i18n.global.t("courses"),
+          navigationBarTitleText: "assignmentDetails",
+          navigationBarBackgroundColor: `#42b883`,
+          navigationBarTextStyle: `white`,
+          name: "assignmentDetails",
+        },
+      }
+    ),
+  },
+  {
+    path: `/courses/discussionDetails`,
+    component: __dynamicImportComponent__(
+      `@/pages/courses/discussionDetails.vue`,
+      {
+        pageType: `top`,
+        style: {
+          // navigationBarTitleText: i18n.global.t("courses"),
+          navigationBarTitleText: "discussionDetails",
+          navigationBarBackgroundColor: `#42b883`,
+          navigationBarTextStyle: `white`,
+          name: "discussionDetails",
+        },
+      }
+    ),
+  },
+  {
     path: `/sign-in`,
     component: __dynamicImportComponent__(`@/pages/sign-in.vue`, {
       pageType: `top`,

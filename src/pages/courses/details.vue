@@ -9,15 +9,15 @@
                 </view>
 
                 <view class="pt-10 progress-wrapper">
-                    <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('courses') }}</text>
+                    <text class="text-gray text-8 " style="width: 20%;">{{ $t('courses') }}</text>
                     <up-line-progress :percentage="progressPercent" height="20" activeColor="orange"
                         :show-text="false" />
                     <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ courseProgress }}/{{
                         totalChapters
-                        }})</text>
+                    }})</text>
                 </view>
                 <view class="pt-10 progress-wrapper">
-                    <text class="text-gray text-8 pr-4" style="width: 25%;">{{ $t('assignment') }}</text>
+                    <text class="text-gray text-8 " style="width: 20%;">{{ $t('assignment') }}</text>
                     <up-line-progress :percentage="asgProgressPercent" height="20" activeColor="green"
                         :show-text="false" />
                     <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ asgcourseProgress
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { listCourseById, getCourseSessionsById, listSessionUsersBySessionId, listCourseProgressByUserIdAndSessionId } from '@/utils/api';
+import { listCourseById, getCourseSessionsById, listSessionUsersBySessionId, listCourseProgressByUserIdAndSessionId, listAssignmentsByCourseId } from '@/utils/api';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref, onMounted, computed } from 'vue';
 import IntroductionComponent from './components/introduction.vue';
@@ -82,8 +82,8 @@ const students: any = ref([]);
 const courseProgress = ref(0); // 已学章节数
 const totalChapters = ref(1); // 避免除以 0
 
-const asgcourseProgress = ref(1); // 已学章节数
-const asgTotalChapters = ref(3); // 避免除以 0
+const asgcourseProgress = ref(0); // 已学章节数
+const asgTotalChapters = ref(1); // 避免除以 0
 
 const teacherAvatar = ref('');
 const isDataLoaded = ref(false); // 数据加载完成标志
@@ -216,7 +216,9 @@ onLoad(async (e: any) => {
         courseData.value.syllabus = mergeProgress(courseProgressResponse, courseResponse).data
         //将已完成的课程，设置关联起来；
 
-        // console.log('【调试】:【', students.value, courseData.value, '】');
+        const assignmentsResponse: any = await listAssignmentsByCourseId(courseData.value.course_id.id);
+        courseData.value.assignments = assignmentsResponse.data;
+        asgTotalChapters.value = assignmentsResponse.data.length
         isDataLoaded.value = true;
     } catch (error) {
         console.error('数据加载失败', error);

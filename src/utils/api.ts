@@ -12,6 +12,19 @@ export const listCourseSessions = async () => {
     console.error("Error:", error);
   }
 };
+
+export const listAssignmentsByCourseId = async (id: any) => {
+  const filter = `{"$and":[{"course_id":{"id":{"$eq":${id}}}}]}`;
+  const url = `assignment:list?appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&&${filter}`;
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const getCourseSessionsById = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");
