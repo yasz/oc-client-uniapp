@@ -42,6 +42,7 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
+
           const { id, nickname, roles } = response.data.data;
           this.userId = id;
           this.nickname = nickname;
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore("authStore", {
         }
         return response.data;
       } catch (error) {
-        console.error("Token 检查失败:", error);
+        // console.error("Token 检查失败:", error);
         this.signOut(); // Token 无效，清除状态
         return null;
       }
@@ -59,7 +60,7 @@ export const useAuthStore = defineStore("authStore", {
 
     // 登出逻辑
     async signOut() {
-      this.token = null;
+      this.token = "";
       this.userId = null;
       this.nickname = null;
       this.role = ""; // 清空状态
@@ -73,6 +74,7 @@ export const useAuthStore = defineStore("authStore", {
         if (token) {
           this.token = token;
           // 检查 token 是否有效
+
           const checkResponse = await this.refreshAuthStore();
 
           if (!checkResponse) {
@@ -86,22 +88,24 @@ export const useAuthStore = defineStore("authStore", {
   },
 });
 
+const authStore = useAuthStore();
+watch(
+  () => authStore.token,
+  (newToken) => {
+    console.log("【调试】:【", "refreshToken", "】");
+    if (newToken) {
+      uni.setStorageSync("authToken", newToken);
+    } else {
+      uni.removeStorageSync("authToken");
+    }
+  }
+);
 // 初始化 AuthStore
 const initAuthStore = async () => {
   console.log("【调试】: 初始化 AuthStore");
-  const authStore = useAuthStore();
-  await authStore.loadTokenFromStorage();
+
+  await useAuthStore().loadTokenFromStorage();
 
   // 监听 token 状态变化，仅在 token 变化时更新 storage
-  watch(
-    () => authStore.token,
-    (newToken) => {
-      if (newToken) {
-        uni.setStorageSync("authToken", newToken);
-      } else {
-        uni.removeStorageSync("authToken");
-      }
-    }
-  );
 };
 await initAuthStore();

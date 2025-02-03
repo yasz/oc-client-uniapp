@@ -142,10 +142,6 @@ router.beforeEach((to, from) => {
 });
 export default router;
 function checkAuth(url: string) {
-  // while (!(getActivePinia() && useAuthStore().isAuthInitialized)) {
-  //   console.log("【调试】: 等待 AuthStore 初始化...");
-  //   await new Promise((resolve) => setTimeout(resolve, 100)); // 等待 100ms 再检查
-  // }
   if (["/index", "/sign-in", "/my"].includes(url)) {
     // 白名单页面，不需要校验token
     return true;

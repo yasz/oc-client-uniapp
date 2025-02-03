@@ -56,14 +56,18 @@ const openAttachment = async (url: string | undefined, item: any) => {
         return;
     }
     //更新当前进度
-    await createCourseProgress(
-        {
-            course_id: { id: item.id },
-            course_session_id: { id: sessesionId.value },
-            progress_percentage: 1,
-            user_id: { id: useAuthStore().userId },
-        }
-    );
+    try {
+        await createCourseProgress(
+            {
+                course_id: { id: item.id },
+                course_session_id: { id: sessesionId.value },
+                progress_percentage: 1,
+                user_id: { id: useAuthStore().userId },
+            }
+        );
+    } catch (e) {
+
+    }
     const updateItemProgress = (items: TreeDataItem[]) => {
         for (const node of items) {
             if (node.id === item.id) {
