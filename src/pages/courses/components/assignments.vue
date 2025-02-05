@@ -8,12 +8,26 @@ import { defineProps, ref } from 'vue';
 defineProps<{ content: any[] }>();
 
 const show = ref(false);
+const showSubmitButton = ref(true);
+
 const assignmentId = ref(0);
 const currentDescription = ref("");
 const file = ref([]);
 function openContent(item: any) {
   currentDescription.value = item.description;
   assignmentId.value = item.id
+
+  if (item.submissions && item.submissions.length > 0) {
+    showSubmitButton.value = false
+    detailContent.value = item.submissions[0].content
+    file.value = item.submissions[0].attachment.map(({ id, title, extname, url }: any) => ({
+      id, path: `${import.meta.env.VITE_BUCKET_ENDPOINT}${url}`,
+      srcname: title + extname
+
+    }))
+  } else {
+    showSubmitButton.value = true
+  }
   show.value = true;
 }
 
@@ -51,9 +65,12 @@ onLoad(async (e: any) => {
 
     <view v-for="item in content" :key="item.id" class="p-20 border-b">
       <view class="flex baseline pl-20">
-        <uni-icons type="circle" size="22" color="#9298a5"></uni-icons>
+        <uni-icons v-if="item.submissions && item.submissions.length > 0" type="checkbox" size="22"
+          color="#9298a5"></uni-icons>
+        <uni-icons v-else type="circle" size="22" color="#9298a5"></uni-icons>
         <text @click="openContent(item)" class="children-item py-10 pl-10">
           {{ item.title }}
+
         </text>
       </view>
     </view>
@@ -93,9 +110,11 @@ onLoad(async (e: any) => {
       width: 100%;
     ">
               <u-button @click="close"
-                style="flex: 1; padding: 10px 20px; background: #ccc; border-radius: 5px; border: none;">取消</u-button>
-              <u-button @click="save"
-                style="flex: 1; padding: 10px 20px; background: #007AFF; color: white; border-radius: 5px; border: none;">保存</u-button>
+                style="flex: 1; padding: 10px 20px; background: #ccc; border-radius: 5px; border: none;">{{ $t("cancel")
+                }}</u-button>
+              <u-button v-if="showSubmitButton" @click="save"
+                style="flex: 1; padding: 10px 20px; background: #007AFF; color: white; border-radius: 5px; border: none;">{{
+                  $t("submit") }}</u-button>
             </view>
           </view>
         </view>

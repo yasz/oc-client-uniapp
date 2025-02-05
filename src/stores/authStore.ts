@@ -1,7 +1,7 @@
-import { Configuration } from "@/generated-client";
 import axios from "axios";
 import { defineStore } from "pinia";
 import { watch } from "vue";
+import pinia from "./store";
 
 // 创建 Pinia store 来管理认证状态
 export const useAuthStore = defineStore("authStore", {
@@ -15,16 +15,6 @@ export const useAuthStore = defineStore("authStore", {
 
   getters: {
     // 动态生成 API 配置，确保始终使用最新的 token
-    apiConfig: (state) => {
-      return new Configuration({
-        basePath: import.meta.env.VITE_API_ENDPOINT,
-        baseOptions: {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        },
-      });
-    },
   },
 
   actions: {
@@ -88,11 +78,9 @@ export const useAuthStore = defineStore("authStore", {
   },
 });
 
-const authStore = useAuthStore();
 watch(
-  () => authStore.token,
+  () => useAuthStore(pinia).token,
   (newToken) => {
-    console.log("【调试】:【", "refreshToken", "】");
     if (newToken) {
       uni.setStorageSync("authToken", newToken);
     } else {
@@ -100,12 +88,3 @@ watch(
     }
   }
 );
-// 初始化 AuthStore
-const initAuthStore = async () => {
-  console.log("【调试】: 初始化 AuthStore");
-
-  await useAuthStore().loadTokenFromStorage();
-
-  // 监听 token 状态变化，仅在 token 变化时更新 storage
-};
-await initAuthStore();

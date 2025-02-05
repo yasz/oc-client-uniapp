@@ -14,15 +14,15 @@
                         :show-text="false" />
                     <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ courseProgress }}/{{
                         totalChapters
-                        }})</text>
+                    }})</text>
                 </view>
                 <view class="pt-10 progress-wrapper">
                     <text class="text-gray text-8 " style="width: 20%;">{{ $t('assignment') }}</text>
                     <up-line-progress :percentage="asgProgressPercent" height="20" activeColor="green"
                         :show-text="false" />
-                    <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ asgcourseProgress
+                    <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ submissionAssignments
                         }}/{{
-                            asgTotalChapters
+                            totalAssignments
                         }})</text>
                 </view>
             </view>
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { listCourseById, getCourseSessionsById, listSessionUsersBySessionId, listCourseProgressByUserIdAndSessionId, listAssignmentsByCourseId } from '@/utils/api';
+import { listCourseById, getCourseSessionsById, listSessionUsersBySessionId, listCourseProgressByUserIdAndSessionId, listAssignmentsByCourseId, listAssignmentSubmission } from '@/utils/api';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref, onMounted, computed } from 'vue';
 import IntroductionComponent from './components/introduction.vue';
@@ -82,12 +82,14 @@ const students: any = ref([]);
 const courseProgress = ref(0); // 已学章节数
 const totalChapters = ref(1); // 避免除以 0
 
-const asgcourseProgress = ref(0); // 已学章节数
-const asgTotalChapters = ref(1); // 避免除以 0
+const submissionAssignments = ref(0); // 作业已提交章节数
+const totalAssignments = ref(1); // 避免除以 0
 
 const teacherAvatar = ref('');
 const isDataLoaded = ref(false); // 数据加载完成标志
 const userId = useAuthStore().userId;
+
+
 
 // 计算学习进度百分比
 const progressPercent = computed(() => {
@@ -95,7 +97,7 @@ const progressPercent = computed(() => {
 });
 
 const asgProgressPercent = computed(() => {
-    return Math.round((asgcourseProgress.value / asgTotalChapters.value) * 100);
+    return Math.round((submissionAssignments.value / totalAssignments.value) * 100);
 });
 function handleTabChange(event: any) {
     currentTabIndex.value = event.index
@@ -159,6 +161,27 @@ function countLeafNodes(data: any[]): number {
 
     return count;
 }
+function mergeAssignmentsWithSubmissions(
+    assignmentsResponse: { data: any[] },
+    assignmentSubmissionResponse: { data: any[] }
+): any[] {
+    const submissionsMap = new Map<number, any[]>();
+
+    // 先将提交按 fk_assignment_id 归类
+    assignmentSubmissionResponse.data.forEach((submission) => {
+        if (!submissionsMap.has(submission.fk_assignment_id)) {
+            submissionsMap.set(submission.fk_assignment_id, []);
+        }
+        submissionsMap.get(submission.fk_assignment_id)!.push(submission);
+    });
+
+    // 关联到 assignments
+    return assignmentsResponse.data.map((assignment) => ({
+        ...assignment,
+        submissions: submissionsMap.get(assignment.id) || []
+    }));
+}
+
 function mergeProgress(courseProgressResponse: any, courseResponse: any) {
     const progressMap = new Map();
 
@@ -217,8 +240,12 @@ onLoad(async (e: any) => {
         //将已完成的课程，设置关联起来；
 
         const assignmentsResponse: any = await listAssignmentsByCourseId(courseData.value.course_id.id);
-        courseData.value.assignments = assignmentsResponse.data;
-        asgTotalChapters.value = assignmentsResponse.data.length
+        totalAssignments.value = assignmentsResponse.data.length
+
+        const assignmentSubmissionResponse: any = await listAssignmentSubmission({ userId, courseSessionId: id.value });
+        submissionAssignments.value = assignmentSubmissionResponse.data.length;
+        courseData.value.assignments = mergeAssignmentsWithSubmissions(assignmentsResponse, assignmentSubmissionResponse);
+
         isDataLoaded.value = true;
     } catch (error) {
         console.error('数据加载失败', error);

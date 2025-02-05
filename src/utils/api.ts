@@ -107,6 +107,22 @@ export const listSessionUsersBySessionId = async (id: any) => {
   }
 };
 
+export const listAssignmentSubmission = async ({
+  userId,
+  courseSessionId,
+}: any) => {
+  const filter = `{"$and":[{"user_id":{"id":{"$eq":${userId}}}},{"course_session_id":{"id":{"$eq":${courseSessionId}}}}]}`;
+  const url = `assignment_submission:list?&appends[]=attachment&filter=${filter}`; //&appends[]=children
+
+  try {
+    const response = await getAPIAxios(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const createAssignmentSubmission = async ({
   userId,
   courseSessionId,

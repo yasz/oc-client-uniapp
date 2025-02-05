@@ -2,17 +2,14 @@
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
-
 const route = useRoute();
 const urls = ["index", "courses", "my"];
-const routeIndexMap: Record<string, number> = {
-  "/index": 0,
-  "/courses": 1,
-  "/my": 2,
-};
+
+// 通过 urls 数组动态生成 routeIndexMap
+const routeIndexMap = Object.fromEntries(urls.map((name, i) => [`/${name}`, i]));
 
 // 设置初始值
-const index = ref(routeIndexMap[route.path] || 0);
+const index = ref(routeIndexMap[route.path] ?? 0);
 
 // 路由变化时更新 index
 watch(
