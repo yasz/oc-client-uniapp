@@ -106,3 +106,27 @@ export const listSessionUsersBySessionId = async (id: any) => {
     throw error;
   }
 };
+
+export const createAssignmentSubmission = async ({
+  userId,
+  courseSessionId,
+  assignmentId,
+  content,
+  attachments,
+}: any) => {
+  const url = `assignment_submission:create`;
+  try {
+    const response = await postAPIAxios(url, {
+      user_id: { id: userId },
+      course_session_id: { id: courseSessionId },
+      assignment_id: { id: assignmentId },
+      content,
+      attachment: attachments.map(({ id }: any) => ({ id })),
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};

@@ -16,6 +16,35 @@ function getSystemInfoAsync() {
     });
   });
 }
+export const uploadFile = async ({ url, file }: any) => {
+  const token = useAuthStore().token || uni.getStorageSync("authToken");
+
+  try {
+    const response = await fetch(file.url);
+    const blob = await response.blob();
+
+    // 创建 FormData
+    const formData = new FormData();
+    formData.append("file", blob, file.name);
+
+    const uploadResponse = await axios.post(
+      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        timeout: 30000, // 超时时间10秒
+      }
+    );
+    return uploadResponse.data;
+  } catch (error) {
+    console.error("文件上传失败:", error);
+    return await Promise.reject(error);
+  }
+};
 export const getViewportWidth = async () => {
   let res: any = await getSystemInfoAsync();
   return res.screenWidth;
