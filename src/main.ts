@@ -8,14 +8,12 @@ import router from "@/router/index";
 import i18n from "./lang";
 import pinia from "./stores/store";
 import { useAuthStore } from "./stores/authStore";
-
+useAuthStore().loadTokenFromStorage();
+const app = createSSRApp(App);
 export function createApp() {
-  const app = createSSRApp(App);
   app.use(pinia);
-  useAuthStore().loadTokenFromStorage();
   app.use(uviewPlus);
   app.use(i18n);
-
   return {
     app,
     router,

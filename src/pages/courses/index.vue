@@ -23,7 +23,7 @@
                         <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
                         <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
                             course.price
-                            }}.00</view>
+                        }}.00</view>
                         <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view>
 
                     </view>
@@ -31,6 +31,7 @@
             </view>
         </view>
         <view class="bg-gray2" style="height:300rpx;" />
+        <Layout />
     </view>
 </template>
 
@@ -39,6 +40,7 @@ import DotSwiper from '@/components/dotSwiper.vue';
 import { listCourseSessions } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive } from 'vue';
+import Layout from '../layout.vue';
 interface Course {
     id: number;
     name: string;

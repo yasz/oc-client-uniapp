@@ -5,7 +5,7 @@
       <text class="title">{{ t("pages.new activities") }}</text>
     </view>
     <button @click="() => { go('/courses') }">Go to Courses Index</button>
-
+    <Layout />
   </view>
 </template>
 
@@ -15,6 +15,7 @@ import {
 } from "@/utils/common";
 
 import { useI18n } from 'vue-i18n';
+import Layout from "../layout.vue";
 
 const { t, locale } = useI18n();
 </script>

@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import { Configuration, StudentsApiFactory } from '@/generated-client';
+
 import useModal from '@/hooks/useModal';
-import router from '@/router';
+
 import { useAuthStore } from '@/stores/authStore';
 import { go } from '@/utils/common';
 import axios from 'axios';

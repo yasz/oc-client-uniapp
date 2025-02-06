@@ -33,7 +33,7 @@
                 </view>
             </view>
         </view>
-
+        <Layout></Layout>
     </view>
 </template>
 
@@ -58,6 +58,7 @@ import Tabbar from "@/components/tabbar.vue";
 import LangSwitch from "@/components/langSwitch.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
+import Layout from "../layout.vue";
 const logout = () => {
     useAuthStore().signOut();
 };

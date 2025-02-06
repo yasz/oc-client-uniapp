@@ -1,5 +1,4 @@
-import i18n from "@/lang";
-
+import { useAuthStore } from "@/stores/authStore";
 import { createRouter, __dynamicImportComponent__ } from "@/uni-simple-router";
 
 const platform: any = process.env.VUE_APP_PLATFORM ?? "h5";
@@ -104,27 +103,31 @@ const router = createRouter({
   platform: platform,
   routes: [
     ...soliRoutes,
-    {
-      path: "/",
-      redirect: "/index",
-      component: __dynamicImportComponent__(`@/pages/layout.vue`, {
-        pageType: `top`,
-      }),
-      children: [
-        {
-          path: "index",
-          component: __dynamicImportComponent__(`@/pages/index/index.vue`),
-        },
-        {
-          path: "my",
-          component: __dynamicImportComponent__(`@/pages/my/index.vue`),
-        },
-        {
-          path: "courses",
-          component: __dynamicImportComponent__(`@/pages/courses/index.vue`),
-        },
-      ],
-    },
+    // {
+    //   path: "/",
+    //   redirect: "/index",
+    //   name: "index",
+    //   component: __dynamicImportComponent__(`@/pages/layout.vue`, {
+    //     pageType: `top`,
+    //   }),
+    //   children: [
+    //     {
+    //       path: "index",
+
+    //       component: __dynamicImportComponent__(`@/pages/index/index.vue`),
+    //     },
+    //     {
+    //       path: "my",
+    //       name: "my",
+    //       component: __dynamicImportComponent__(`@/pages/my/index.vue`),
+    //     },
+    //     {
+    //       path: "courses",
+    //       name: "courses",
+    //       component: __dynamicImportComponent__(`@/pages/courses/index.vue`),
+    //     },
+    //   ],
+    // },
   ],
   routeNotFound: (to) => {
     console.log(to);
@@ -134,13 +137,15 @@ const router = createRouter({
   },
 });
 router.beforeEach((to, from) => {
+  console.log("【调试】:【", "路由拦截进入", "】");
+
   if (!checkAuth(to.path)) {
     //如果目表页未通过验证，则跳向登录页
     return { path: "/sign-in" };
   }
   // 用户已经登录，继续导航
 });
-export default router;
+
 function checkAuth(url: string) {
   if (["/index", "/sign-in", "/my"].includes(url)) {
     // 白名单页面，不需要校验token
@@ -151,8 +156,13 @@ function checkAuth(url: string) {
   const token = uni.getStorageSync("authToken");
   // 如果没有 token，跳转到登录页
   if (!token || token === "") {
+    console.log("【调试】:【", "token没了", "】");
     return false;
+  } else {
+    console.log("【调试】:【", "token还在", "】");
   }
 
   return true;
 }
+console.log("【调试】:【", "路由初始化", "】");
+export default router;

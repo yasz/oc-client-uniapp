@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { go } from "@/utils/common";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
@@ -23,7 +24,7 @@ watch(
 
 const change = (e: number) => {
   if (index.value !== e) {
-    uni.switchTab({ url: `/${urls[e]}` });
+    go(`/${urls[e]}`);
   }
 };
 </script>

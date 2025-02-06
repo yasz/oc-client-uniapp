@@ -50,6 +50,7 @@ export const useAuthStore = defineStore("authStore", {
 
     // 登出逻辑
     async signOut() {
+      console.log("【调试】:【", "登出清token", "】");
       this.token = "";
       this.userId = null;
       this.nickname = null;
