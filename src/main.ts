@@ -8,7 +8,7 @@ import router from "@/router/index";
 import i18n from "./lang";
 import pinia from "./stores/store";
 import { useAuthStore } from "./stores/authStore";
-useAuthStore().loadTokenFromStorage();
+await useAuthStore().loadTokenFromStorage();
 const app = createSSRApp(App);
 export function createApp() {
   app.use(pinia);
