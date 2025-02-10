@@ -1,10 +1,10 @@
 <template>
   <view class="content">
-    <image class="logo" src="/static/logo.png" />
+    <image class="logo" mode="scaleToFill" src="/static/images/title.jpg" />
     <view class="text-area">
-      <text class="title">{{ t("pages.new activities") }}</text>
+      <!-- <text class="title">{{ t("pages.new activities") }}</text> -->
     </view>
-    <button @click="() => { go('/courses') }">Go to Courses Index</button>
+    <!-- <button @click="() => { go('/courses') }">Go to Courses Index</button> -->
     <Layout />
   </view>
 </template>
@@ -29,9 +29,7 @@ const { t, locale } = useI18n();
 }
 
 .logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
+  width: 100vw;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50rpx;

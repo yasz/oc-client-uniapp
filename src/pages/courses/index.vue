@@ -1,9 +1,7 @@
 <template>
     <view>
-        <DotSwiper :imgUrls="[{ image: '/static/cover/ct.jpg', title: '圣约神学历史' }
-            , { image: '/static/cover/piano.jpg', title: '现代和声编配——实战' }
-            , { image: '/static/cover/dt.jpg', title: '《多特信条》领读' }
-        ]"></DotSwiper>
+        <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper>
+
         <view class="pd-14 bg-gray2">
             <!-- 遍历课程数据，生成卡片列表 -->
             <view v-for="(course, index) in courses" :key="index" class="card-wrapper">
@@ -37,7 +35,7 @@
 
 <script lang="ts" setup>
 import DotSwiper from '@/components/dotSwiper.vue';
-import { listCourseSessions } from '@/utils/api';
+import { list_recommended_course_sessions, listCourseSessions } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive } from 'vue';
 import Layout from '../layout.vue';
@@ -50,6 +48,7 @@ interface Course {
     price: number;
 }
 const courses = reactive<Course[]>([]);
+const swiperData = reactive<{ image: string; title: string, id: number }[]>([]);
 
 onMounted(async () => {
     const response: any = await listCourseSessions();
@@ -66,10 +65,19 @@ onMounted(async () => {
                     cover: import.meta.env.VITE_BUCKET_ENDPOINT + item.cover?.[0]?.url || '/static/images/default-cover.jpg',
                     price: item.price || 0 // 假设有价格字段
                 }
-
                 return res
-
             })
+        );
+    }
+
+    const recommandSessionsResponse: any = await list_recommended_course_sessions()
+    if (recommandSessionsResponse.data) {
+        swiperData.push(
+            ...recommandSessionsResponse.data.map((item: any) => ({
+                image: import.meta.env.VITE_BUCKET_ENDPOINT + item.course_session_id.cover?.[0]?.url || '/static/images/default-cover.jpg',
+                title: item.course_session_id.name,
+                id: item.course_session_id.id,
+            }))
         );
     }
 });

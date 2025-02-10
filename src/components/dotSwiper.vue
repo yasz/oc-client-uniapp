@@ -15,13 +15,6 @@
 import { getViewportWidth } from "@/utils/common";
 import { ref } from "vue";
 
-// 图片点击预览
-const invokeClick = (e: any) => {
-  e = e ? e : 0;
-  console.log("【调试】:【", e, imgUrls.value[e], "】");
-  uni.previewImage({ urls: imgUrls.value.map((item: any) => item.image), current: e });
-};
-
 // 当前轮播图页码
 const currentSwiperPage = ref(0);
 
@@ -29,18 +22,29 @@ const currentSwiperPage = ref(0);
 const viewportWidth = ref();
 
 // 接收外部传入的属性
-const props: any = defineProps({
-  imgUrls: Array, // 外部传入的轮播图数组，包含图片和标题
-  eclick: Function, // 其他可能需要的属性
-});
+const props = defineProps<{
+  imgUrls: { image: string; title: string; id?: number }[];
+  eclick?: (item: any, index: number) => void;
+}>();
 
-// 图片列表
-const imgUrls: any = ref([]);
+// 处理点击事件
+const invokeClick = (index: number) => {
+  const item = props.imgUrls[index];
 
-// 初始化方法
+  if (props.eclick) {
+    // 如果传入 eclick，则调用 eclick，并传递 item 和 index
+    props.eclick(item, index);
+  } else {
+    // 如果未传入 eclick，则默认使用图片预览
+    uni.previewImage({
+      urls: props.imgUrls.map((item) => item.image),
+      current: index,
+    });
+  }
+};
+
+// 初始化视口宽度
 const init = async () => {
-  let unitUrls: any = props.imgUrls;
-  imgUrls.value = unitUrls;
   viewportWidth.value = await getViewportWidth();
 };
 init();

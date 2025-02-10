@@ -89,6 +89,19 @@ export const listCourseById = async (id: any) => {
   }
 };
 
+export const list_recommended_course_sessions = async () => {
+  const url = `recommended_course_sessions:list?&sort=seq&appends[]=course_session_id&appends[]=course_session_id.cover&appends[]=course_session_id.teacher_id&appends[]=course_session_id.teacher_id.avatar`; //&appends[]=children
+
+  try {
+    const response = await getAPIAxios(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 export const listSessionUsersBySessionId = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");
