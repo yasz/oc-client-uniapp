@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/authStore";
 import { createRouter, __dynamicImportComponent__ } from "@/uni-simple-router";
 
 const platform: any = process.env.VUE_APP_PLATFORM ?? "h5";
@@ -28,6 +27,7 @@ const soliRoutes = [
       },
     }),
   },
+
   {
     path: `/courses/details`,
     component: __dynamicImportComponent__(`@/pages/courses/details.vue`, {
@@ -86,6 +86,18 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/sign-up`,
+    component: __dynamicImportComponent__(`@/pages/sign-up.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `sign-up`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "sign-up",
+      },
+    }),
+  },
+  {
     path: `/my`,
     component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
       pageType: `top`,
@@ -101,34 +113,7 @@ const soliRoutes = [
 
 const router = createRouter({
   platform: platform,
-  routes: [
-    ...soliRoutes,
-    // {
-    //   path: "/",
-    //   redirect: "/index",
-    //   name: "index",
-    //   component: __dynamicImportComponent__(`@/pages/layout.vue`, {
-    //     pageType: `top`,
-    //   }),
-    //   children: [
-    //     {
-    //       path: "index",
-
-    //       component: __dynamicImportComponent__(`@/pages/index/index.vue`),
-    //     },
-    //     {
-    //       path: "my",
-    //       name: "my",
-    //       component: __dynamicImportComponent__(`@/pages/my/index.vue`),
-    //     },
-    //     {
-    //       path: "courses",
-    //       name: "courses",
-    //       component: __dynamicImportComponent__(`@/pages/courses/index.vue`),
-    //     },
-    //   ],
-    // },
-  ],
+  routes: [...soliRoutes],
   routeNotFound: (to) => {
     console.log(to);
     return {
@@ -147,7 +132,7 @@ router.beforeEach((to, from) => {
 });
 
 function checkAuth(url: string) {
-  if (["/index", "/sign-in", "/my"].includes(url)) {
+  if (["/index", "/sign-in", "/my", "/sign-up"].includes(url)) {
     // 白名单页面，不需要校验token
     return true;
   }
