@@ -109,7 +109,7 @@ const submitForm = () => {
   color: #895408;
   font-weight: bold;
   position: absolute;
-  top: 20px;
+  top: 35%;
   /* 距离上方一定距离 */
   right: 20px;
   /* 距离右边一定距离 */

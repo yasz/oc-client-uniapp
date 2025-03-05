@@ -15,7 +15,7 @@ export const listCourseSessions = async () => {
 
 export const listAssignmentsByCourseId = async (id: any) => {
   const filter = `{"$and":[{"course_id":{"id":{"$eq":${id}}}}]}`;
-  const url = `assignment:list?appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&&${filter}`;
+  const url = `assignment:list?appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&filter=${filter}`;
   try {
     const response = await getAPI(url, null);
     console.log("Response:", response);
