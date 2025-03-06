@@ -5,16 +5,22 @@
             <image class="logo" src="@/static/images/logo.jpg" />
 
             <!-- 输入邮箱 -->
-            <input class="input" v-model="username" type="text" placeholder="请输入账号" />
+            <input class="input" v-model="username" type="text" placeholder="Please input username" />
 
             <!-- 输入密码 -->
-            <input class="input" v-model="password" type="password" placeholder="请输入密码" />
+            <input class="input" v-model="password" type="password" placeholder="Please input Password" />
 
             <!-- 登录按钮 -->
 
-            <button class="sign-in-button" :disabled="loading" @click="handleSignIn">
-                {{ $t("sign in") }}
-            </button>
+            <view class="flex">
+                <button class="sign-in-button" :disabled="loading" @click="handleSignIn">
+                    {{ $t("sign in") }}
+                </button>
+                <button class="sign-in-button" @click="go('/sign-up')">
+                    {{ $t("signup") }}
+                </button>
+            </view>
+
 
         </view>
     </view>

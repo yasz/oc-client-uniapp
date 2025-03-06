@@ -1,44 +1,102 @@
 <template>
   <view class="container">
-    <uni-card :is-shadow="true" class="register-card">
-      <view class="register-content">
-        <view class="form-group">
-          <uni-input v-model="username" type="text" placeholder="请输入用户名" class="form-input" />
-        </view>
-        <view class="form-group">
-          <uni-input v-model="password" type="password" placeholder="请输入密码" class="form-input" />
-        </view>
-        <button class="submit-button" @click="submitForm">注册</button>
+    <uni-card :is-shadow="true">
+      <u-form class="bg-white" :rules="rules" :model="formModel" placeholder errorType="border-bottom" ref="formRef">
+
+        <!-- Username Field -->
+        <u-form-item prop="username" borderBottom labelWidth="90" :label="$t('username')">
+          <u-input border="none" :placeholder="$t('please input ') + $t('username')"
+            v-model="formModel.username"></u-input>
+        </u-form-item>
+
+        <!-- Password Field -->
+        <u-form-item prop="password" borderBottom labelWidth="90" :label="$t('password')">
+          <u-input type="password" border="none" :placeholder="$t('please input ') + $t('password')"
+            v-model="formModel.password"></u-input>
+        </u-form-item>
+
+        <!-- Confirm Password Field -->
+        <u-form-item prop="confirmPassword" borderBottom labelWidth="90" :label="$t('confirm password')">
+          <u-input type="password" border="none" :placeholder="$t('please input ') + $t('confirm password')"
+            v-model="formModel.confirmPassword"></u-input>
+        </u-form-item>
+
+        <!-- Email Field -->
+        <u-form-item prop="email" borderBottom labelWidth="90" :label="$t('email')">
+          <u-input border="none" :placeholder="$t('please input ') + $t('email')" v-model="formModel.email"></u-input>
+        </u-form-item>
+
+      </u-form>
+      <view class="flex">
+        <u-button @click="submitForm">
+          {{ $t('sign up') }}
+        </u-button>
       </view>
     </uni-card>
-    <!-- 把 Don’t miss out 文本移到卡片外面并调整位置 -->
+    <!-- Move Don’t miss out text -->
     <text class="slanted-text">Don’t miss out.</text>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
-// 注册表单的响应式数据
-const username = ref<string>('');
-const password = ref<string>('');
+// Register form reactive data
+const formModel = reactive({
+  username: "",
+  password: "",
+  confirmPassword: "",
+  email: "",
+});
 
-// 提交注册表单的方法
+// Submit form method
 const submitForm = () => {
-  if (!username.value || !password.value) {
+  // Check if confirm password matches
+  if (formModel.password !== formModel.confirmPassword) {
     uni.showToast({
-      title: '请填写完整信息',
+      title: 'Passwords do not match',
       icon: 'none',
     });
     return;
   }
-  // 假设注册成功
+
+  // Assume registration is successful
   uni.showToast({
-    title: '注册成功',
+    title: 'Registration Successful',
     icon: 'success',
   });
-  // 在此处可以添加网络请求等逻辑
+
+  // Here, network request logic can be added
 };
+
+// Validation rules
+const rules = computed(() => {
+  return {
+    username: {
+      required: true,
+      message: `username is required`,
+      trigger: "blur",
+    },
+    password: {
+      required: true,
+      message: `password is required`,
+      trigger: "blur",
+      min: 6,
+      pattern: /^[a-zA-Z0-9]*$/, // No special characters
+    },
+    confirmPassword: {
+      required: true,
+      message: `confirm password is required`,
+      trigger: "blur",
+    },
+    email: {
+      required: true,
+      message: `email is required`,
+      trigger: "blur",
+      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, // Email format validation
+    },
+  };
+});
 </script>
 
 <style>
@@ -63,58 +121,15 @@ const submitForm = () => {
   background-size: cover;
 }
 
-.register-card {
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  border-radius: 10px;
-  position: relative;
-  z-index: 1;
-}
-
-.register-content {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.submit-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #f15929;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-/* 将 Don’t miss out 移到卡片外的右上角 */
+/* Move Don’t miss out to the right-top corner */
 .slanted-text {
   transform: rotate(-10deg);
   color: #895408;
   font-weight: bold;
   position: absolute;
   top: 35%;
-  /* 距离上方一定距离 */
   right: 20px;
-  /* 距离右边一定距离 */
   font-size: 1.5rem;
   z-index: 2;
-  /* 保证它在背景上方 */
 }
 </style>
