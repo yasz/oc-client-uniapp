@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts" setup>
+import { back, toast } from '@/utils/common';
 import { computed, reactive, ref } from 'vue';
 
 // Register form reactive data
@@ -48,9 +49,9 @@ const formModel = reactive({
   confirmPassword: "",
   email: "",
 });
-
+const formRef: any = ref();
 // Submit form method
-const submitForm = () => {
+const submitForm = async () => {
   // Check if confirm password matches
   if (formModel.password !== formModel.confirmPassword) {
     uni.showToast({
@@ -59,8 +60,19 @@ const submitForm = () => {
     });
     return;
   }
+  console.log("【调试】:【", formModel, "】");
+  try {
+    await formRef.value.validate();
 
+    // toast(t("success"));
+    back();
+  } catch (e: any) {
+    toast(e[0].message);
+    return;
+  }
   // Assume registration is successful
+  // 系统判断用户是否注册
+
   uni.showToast({
     title: 'Registration Successful',
     icon: 'success',

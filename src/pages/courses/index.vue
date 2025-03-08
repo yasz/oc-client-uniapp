@@ -2,8 +2,18 @@
     <view>
         <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper>
 
+        <div class="justify-evenly baseline">
+            <div v-for="(item, index) in menuItems" :key="item.id" @click="toggleSelection(item.id)"
+                class="flex-col menu-item" :class="{ selected: selectedItem === item.id }">
+                <div>{{ item.line1 }}</div>
+                <div>{{ item.line2 }}</div>
+            </div>
+        </div>
+
         <view class="pd-14 bg-gray2">
             <!-- 遍历课程数据，生成卡片列表 -->
+            <!-- {{ courses }} -->
+
             <view v-for="(course, index) in courses" :key="index" class="card-wrapper">
 
                 <!-- 卡片内容 -->
@@ -18,11 +28,11 @@
                         <!-- 课程名称 -->
                         <view class="text-bold t-14">{{ course.name }}</view>
                         <view class="pt-4 t-12 text-gray">{{ course.teacher }}</view>
-                        <view class="pt-4 t-12 text-gray">{{ course.subject }}</view>
-                        <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
+                        <!-- <view class="pt-4 t-12 text-gray">{{ course.subject }}</view> -->
+                        <!-- <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
                             course.price
-                        }}.00</view>
-                        <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view>
+                            }}.00</view>
+                        <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view> -->
 
                     </view>
                 </view>
@@ -35,10 +45,30 @@
 
 <script lang="ts" setup>
 import DotSwiper from '@/components/dotSwiper.vue';
-import { list_recommended_course_sessions, listCourseSessions } from '@/utils/api';
+import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses } from '@/utils/api';
 import { go } from '@/utils/common';
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import Layout from '../layout.vue';
+interface MenuItem {
+    id: number;
+    line1: string;
+    line2: string;
+}
+const toggleSelection = (id: number) => {
+    if (selectedItem.value === id) {
+        selectedItem.value = null; // 如果点击的是已选项，则取消选择
+    } else {
+        selectedItem.value = id; // 选择新的项
+    }
+};
+const selectedItem = ref<number | null>(null); // 当前选中的菜单项
+const menuItems = ref<MenuItem[]>([
+    { id: 1, line1: '小学语文', line2: '（部编版）' },
+    { id: 2, line1: 'YCT', line2: '标准课程' },
+    { id: 3, line1: 'HSK', line2: '标准课程' },
+    { id: 4, line1: '教师', line2: '课程' }
+]);
+
 interface Course {
     id: number;
     name: string;
@@ -51,26 +81,27 @@ const courses = reactive<Course[]>([]);
 const swiperData = reactive<{ image: string; title: string, id: number }[]>([]);
 
 onMounted(async () => {
-    const response: any = await listCourseSessions();
+    // const response: any = await listCourseSessions();
+    const response: any = await listCourses();
 
     if (response.data) {
-        // 转换数据格式
-        courses.push(
-            ...response.data.map((item: any) => {
-                const res = {
-                    id: item.id,
-                    name: item.name,
-                    teacher: item.teacher_id.nickname,
-                    subject: item.subject_id.name,
-                    cover: import.meta.env.VITE_BUCKET_ENDPOINT + item.cover?.[0]?.url || '/static/images/default-cover.jpg',
-                    price: item.price || 0 // 假设有价格字段
+
+        let temp = response.data.filter((e: any) => e.children).flatMap((e: any) => {
+            return e.children.map((child: any) => {
+                return {
+                    subject: e.name, ...child,
+                    cover: import.meta.env.VITE_BUCKET_ENDPOINT + child.cover?.[0]?.url
                 }
-                return res
             })
+        }).flat()
+
+        console.log('【调试~~】:【', temp, '】');
+        courses.push(
+            ...temp
         );
     }
 
-    const recommandSessionsResponse: any = await list_recommended_course_sessions()
+    const recommandSessionsResponse: any = await listRecommendedCourseSessions()
     if (recommandSessionsResponse.data) {
         swiperData.push(
             ...recommandSessionsResponse.data.map((item: any) => ({
@@ -81,12 +112,35 @@ onMounted(async () => {
         );
     }
 });
-// 课程数据
+
 
 </script>
 
 <style lang="scss" scoped>
+.selected {
+    background-color: #f9c74f;
+    border-radius: 20px 2px 20px 2px;
+
+    /* 确保背景色宽度为100% */
+    height: 100%;
+    /* 确保背景色占据整个高度 */
+    padding: 5px;
+    /* 可以调整内边距以确保空间 */
+}
+
 /* 外部容器样式 */
+.menu-container {
+    background-color: #f9c74f;
+    /* 可替换为您需要的颜色 */
+    padding: 20px;
+    /* 填充以增加空间 */
+    border-radius: 20px;
+    /* 圆角 */
+    position: relative;
+    /* 为了定位 */
+}
+
+
 
 /* 单个课程卡片容器（包含卡片本身和左上角教师标签） */
 .card-wrapper {
@@ -94,7 +148,6 @@ onMounted(async () => {
     margin-bottom: 20rpx;
 }
 
-/* 左上角教师标签 */
 
 
 /* 单个课程卡片样式 */
@@ -124,5 +177,17 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.menu-item {
+    display: flex;
+    /* 使用 Flexbox 布局 */
+    flex-direction: column;
+    justify-content: center;
+    /* 垂直居中 */
+    align-items: center;
+    /* 水平居中 */
+    height: 80px;
+    /* 或其他固定高度 */
 }
 </style>

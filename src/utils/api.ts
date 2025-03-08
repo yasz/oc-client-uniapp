@@ -13,6 +13,19 @@ export const listCourseSessions = async () => {
   }
 };
 
+export const listCourses = async (filter?: string) => {
+  const url =
+    "courses:list?pageSize=20&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1";
+
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 export const listAssignmentsByCourseId = async (id: any) => {
   const filter = `{"$and":[{"course_id":{"id":{"$eq":${id}}}}]}`;
   const url = `assignment:list?appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&filter=${filter}`;
@@ -89,7 +102,7 @@ export const listCourseById = async (id: any) => {
   }
 };
 
-export const list_recommended_course_sessions = async () => {
+export const listRecommendedCourseSessions = async () => {
   const url = `recommended_course_sessions:list?&sort=seq&appends[]=course_session_id&appends[]=course_session_id.cover&appends[]=course_session_id.teacher_id&appends[]=course_session_id.teacher_id.avatar`; //&appends[]=children
 
   try {
