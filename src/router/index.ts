@@ -27,19 +27,34 @@ const soliRoutes = [
       },
     }),
   },
-
   {
     path: `/courses/details`,
     component: __dynamicImportComponent__(`@/pages/courses/details.vue`, {
       pageType: `top`,
       style: {
         // navigationBarTitleText: i18n.global.t("courses"),
-        navigationBarTitleText: "coursesDetails",
+        navigationBarTitleText: "CourseDetailPage",
         navigationBarBackgroundColor: `#42b883`,
         navigationBarTextStyle: `white`,
-        name: "coursesDetails",
+        name: "CourseDetailPage",
       },
     }),
+  },
+  {
+    path: `/courses/sessionDetails`,
+    component: __dynamicImportComponent__(
+      `@/pages/courses/sessionDetails.vue`,
+      {
+        pageType: `top`,
+        style: {
+          // navigationBarTitleText: i18n.global.t("courses"),
+          navigationBarTitleText: "CourseSessionDetailPage",
+          navigationBarBackgroundColor: `#42b883`,
+          navigationBarTextStyle: `white`,
+          name: "CourseSessionDetailPage",
+        },
+      }
+    ),
   },
   {
     path: `/courses/assignmentDetails`,

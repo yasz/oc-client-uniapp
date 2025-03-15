@@ -3,6 +3,7 @@
         <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="106rpx" shape="circle"></u-avatar>
         <view v-if="useAuthStore().token" class="pl-20 fixed-height">
             {{ $t("Hi") }} , {{ useAuthStore().nickname }}
+            {{ useAuthStore().role }}
             {{ useAuthStore().userId }}
         </view>
         <view v-if="!useAuthStore().token">

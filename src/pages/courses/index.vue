@@ -1,6 +1,7 @@
 <template>
     <view>
-        <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper>
+        <!-- <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper> -->
+
 
         <div class="justify-evenly baseline">
             <div v-for="(item, index) in menuItems" :key="item.id" @click="toggleSelection(item.id)"
@@ -54,19 +55,17 @@ interface MenuItem {
     line1: string;
     line2: string;
 }
-const toggleSelection = (id: number) => {
-    if (selectedItem.value === id) {
-        selectedItem.value = null; // 如果点击的是已选项，则取消选择
-    } else {
-        selectedItem.value = id; // 选择新的项
-    }
+
+const toggleSelection = async (id: number) => {
+    selectedItem.value = selectedItem.value === id ? undefined : id;
+    await fetchCoursesByMenuId(selectedItem.value);
 };
-const selectedItem = ref<number | null>(null); // 当前选中的菜单项
+const selectedItem = ref<number | undefined>(undefined); // 当前选中的菜单项
 const menuItems = ref<MenuItem[]>([
-    { id: 1, line1: '小学语文', line2: '（部编版）' },
-    { id: 2, line1: 'YCT', line2: '标准课程' },
-    { id: 3, line1: 'HSK', line2: '标准课程' },
-    { id: 4, line1: '教师', line2: '课程' }
+    { id: 12, line1: '小学语文', line2: '（部编版）' },
+    { id: 11, line1: 'YCT', line2: '标准课程' },
+    { id: 13, line1: 'HSK', line2: '标准课程' },
+    { id: 14, line1: '教师', line2: '课程' }
 ]);
 
 interface Course {
@@ -80,26 +79,32 @@ interface Course {
 const courses = reactive<Course[]>([]);
 const swiperData = reactive<{ image: string; title: string, id: number }[]>([]);
 
-onMounted(async () => {
-    // const response: any = await listCourseSessions();
-    const response: any = await listCourses();
+const fetchCoursesByMenuId = async (id: number | undefined) => {
+    let response: any;
+    if (id) {
+        // Call listCourseById if a menu item is selected
+        response = await listCourseById(id);
+    } else {
+        // Call listCourses if no specific menu item is selected
+        response = await listCourses();
+    }
 
     if (response.data) {
-
-        let temp = response.data.filter((e: any) => e.children).flatMap((e: any) => {
+        const temp = response.data.filter((e: any) => e.children).flatMap((e: any) => {
             return e.children.map((child: any) => {
                 return {
                     subject: e.name, ...child,
                     cover: import.meta.env.VITE_BUCKET_ENDPOINT + child.cover?.[0]?.url
-                }
-            })
-        }).flat()
+                };
+            });
+        }).flat();
 
         console.log('【调试~~】:【', temp, '】');
-        courses.push(
-            ...temp
-        );
+        courses.splice(0, courses.length, ...temp); // Use splice to reset the courses array
     }
+};
+onMounted(async () => {
+
 
     const recommandSessionsResponse: any = await listRecommendedCourseSessions()
     if (recommandSessionsResponse.data) {
@@ -111,6 +116,7 @@ onMounted(async () => {
             }))
         );
     }
+    await fetchCoursesByMenuId(0);
 });
 
 
@@ -122,9 +128,9 @@ onMounted(async () => {
     border-radius: 20px 2px 20px 2px;
 
     /* 确保背景色宽度为100% */
-    height: 100%;
+    height: 40%;
     /* 确保背景色占据整个高度 */
-    padding: 5px;
+    // padding: 5px;
     /* 可以调整内边距以确保空间 */
 }
 
@@ -180,6 +186,10 @@ onMounted(async () => {
 }
 
 .menu-item {
+    flex: 1;
+    /* Ensures each item takes up an equal amount of width */
+    text-align: center;
+    /* Centers the text inside each item */
     display: flex;
     /* 使用 Flexbox 布局 */
     flex-direction: column;

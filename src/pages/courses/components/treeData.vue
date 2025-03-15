@@ -9,8 +9,11 @@
         <template v-else>
             <!-- 叶子节点 -->
             <view class="flex baseline pl-20">
-                <uni-icons type="checkbox" v-if="item.progress_percentage == 1" size="22" color="#9298a5"></uni-icons>
-                <uni-icons type="circle" v-else size="22" color="#9298a5"></uni-icons>
+                <view v-if="item.progress_percentage">
+                    <uni-icons type="checkbox" v-if="item.progress_percentage == 1" size="22"
+                        color="#9298a5"></uni-icons>
+                    <uni-icons type="circle" v-else size="22" color="#9298a5"></uni-icons>
+                </view>
                 <text class="children-item py-10 pl-10">{{ item.name }}</text>
                 <up-icon @click="openAttachment(item.file_id?.url, item)" :name="getIconByType(item.file_id?.url)"
                     size="22" color="#9298a5" class="ml pr-40"></up-icon>

@@ -90,7 +90,7 @@ export const listCourseById = async (id: any) => {
   }
 
   const filter = `{"$or":[{"parentId":{"$eq":${id}}},{"parent":{"parentId":{"$eq":${id}}}},{"parent":{"parent":{"parentId":{"$eq":${id}}}}}]}`;
-  const url = `courses:list?sort=seq&tree=true&appends[]=file_id&filter=${filter}`; //&appends[]=children
+  const url = `courses:list?sort=seq&appends[]=cover&tree=true&appends[]=file_id&filter=${filter}`; //&appends[]=children
 
   try {
     const response = await getAPIAxios(url, null);
