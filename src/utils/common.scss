@@ -269,13 +269,11 @@ $pt-values: (
 
 .divider {
     
-    margin-top:15rpx;
-    margin-bottom:15rpx;
-    width: 150%;
-    margin-left: -100rpx; 
+    margin-top: 15rpx;
+    margin-bottom: 15rpx;
+    width: 100%; /* 让分割线适应外层容器宽度 */
     height: 2px;
     background-color: #f3f3f3;
-    
   }
 .bold2 {
     font-weight: 700;

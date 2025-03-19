@@ -3,8 +3,8 @@
         <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="106rpx" shape="circle"></u-avatar>
         <view v-if="useAuthStore().token" class="pl-20 fixed-height">
             {{ $t("Hi") }} , {{ useAuthStore().nickname }}
-            {{ useAuthStore().role }}
-            {{ useAuthStore().userId }}
+            <!-- {{ useAuthStore().role }}
+            {{ useAuthStore().userId }} -->
         </view>
         <view v-if="!useAuthStore().token">
             <view class="pl-20 fixed-height" @click="go('/sign-in')">
@@ -14,32 +14,69 @@
             </view>
         </view>
     </view>
-    <view class="pt-10 flex justify-between"> </view>
-    <view class="flex-col px-20">
-        <view class="flex py-10 baseline fixed-height" style="align-items: center;">
-            <view class="mr-20">
-                <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+
+    <view class="my-box mx-20 mt-20">
+        <view class="flex-col px-20">
+            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
+                <view class="mr-20">
+                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+                </view>
+                <LangSwitch />
+            </view>
+            <view class="divider"></view>
+            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
+                <view class="mr-20">
+                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+                </view>
+                学习日历
+            </view>
+            <view class="divider"></view>
+            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
+                <view class="mr-20">
+                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+                </view>
+                拼图账户
+            </view>
+            <view class="divider"></view>
+            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
+                <view class="mr-20">
+                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+                </view>
+                联系我们
             </view>
 
-            <LangSwitch />
-        </view>
-        <view class="divider"></view>
-        <view v-if="useAuthStore().token">
-            <view class="flex py-10 baseline fixed-height" style="align-items: center;" @click="logout">
-                <view class="mr-20">
-                    <u-image src="/static/2988.png" width="36rpx" height="36rpx" />
-                </view>
-                <view>
-                    {{ $t("logout") }}
+            <view class="divider"></view>
+            <view v-if="useAuthStore().token">
+                <view class="flex py-10 baseline fixed-height" style="align-items: center;" @click="logout">
+                    <view class="mr-20">
+                        <u-image src="/static/2988.png" width="36rpx" height="36rpx" />
+                    </view>
+                    <view>
+                        {{ $t("logout") }}
+                    </view>
                 </view>
             </view>
+            <Layout></Layout>
         </view>
-        <Layout></Layout>
     </view>
 </template>
 
 <style scoped>
 /* 定义固定高度 */
+.my-box {
+    /* background-color: #FFD700; */
+    /* 金黄色 */
+    border-radius: 15px;
+    border: 2px solid #FFD700;
+    /* 圆角 */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+    /* 阴影效果 */
+    padding: 15px;
+    /* 文字颜色 */
+    font-size: 16px;
+    /* 文字大小 */
+}
+
 .fixed-height {
     min-height: 60rpx;
     /* 根据需求设置固定行高 */
