@@ -1,6 +1,10 @@
 <template>
   <view class="content">
-    <u-image  src="/src/static/delete.png" width="20rpx" height="20rpx" />
+    <u-image src="/src/static/delete.png" width="20rpx" height="20rpx" />
+    <view>
+      WELCOME
+    </view>
+    <view> 欢迎来到Lifefun“乐凡中文”！</view>
     <image class="logo" mode="scaleToFill" src="/static/images/title.jpg" />
     <view class="text-area">
       <!-- <text class="title">{{ t("pages.new activities") }}</text> -->
@@ -27,6 +31,9 @@ const { t, locale } = useI18n();
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-content: right;
+  color: #875304;
+  background-color: #FCCF29;
 }
 
 .logo {
