@@ -1,5 +1,6 @@
 <template>
   <view class="content">
+    <u-image  src="/src/static/delete.png" width="20rpx" height="20rpx" />
     <image class="logo" mode="scaleToFill" src="/static/images/title.jpg" />
     <view class="text-area">
       <!-- <text class="title">{{ t("pages.new activities") }}</text> -->
