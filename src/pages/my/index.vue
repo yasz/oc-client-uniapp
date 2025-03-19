@@ -24,9 +24,11 @@
                 <LangSwitch />
             </view>
             <view class="divider"></view>
-            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
+            <view @click="go('/my/calendar')" class="flex py-10 baseline fixed-height" style="align-items: center;">
                 <view class="mr-20">
-                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+                    <!-- <u-image src="/static/translate.png" width="36rpx" height="36rpx" /> -->
+                    <uni-icons type="calendar" size="26" />
+
                 </view>
                 学习日历
             </view>

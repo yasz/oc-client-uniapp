@@ -124,6 +124,18 @@ const soliRoutes = [
       },
     }),
   },
+  {
+    path: `/my/calendar`,
+    component: __dynamicImportComponent__(`@/pages/my/calendar.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `%my%`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "calendar",
+      },
+    }),
+  },
 ];
 
 const router = createRouter({
