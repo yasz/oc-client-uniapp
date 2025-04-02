@@ -134,20 +134,29 @@ const switchTab = (tab: string) => {
 }
 
 .course-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20rpx;
+  display: flex;
+  justify-content: space-between;
   padding: 30rpx;
 }
 
 .course-card {
+  flex: 1;
+  margin: 0 10rpx;
   background-color: #fff;
   border-radius: 20rpx;
-  padding: 30rpx;
+  padding: 15rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .course-icon {

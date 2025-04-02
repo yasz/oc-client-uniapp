@@ -4,13 +4,30 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const urls = ["index", "courses", "my"];
+const urls = ["index", "courses", "my"] as const;
+type TabUrl = typeof urls[number];
 
 // 通过 urls 数组动态生成 routeIndexMap
 const routeIndexMap = Object.fromEntries(urls.map((name, i) => [`/${name}`, i]));
 
 // 设置初始值
 const index = ref(routeIndexMap[route.path] ?? 0);
+
+// 图标映射
+const icons: Record<TabUrl, { active: string; inactive: string }> = {
+  index: {
+    active: './src/static/tabbar/index_active.png',
+    inactive: './src/static/tabbar/index.png'
+  },
+  courses: {
+    active: './src/static/tabbar/menu_active.png',
+    inactive: './src/static/tabbar/menu.png'
+  },
+  my: {
+    active: './src/static/tabbar/my_active.png',
+    inactive: './src/static/tabbar/my.png'
+  }
+};
 
 // 路由变化时更新 index
 watch(
@@ -32,20 +49,50 @@ const change = (e: number) => {
 <template>
   <view>
     <view class="mytab">
-      <u-tabbar :border="false" :value="index" @change="change" fixed :placeholder="false" safeAreaInsetBottom
-        activeColor="orange">
-        <u-tabbar-item :text="$t('index')" icon="star"></u-tabbar-item>
-        <u-tabbar-item :text="$t('courses')" icon="pushpin"></u-tabbar-item>
-        <u-tabbar-item :text="$t('my')" icon="account"></u-tabbar-item>
-      </u-tabbar>
+      <view class="tab-bar">
+        <view v-for="(url, idx) in urls" :key="url" class="tab-item" :class="{ active: index === idx }"
+          @click="change(idx)">
+          <image :src="index === idx ? icons[url].active : icons[url].inactive" mode="aspectFit" class="tab-icon" />
+          <text>{{ $t(url) }}</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
 <style lang="scss">
-.mytab view,
-.mytab uni-view {
-  background-color: rgba(247, 247, 247, 0.7) !important;
-  padding-top: 2px;
+.mytab {
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100rpx;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1rpx solid #eee;
+    padding-top: 2px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 24rpx;
+    color: #999;
+
+    &.active {
+      color: #FF7F50;
+    }
+
+    .tab-icon {
+      width: 48rpx;
+      height: 48rpx;
+      margin-bottom: 6rpx;
+    }
+  }
 }
 </style>
