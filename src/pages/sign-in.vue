@@ -1,9 +1,8 @@
 <template>
     <view class="container">
+        <image class="logo" src="@/static/images/logo.png" />
         <view class="form-container">
             <!-- 本地图片 logo -->
-            <image class="logo" src="@/static/images/logo.jpg" />
-
             <!-- 输入邮箱 -->
             <input class="input" v-model="username" type="text" placeholder="Please input username" />
 
@@ -77,14 +76,25 @@ const handleSignIn = async () => {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #fff;
+    background-color: #ff8800;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: url('/static/images/title.jpg') no-repeat bottom center;
+    background-size: cover;
 }
 
 .form-container {
-    width: 100%;
-    max-width: 400px;
-    padding: 16px;
-    background-color: #f9f9f9;
+    width: 80%;
+    padding: 20px;
+    z-index: 1;
+    background-color: #fff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -94,7 +104,8 @@ const handleSignIn = async () => {
 .logo {
     width: 120px;
     height: 120px;
-    margin-bottom: 20px;
+    margin-bottom: -30px;
+    z-index: 0;
 }
 
 .input {
@@ -104,13 +115,5 @@ const handleSignIn = async () => {
     border-radius: 4px;
     margin-bottom: 16px;
     padding-left: 8px;
-}
-
-.sign-in-button {
-    width: 60%;
-    height: 40px;
-    background-color: #f59e0b;
-    color: white;
-    border-radius: 4px;
 }
 </style>

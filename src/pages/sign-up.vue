@@ -26,6 +26,14 @@
           <u-input border="none" :placeholder="$t('please input ') + $t('email')" v-model="formModel.email"></u-input>
         </u-form-item>
 
+        <u-form-item prop="role" borderBottom labelWidth="90" :label="$t('role')">
+          <u-radio-group v-model="formModel.role">
+            <u-radio :customStyle="{ marginRight: '12px' }" name="student" :label="$t('student')" />
+            <u-radio :customStyle="{ marginRight: '8px' }" name="teacher" :label="$t('teacher')" />
+          </u-radio-group>
+        </u-form-item>
+
+
       </u-form>
       <view class="flex">
         <u-button @click="submitForm">
@@ -48,7 +56,10 @@ const formModel = reactive({
   password: "",
   confirmPassword: "",
   email: "",
+  role: "student",
 });
+
+
 const formRef: any = ref();
 // Submit form method
 const submitForm = async () => {
