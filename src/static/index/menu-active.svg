@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 12H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
-  <path d="M7 24H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
-  <path d="M7 36H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
+    <path d="M7 12H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
+    <path d="M7 24H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
+    <path d="M7 36H41" stroke="#FF7F50" stroke-width="4" stroke-linecap="round"/>
 </svg>

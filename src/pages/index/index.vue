@@ -10,12 +10,24 @@
     </view>
 
     <view class="course-grid">
-      <view v-for="(course, index) in courses" :key="index" class="course-card">
+      <view v-for="(course, index) in courses" :key="index" class="course-card" @click="showCourseDetail(index)">
         <image :src="course.image" mode="aspectFit" class="course-icon" />
-        <text class="course-name">{{ course.name }}</text>
-        <text class="course-desc">{{ course.description }}</text>
+        <view class="course-text">
+          <text class="course-name">{{ course.line1 }}</text>
+          <text class="course-desc">{{ course.line2 }}</text>
+        </view>
       </view>
     </view>
+
+    <!-- 课程详情弹窗 -->
+    <uni-popup ref="popup" :is-mask-click="true" type="center">
+      <view class="popup-content">
+        <image :src="currentCourse?.icon" mode="aspectFit" class="popup-icon" />
+        <view class="popup-title">{{ currentCourse?.title }}</view>
+        <view class="popup-divider"></view>
+        <view class="popup-desc" v-html="currentCourse?.description"></view>
+      </view>
+    </uni-popup>
 
     <view class="moments-section">
       <text class="section-title">精彩时刻</text>
@@ -46,23 +58,23 @@ const currentTab = ref('home');
 
 const courses = ref([
   {
-    name: '小学语文',
-    description: '(部编版)',
+    line1: '小学语文',
+    line2: '(部编版)',
     image: './src/static/index/图层 2.png'
   },
   {
-    name: 'YCT',
-    description: '标准课程',
+    line1: 'YCT',
+    line2: '标准课程',
     image: './src/static/index/图层 3.png'
   },
   {
-    name: 'HSK',
-    description: '标准课程',
+    line1: 'HSK',
+    line2: '标准课程',
     image: './src/static/index/图层 4.png'
   },
   {
-    name: '教师',
-    description: '课程',
+    line1: '教师',
+    line2: '课程',
     image: './src/static/index/图层 5.png'
   }
 ]);
@@ -88,6 +100,64 @@ const moments = ref([
 
 const switchTab = (tab: string) => {
   currentTab.value = tab;
+};
+
+interface CourseDetail {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+
+const currentCourse = ref<CourseDetail | null>(null);
+
+const courseDetails: CourseDetail[] = [
+  {
+    icon: './src/static/index/图层 2.png',
+    title: '小学语文（部编版）',
+    description: `本课程提供中国现行的义务教育教科书，
+即教育部编写的小学语文1-12册的相应学习和教学资源。
+
+由于面向国际学习群体，在个别用词上进行"去国别化"处理。
+
+私教课将安排富有小学教学经验的教师进行授课。
+
+适合中文母语儿童进一步提高使用中文的能力，以及培养相应的文学修养。`
+  },
+  {
+    icon: './src/static/index/图层 3.png',
+    title: 'YCT标准课程',
+    description: `本课程提供中国教育部中外语言合作中心发行，由高等教育出版社出版的YCT (Youth Chinese Test) 标准教程的学习和教学资源。
+
+私教课老师均为中文母语者，且具备普通话水平二级乙等以上；高考语文高分者（卷面准确率在80%以上）。
+
+适合中文零基础的儿童学习，帮助掌握初步掌握中文使用的能力。`
+  },
+  {
+    icon: './src/static/index/图层 4.png',
+    title: 'HSK标准课程',
+    description: `本课程提供中国国家汉语办公室编写，北京语言大学出版社出版的HSK (汉语水平考试) 标准课程1-6级，共9册的相应学习和教学资源。
+
+私教课老师均为中文母语者，且具备普通话水平二级乙等以上；高考语文高分者（卷面准确率在80%以上）。
+
+适合非中文母语学习者，尤其是有汉语水平考试需求的成人及青少年，进行中文学习，以及备考汉语水平考试或相应国家的中文高考。`
+  }
+];
+
+const popup: any = ref(null);
+
+const showCourseDetail = (index: number) => {
+  console.log(index)
+  if (index < 3) { // 只处理前三个课程
+    popup?.value?.open('center');
+    currentCourse.value = courseDetails[index];
+
+  }
+};
+
+const closePopup = () => {
+
+  currentCourse.value = null;
 };
 </script>
 
@@ -160,21 +230,31 @@ const switchTab = (tab: string) => {
 }
 
 .course-icon {
-  width: 120rpx;
-  height: 120rpx;
-  margin-bottom: 20rpx;
+  width: 90rpx;
+  height: 90rpx;
+  margin-bottom: 12rpx;
+}
+
+.course-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .course-name {
-  font-size: 32rpx;
+  font-size: 24rpx;
   font-weight: bold;
   color: #333;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .course-desc {
-  font-size: 24rpx;
+  font-size: 20rpx;
   color: #666;
-  margin-top: 10rpx;
+  margin-top: 4rpx;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .moments-section {
@@ -243,5 +323,43 @@ const switchTab = (tab: string) => {
   width: 48rpx;
   height: 48rpx;
   margin-bottom: 6rpx;
+}
+
+/* 添加弹窗样式 */
+.popup-content {
+  width: 600rpx;
+  padding: 40rpx;
+  background: #fff;
+  border-radius: 20rpx;
+}
+
+.popup-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto 20rpx;
+  display: block;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.popup-divider {
+  height: 4rpx;
+  background: #FFB800;
+  width: 60rpx;
+  margin: 0 auto 30rpx;
+}
+
+.popup-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+  text-align: justify;
+  white-space: pre-wrap;
 }
 </style>

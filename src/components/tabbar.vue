@@ -20,8 +20,8 @@ const icons: Record<TabUrl, { active: string; inactive: string }> = {
     inactive: './src/static/tabbar/index.png'
   },
   courses: {
-    active: './src/static/tabbar/menu_active.png',
-    inactive: './src/static/tabbar/menu.png'
+    active: './src/static/tabbar/courses_active.png',
+    inactive: './src/static/tabbar/courses.png'
   },
   my: {
     active: './src/static/tabbar/my_active.png',
