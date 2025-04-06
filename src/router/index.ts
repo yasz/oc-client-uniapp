@@ -136,6 +136,18 @@ const soliRoutes = [
       },
     }),
   },
+  {
+    path: `/puzzle`,
+    component: __dynamicImportComponent__(`@/pages/puzzles/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "puzzle",
+      },
+    }),
+  },
 ];
 
 const router = createRouter({
