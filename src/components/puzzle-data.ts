@@ -1,11 +1,74 @@
 export const puzzlePieces = [
-  { src: "/static/puzzles/completed/1.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/2.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/3.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/4.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/5.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/6.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/7.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/8.png", width: 0, height: 0 },
-  { src: "/static/puzzles/completed/9.png", width: 0, height: 0 },
+  {
+    src: "/static/puzzles/completed/1.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 276,
+    y: 730,
+  },
+  {
+    src: "/static/puzzles/completed/2.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 566,
+    y: 730,
+  },
+  {
+    src: "/static/puzzles/completed/3.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 1104,
+    y: 730,
+  },
+  {
+    src: "/static/puzzles/completed/4.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 276,
+    y: 1141,
+  },
+  {
+    src: "/static/puzzles/completed/5.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 684,
+    y: 1027,
+  },
+  {
+    src: "/static/puzzles/completed/6.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 996,
+    y: 1141,
+  },
+  {
+    src: "/static/puzzles/completed/7.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 276,
+    y: 1434,
+  },
+  {
+    src: "/static/puzzles/completed/8.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 568,
+    y: 1562,
+  },
+  {
+    src: "/static/puzzles/completed/9.png",
+    originalWidth: 0,
+    originalHeight: 0,
+    x: 1104,
+    y: 1434,
+  },
 ];
+
+// Define the type for better intellisense/safety
+export interface PuzzlePiece {
+  src: string;
+  originalWidth: number;
+  originalHeight: number;
+  x: number;
+  y: number;
+}
