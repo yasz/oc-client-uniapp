@@ -1,69 +1,11 @@
 <template>
-  <view class="puzzle-container">
-    <view class="puzzle-section">
-      <view class="puzzle-title">Completed Puzzle</view>
-      <view class="puzzle-grid">
-        <view v-for="(piece, index) in puzzlePieces" :key="index" class="puzzle-piece">
-          <image :src="piece.src" mode="widthFix" :style="{ width: piece.width + 'px', height: piece.height + 'px' }"
-            @load="onImageLoad($event, index)"></image>
-        </view>
-      </view>
-    </view>
+  <view style="width: 80%; margin: 0 auto;">
+    <PuzzleGrid :scale="0.2" />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const puzzlePieces = ref([
-  { src: '/static/puzzles/completed/1.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/2.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/3.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/4.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/5.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/6.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/7.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/8.png', width: 0, height: 0 },
-  { src: '/static/puzzles/completed/9.png', width: 0, height: 0 }
-])
-
-const onImageLoad = (event: any, index: number) => {
-  const { width, height } = event.detail
-  puzzlePieces.value[index].width = width
-  puzzlePieces.value[index].height = height
-}
+import PuzzleGrid from '@/components/PuzzleGrid.vue'
 </script>
 
-<style lang="scss">
-.puzzle-container {
-  padding: 20rpx;
-
-  .puzzle-section {
-    .puzzle-title {
-      font-size: 32rpx;
-      font-weight: bold;
-      margin-bottom: 20rpx;
-      text-align: center;
-    }
-
-    .puzzle-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      width: 100%;
-      max-width: 600rpx;
-      margin: 0 auto;
-      background-color: #f0f0f0;
-      padding: 0;
-      border-radius: 8rpx;
-    }
-
-    .puzzle-piece {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1rpx solid #fff;
-    }
-  }
-}
-</style>
+<style lang="scss"></style>
