@@ -12,7 +12,7 @@
         <text class="welcome-title pr-6">WELCOME</text>
         <text class="welcome-subtitle">欢迎来到Lifefunner"乐凡中文"！</text>
       </view>
-      <view class="donate-btn" @click="showDonatePopup">
+      <view style="z-index: 3;" class="donate-btn" @click="showDonatePopup">
         <text>支持/DONATE</text>
       </view>
     </view>
@@ -49,35 +49,27 @@
 
     <!-- 捐赠弹窗 -->
     <uni-popup ref="donatePopup" :is-mask-click="true" type="center">
-      <view class="donate-popup">
-        <view class="donate-popup-header">
-          <text class="donate-popup-title">支持/Donate</text>
-          <text class="donate-popup-close" @click="donatePopup.close()">×</text>
-        </view>
-        <view class="donate-popup-divider"></view>
+      <view class="popup-content bg-white">
+        <view class="popup-title">支持/Donate</view>
+        <view class="popup-divider"></view>
         <view class="donate-qr-container">
-          <view class="donate-qr-item">
-
-            <view class="donate-qr-wrapper wechat">
-              <image src="/static/index/wechat.png" mode="aspectFit" class="donate-qr" />
-            </view>
-          </view>
-          <view class="donate-qr-item">
-
-            <view class="donate-qr-wrapper alipay">
-              <image src="/static/index/alipay.png" mode="aspectFit" class="donate-qr" />
-            </view>
-          </view>
+          <image src="/static/index/wechat.png" style="width: 480rpx; height: 360rpx;" />
+          <image src="/static/index/alipay.png" style="width: 480rpx; height: 360rpx;" />
         </view>
-        <view>验证提示：马*乐</view>
-        <view class="donate-message">
+        <view class="flex-col flex-center-column">
+          <view class="t-10 text-gray">验证提示：马*乐</view>
 
-          感谢您的赠予！
-          <text class="donate-poem">投我以木桃，报之以琼瑶。</text>
-          我们将以热忱的工作和教学回馈您的
-          信任和支持。
+          <view class="t-12 pt-20 f-c-b">
+            感谢您的赠予！
+          </view>
+          <text class="t-12">投我以木桃，报之以琼瑶。</text>
+          <text class="t-12">
+            我们将以热忱的工作和教学回馈您的
+          </text>
+          <text class="t-12">信任和支持。</text>
         </view>
       </view>
+
     </uni-popup>
 
     <Layout />
@@ -196,6 +188,7 @@ const showDetail = async (type: 'course' | 'moment', index: number) => {
 
 const showDonatePopup = () => {
   donatePopup.value?.open();
+  console.log(donatePopup.value)
 };
 
 </script>
@@ -429,5 +422,13 @@ const showDonatePopup = () => {
   line-height: 1.8;
   text-align: justify;
   white-space: pre-wrap;
+}
+
+.donate-qr-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  /* 设置二维码之间的间距为10px */
+  margin: 30rpx 0;
 }
 </style>
