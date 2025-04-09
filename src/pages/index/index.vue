@@ -47,6 +47,7 @@
 import {
   go
 } from "@/utils/common";
+import { listCMSByIds } from "@/utils/api";
 
 import { useI18n } from 'vue-i18n';
 import Layout from "../layout.vue";
@@ -108,55 +109,30 @@ interface CourseDetail {
   description: string;
 }
 
-
 const currentCourse = ref<CourseDetail | null>(null);
-
-const courseDetails: CourseDetail[] = [
-  {
-    icon: './src/static/index/图层 2.png',
-    title: '小学语文（部编版）',
-    description: `本课程提供中国现行的义务教育教科书，
-即教育部编写的小学语文1-12册的相应学习和教学资源。
-
-由于面向国际学习群体，在个别用词上进行"去国别化"处理。
-
-私教课将安排富有小学教学经验的教师进行授课。
-
-适合中文母语儿童进一步提高使用中文的能力，以及培养相应的文学修养。`
-  },
-  {
-    icon: './src/static/index/图层 3.png',
-    title: 'YCT标准课程',
-    description: `本课程提供中国教育部中外语言合作中心发行，由高等教育出版社出版的YCT (Youth Chinese Test) 标准教程的学习和教学资源。
-
-私教课老师均为中文母语者，且具备普通话水平二级乙等以上；高考语文高分者（卷面准确率在80%以上）。
-
-适合中文零基础的儿童学习，帮助掌握初步掌握中文使用的能力。`
-  },
-  {
-    icon: './src/static/index/图层 4.png',
-    title: 'HSK标准课程',
-    description: `本课程提供中国国家汉语办公室编写，北京语言大学出版社出版的HSK (汉语水平考试) 标准课程1-6级，共9册的相应学习和教学资源。
-
-私教课老师均为中文母语者，且具备普通话水平二级乙等以上；高考语文高分者（卷面准确率在80%以上）。
-
-适合非中文母语学习者，尤其是有汉语水平考试需求的成人及青少年，进行中文学习，以及备考汉语水平考试或相应国家的中文高考。`
-  }
-];
 
 const popup: any = ref(null);
 
-const showCourseDetail = (index: number) => {
-  console.log(index)
-  if (index < 3) { // 只处理前三个课程
-    popup?.value?.open('center');
-    currentCourse.value = courseDetails[index];
-
+const showCourseDetail = async (index: number) => {
+  try {
+    // 课程索引映射到 CMS ID：小学语文(1), YCT(2), HSK(3), 教师课程(4)
+    const cmsId = index + 1;
+    const response = await listCMSByIds([cmsId]);
+    if (response?.data?.[0]) {
+      const courseDetail = response.data[0];
+      currentCourse.value = {
+        icon: courses.value[index].image,
+        title: courses.value[index].line1,
+        description: courseDetail.content
+      };
+      popup.value?.open();
+    }
+  } catch (error) {
+    console.error('Failed to fetch course detail:', error);
   }
 };
 
 const closePopup = () => {
-
   currentCourse.value = null;
 };
 </script>

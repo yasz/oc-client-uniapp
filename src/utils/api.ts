@@ -172,3 +172,22 @@ export const createAssignmentSubmission = async ({
     throw error;
   }
 };
+
+export const listCMSByIds = async (ids: number[]) => {
+  if (!ids || ids.length === 0) {
+    console.error("Error: Missing required parameter 'ids'");
+    return Promise.reject("Missing required parameter 'ids'");
+  }
+
+  const filter = `{"$and":[{"id":{"$in":${JSON.stringify(ids)}}}]}`;
+  const url = `cms:list?sort=seq&appends[]=cover&page=1&filter=${filter}`;
+
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
