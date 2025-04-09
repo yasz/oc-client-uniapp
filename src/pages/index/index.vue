@@ -1,16 +1,22 @@
 <template>
   <view class="container">
-    <view class="search-bar">
+    <!-- <view class="search-bar">
       <u-search v-model="searchKeyword" placeholder="SEARCH" />
-    </view>
+    </view> -->
     <view class="welcome-section">
-      <text class="welcome-title">WELCOME</text>
-      <text class="welcome-subtitle">欢迎来到Lifefun"乐凡中文"！</text>
-      <view class="donate-btn">支持/DONATE</view>
+      <image src="/static/index/logo.png" mode="aspectFit" class="welcome-logo" />
+      <view class="welcome-text">
+        <text class="welcome-title">WELCOME</text>
+        <text class="welcome-subtitle">欢迎来到Lifefun"乐凡中文"！</text>
+      </view>
+      <view class="donate-btn" @click="showDonatePopup">
+        <image src="/static/index/logo.png" mode="aspectFit" class="donate-logo" />
+        <text>支持/DONATE</text>
+      </view>
     </view>
 
     <view class="course-grid">
-      <view v-for="(course, index) in courses" :key="index" class="course-card" @click="showCourseDetail(index)">
+      <view v-for="(course, index) in courses" :key="index" class="course-card" @click="showDetail('course', index)">
         <image :src="course.image" mode="aspectFit" class="course-icon" />
         <view class="course-text">
           <text class="course-name">{{ course.line1 }}</text>
@@ -22,22 +28,55 @@
     <!-- 课程详情弹窗 -->
     <uni-popup ref="popup" :is-mask-click="true" type="center">
       <view class="popup-content">
-        <image :src="currentCourse?.icon" mode="aspectFit" class="popup-icon" />
-        <view class="popup-title">{{ currentCourse?.title }}</view>
+        <image :src="currentDetail?.icon" mode="aspectFit" class="popup-icon" />
+        <view class="popup-title">{{ currentDetail?.title }}</view>
         <view class="popup-divider"></view>
-        <view class="popup-desc" v-html="currentCourse?.description"></view>
+        <view class="popup-desc" v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>
 
     <view class="moments-section">
       <text class="section-title">精彩时刻</text>
-      <view class="moments-grid">
-        <view v-for="(moment, index) in moments" :key="index" class="moment-card">
+      <view class="moments-grid pt-20">
+        <view v-for="(moment, index) in moments" :key="index" class="moment-card" @click="showDetail('moment', index)">
           <image :src="moment.image" mode="aspectFill" class="moment-image" />
           <text class="moment-desc">{{ moment.description }}</text>
         </view>
       </view>
     </view>
+
+    <!-- 捐赠弹窗 -->
+    <uni-popup ref="donatePopup" :is-mask-click="true" type="center">
+      <view class="donate-popup">
+        <view class="donate-popup-header">
+          <text class="donate-popup-title">支持/Donate</text>
+          <text class="donate-popup-close" @click="donatePopup.close()">×</text>
+        </view>
+        <view class="donate-popup-divider"></view>
+        <view class="donate-qr-container">
+          <view class="donate-qr-item">
+
+            <view class="donate-qr-wrapper wechat">
+              <image src="/static/index/wechat.png" mode="aspectFit" class="donate-qr" />
+            </view>
+          </view>
+          <view class="donate-qr-item">
+
+            <view class="donate-qr-wrapper alipay">
+              <image src="/static/index/alipay.png" mode="aspectFit" class="donate-qr" />
+            </view>
+          </view>
+        </view>
+        <view>验证提示：马*乐</view>
+        <view class="donate-message">
+
+          感谢您的赠予！
+          <text class="donate-poem">投我以木桃，报之以琼瑶。</text>
+          我们将以热忱的工作和教学回馈您的
+          信任和支持。
+        </view>
+      </view>
+    </uni-popup>
 
     <Layout />
   </view>
@@ -51,90 +90,112 @@ import { listCMSByIds } from "@/utils/api";
 
 import { useI18n } from 'vue-i18n';
 import Layout from "../layout.vue";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const { t, locale } = useI18n();
 const searchKeyword = ref('');
 const currentTab = ref('home');
 
-const courses = ref([
-  {
-    line1: '小学语文',
-    line2: '(部编版)',
-    image: './src/static/index/图层 2.png'
-  },
-  {
-    line1: 'YCT',
-    line2: '标准课程',
-    image: './src/static/index/图层 3.png'
-  },
-  {
-    line1: 'HSK',
-    line2: '标准课程',
-    image: './src/static/index/图层 4.png'
-  },
-  {
-    line1: '教师',
-    line2: '课程',
-    image: './src/static/index/图层 5.png'
-  }
-]);
+interface Course {
+  line1: string;
+  line2: string;
+  image: string;
+}
 
-const moments = ref([
-  {
-    image: '/static/moments/moment1.jpg',
-    description: '老师们的线下活动'
-  },
-  {
-    image: '/static/moments/moment2.jpg',
-    description: '老师们的线下活动'
-  },
-  {
-    image: '/static/moments/moment3.jpg',
-    description: '在录制课程的老师'
-  },
-  {
-    image: '/static/moments/moment4.jpg',
-    description: '欧洲孔子学院培训的老师'
-  }
-]);
+interface CMSItem {
+  id: number;
+  title: string;
+  sub_title: string;
+  content: string;
+  cover: any[];
+}
 
-const switchTab = (tab: string) => {
-  currentTab.value = tab;
+const courses = ref<Course[]>([]);
+const cmsData = ref<CMSItem[]>([]);
+const moments = ref<{ image: string; description: string; content: string }[]>([]);
+
+// 获取所有课程信息
+const fetchCourses = async () => {
+  try {
+    const response: any = await listCMSByIds([1, 2, 3, 4]);
+    if (response?.data) {
+      cmsData.value = response.data;
+      // 转换数据格式
+      courses.value = response.data.map((item: any) => ({
+        line1: item.title,
+        line2: item.sub_title,
+        image: item.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}` : ''
+      }));
+    }
+  } catch (error) {
+    console.error('Failed to fetch courses:', error);
+  }
 };
 
-interface CourseDetail {
+// 获取精彩时刻
+const fetchMoments = async () => {
+  try {
+    const response: any = await listCMSByIds([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
+    if (response?.data) {
+      moments.value = response.data.map((item: any) => ({
+        image: item.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}` : '',
+        description: item.title,
+        content: item.content
+      }));
+    }
+  } catch (error) {
+    console.error('Failed to fetch moments:', error);
+  }
+};
+
+// 页面加载时获取数据
+onMounted(() => {
+  fetchCourses();
+  fetchMoments();
+});
+
+
+interface DetailItem {
   icon: string;
   title: string;
   description: string;
 }
 
-const currentCourse = ref<CourseDetail | null>(null);
-
+const currentDetail = ref<DetailItem | null>(null);
 const popup: any = ref(null);
+const donatePopup: any = ref(null);
 
-const showCourseDetail = async (index: number) => {
+const showDetail = async (type: 'course' | 'moment', index: number) => {
   try {
-    // 课程索引映射到 CMS ID：小学语文(1), YCT(2), HSK(3), 教师课程(4)
-    const cmsId = index + 1;
-    const response = await listCMSByIds([cmsId]);
-    if (response?.data?.[0]) {
-      const courseDetail = response.data[0];
-      currentCourse.value = {
-        icon: courses.value[index].image,
-        title: courses.value[index].line1,
-        description: courseDetail.content
-      };
-      popup.value?.open();
+    if (type === 'course') {
+      if (cmsData.value[index]) {
+        const courseDetail = cmsData.value[index];
+        currentDetail.value = {
+          icon: courseDetail.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${courseDetail.cover[0]?.url}` : '',
+          title: courseDetail.title + courseDetail.sub_title,
+          description: courseDetail.content
+        };
+      }
+    } else {
+      if (moments.value[index]) {
+        const momentDetail = moments.value[index];
+        currentDetail.value = {
+          icon: momentDetail.image,
+          title: momentDetail.description,
+          description: momentDetail.content
+        };
+      }
     }
+    popup.value?.open();
   } catch (error) {
-    console.error('Failed to fetch course detail:', error);
+    console.error('Failed to show detail:', error);
   }
 };
 
-const closePopup = () => {
-  currentCourse.value = null;
+const showDonatePopup = () => {
+  donatePopup.value?.open();
 };
+
 </script>
 
 <style>
@@ -151,32 +212,59 @@ const closePopup = () => {
 
 .welcome-section {
   background-color: #FFB800;
-  padding: 30rpx;
+  padding: 40rpx;
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 40rpx;
+  height: 300rpx;
+}
+
+.welcome-logo {
+  width: 280rpx;
+  height: 280rpx;
+  flex-shrink: 0;
+}
+
+.welcome-text {
+  flex: 1;
+  padding-top: 40rpx;
 }
 
 .welcome-title {
-  font-size: 48rpx;
+  font-size: 56rpx;
   font-weight: bold;
   color: #875304;
   display: block;
+  line-height: 1.2;
+  letter-spacing: 2rpx;
 }
 
 .welcome-subtitle {
   font-size: 32rpx;
   color: #875304;
-  margin-top: 10rpx;
+  margin-top: 20rpx;
   display: block;
+  line-height: 1.4;
 }
 
 .donate-btn {
   background-color: #fff;
-  padding: 10rpx 30rpx;
-  border-radius: 30rpx;
+  padding: 12rpx 30rpx;
+  border-radius: 40rpx;
   font-size: 28rpx;
   position: absolute;
-  right: 30rpx;
-  top: 30rpx;
+  right: 40rpx;
+  top: 40rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.donate-logo {
+  width: 36rpx;
+  height: 36rpx;
 }
 
 .course-grid {
