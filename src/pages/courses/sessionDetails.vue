@@ -15,14 +15,14 @@
                         :show-text="false" />
                     <text style="width: 25%;" class="progress-text">{{ progressPercent }}% ({{ courseProgress }}/{{
                         totalChapters
-                    }})</text>
+                        }})</text>
                 </view>
                 <view class="pt-10 progress-wrapper">
                     <text class="text-gray text-8 " style="width: 20%;">{{ $t('assignment') }}</text>
                     <up-line-progress :percentage="asgProgressPercent" height="20" activeColor="green"
                         :show-text="false" />
                     <text style="width: 25%;" class="progress-text">{{ asgProgressPercent }}% ({{ submissionAssignments
-                        }}/{{
+                    }}/{{
                             totalAssignments
                         }})</text>
                 </view>

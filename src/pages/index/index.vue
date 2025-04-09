@@ -3,14 +3,16 @@
     <!-- <view class="search-bar">
       <u-search v-model="searchKeyword" placeholder="SEARCH" />
     </view> -->
+
     <view class="welcome-section">
-      <image src="/static/index/logo.png" mode="aspectFit" class="welcome-logo" />
-      <view class="welcome-text">
-        <text class="welcome-title">WELCOME</text>
+      <view class="pl-30" style="position: relative; z-index: 1;">
+        <image src="/static/index/logo.png" mode="aspectFit" class="welcome-logo" />
+      </view>
+      <view class="welcome-text pt-60" style="margin-left: -100rpx; position: relative; z-index: 2;">
+        <text class="welcome-title pr-6">WELCOME</text>
         <text class="welcome-subtitle">欢迎来到Lifefunner"乐凡中文"！</text>
       </view>
       <view class="donate-btn" @click="showDonatePopup">
-
         <text>支持/DONATE</text>
       </view>
     </view>
@@ -211,8 +213,8 @@ const showDonatePopup = () => {
 }
 
 .welcome-section {
-  background-color: #FFB800;
-  padding: 20rpx;
+  background: linear-gradient(180deg, #FFB800 0%, #ff9d00 100%);
+
   position: relative;
   display: flex;
   align-items: center;
@@ -228,29 +230,33 @@ const showDonatePopup = () => {
 
 .welcome-text {
   flex: 1;
-  padding-top: 40rpx;
+  text-align: right;
 }
 
 .welcome-title {
   font-size: 56rpx;
-  font-weight: bold;
-  color: #875304;
+  font-weight: 900;
+  color: #9b6310;
   display: block;
   line-height: 1.2;
   letter-spacing: 2rpx;
+  -webkit-text-stroke: 0.3px #523201;
 }
 
 .welcome-subtitle {
-  font-size: 32rpx;
-  color: #875304;
-  margin-top: 10rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #8B4513;
+  line-height: 1.4;
+  letter-spacing: 1rpx;
   display: block;
-  line-height: 1.2;
+  margin-top: 8rpx;
+  -webkit-text-stroke: 0.7px #523201;
 }
 
 .donate-btn {
   background-color: #fff;
-  padding: 12rpx 30rpx;
+  padding: 16rpx 32rpx;
   border-radius: 40rpx;
   font-size: 28rpx;
   position: absolute;
@@ -260,6 +266,9 @@ const showDonatePopup = () => {
   align-items: center;
   gap: 10rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  color: #523201;
+  text-shadow: 0 0 10rpx rgba(255, 184, 0, 0.3);
+  font-weight: 900;
 }
 
 .course-grid {
