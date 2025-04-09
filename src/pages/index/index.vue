@@ -7,10 +7,10 @@
       <image src="/static/index/logo.png" mode="aspectFit" class="welcome-logo" />
       <view class="welcome-text">
         <text class="welcome-title">WELCOME</text>
-        <text class="welcome-subtitle">欢迎来到Lifefun"乐凡中文"！</text>
+        <text class="welcome-subtitle">欢迎来到Lifefunner"乐凡中文"！</text>
       </view>
       <view class="donate-btn" @click="showDonatePopup">
-        <image src="/static/index/logo.png" mode="aspectFit" class="donate-logo" />
+
         <text>支持/DONATE</text>
       </view>
     </view>
@@ -212,12 +212,12 @@ const showDonatePopup = () => {
 
 .welcome-section {
   background-color: #FFB800;
-  padding: 40rpx;
+  padding: 20rpx;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 40rpx;
-  height: 300rpx;
+  gap: 10rpx;
+  height: 280rpx;
 }
 
 .welcome-logo {
@@ -243,9 +243,9 @@ const showDonatePopup = () => {
 .welcome-subtitle {
   font-size: 32rpx;
   color: #875304;
-  margin-top: 20rpx;
+  margin-top: 10rpx;
   display: block;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 .donate-btn {
@@ -260,11 +260,6 @@ const showDonatePopup = () => {
   align-items: center;
   gap: 10rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-}
-
-.donate-logo {
-  width: 36rpx;
-  height: 36rpx;
 }
 
 .course-grid {
