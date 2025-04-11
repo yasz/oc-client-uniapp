@@ -1,97 +1,47 @@
 <template>
-    <view class="flex items-center pt-80 pb-40 px-30 bg-primary">
-        <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="106rpx" shape="circle"></u-avatar>
-        <view v-if="useAuthStore().token" class="pl-20 fixed-height">
-            {{ $t("Hi") }} , {{ useAuthStore().nickname }}
-            <!-- {{ useAuthStore().role }}
-            {{ useAuthStore().userId }} -->
-        </view>
-        <view v-if="!useAuthStore().token">
-            <view class="pl-20 fixed-height" @click="go('/sign-in')">
-                <view class="flex">
-                    {{ $t("sign in") }}
-                </view>
-            </view>
-        </view>
-    </view>
-
-    <view class="my-box mx-20 mt-20">
-        <view class="flex-col px-20">
-            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
-                <view class="mr-20">
-                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
-                </view>
-                <LangSwitch />
-            </view>
-            <view class="divider"></view>
-            <view @click="go('/my/calendar')" class="flex py-10 baseline fixed-height" style="align-items: center;">
-                <view class="mr-20">
-                    <!-- <u-image src="/static/translate.png" width="36rpx" height="36rpx" /> -->
-                    <uni-icons type="calendar" size="26" />
-
-                </view>
-                学习日历
-            </view>
-            <view class="divider"></view>
-            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
-                <view class="mr-20">
-                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
-                </view>
-                拼图账户
-            </view>
-            <view class="divider"></view>
-            <view class="flex py-10 baseline fixed-height" style="align-items: center;">
-                <view class="mr-20">
-                    <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
-                </view>
-                联系我们
-            </view>
-
-            <view class="divider"></view>
-            <view v-if="useAuthStore().token">
-                <view class="flex py-10 baseline fixed-height" style="align-items: center;" @click="logout">
-                    <view class="mr-20">
-                        <u-image src="/static/2988.png" width="36rpx" height="36rpx" />
-                    </view>
-                    <view>
-                        {{ $t("logout") }}
+    <view class="container">
+        <!-- 头部区域 -->
+        <view class="header">
+            <view class="header-content">
+                <view class="user-profile">
+                    <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="140rpx" shape="circle"></u-avatar>
+                    <view class="user-text">
+                        <view class="user-name">{{ useAuthStore().token ? useAuthStore().nickname : 'MARY' }}</view>
+                        <view class="user-days">加入Lifefunner的第120天</view>
                     </view>
                 </view>
+                <view class="header-icons">
+                    <image src="/static/my/logo.png" mode="aspectFit" class="header-icon" />
+                    <image src="/static/my/logo_puzzle.png" mode="aspectFit" class="header-icon" />
+                </view>
             </view>
-            <Layout></Layout>
+            <!-- 河马卡片 -->
+            <view class="hippo-card">
+                <image src="/static/my/hippo.png" mode="aspectFit" class="hippo-image" />
+                <view class="hippo-text">
+                    MERRY MANDARIN:
+                    <view>HAPPY AS A HIPPO</view>
+                </view>
+                <image src="/static/my/puzzle-piece.png" mode="aspectFit" class="puzzle-piece" />
+            </view>
         </view>
+
+        <!-- 菜单按钮区域 -->
+        <view class="menu-list">
+            <view class="menu-item" v-for="i in 6" :key="i" @click="handleMenuClick(i)">
+                <view class="menu-icon-wrapper">
+                    <image :src="`/static/my/i${i}.png`" mode="aspectFit" class="menu-icon" />
+                </view>
+                <text class="menu-text">{{ getMenuText(i) }}</text>
+                <view class="menu-arrow">
+                    <text class="arrow">></text>
+                </view>
+            </view>
+        </view>
+
+        <Layout />
     </view>
 </template>
-
-<style scoped>
-/* 定义固定高度 */
-.my-box {
-    /* background-color: #FFD700; */
-    /* 金黄色 */
-    border-radius: 15px;
-    border: 2px solid #FFD700;
-    /* 圆角 */
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
-    /* 阴影效果 */
-    padding: 15px;
-    /* 文字颜色 */
-    font-size: 16px;
-    /* 文字大小 */
-}
-
-.fixed-height {
-    min-height: 60rpx;
-    /* 根据需求设置固定行高 */
-    line-height: 60rpx;
-    /* 确保内容垂直居中 */
-    overflow: hidden;
-    /* 防止内容溢出 */
-    white-space: nowrap;
-    /* 避免文本换行 */
-    text-overflow: ellipsis;
-    /* 超出显示省略号 */
-}
-</style>
 
 <script setup lang="ts">
 import Tabbar from "@/components/tabbar.vue";
@@ -99,7 +49,169 @@ import LangSwitch from "@/components/langSwitch.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
 import Layout from "../layout.vue";
+
 const logout = () => {
     useAuthStore().signOut();
 };
+
+type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
+
+const menuTexts: Record<MenuIndex, string> = {
+    1: '学习日历',
+    2: '拼图账户',
+    3: '联系我们',
+    4: '关于我们',
+    5: '使用帮助',
+    6: '意见反馈'
+};
+
+const menuRoutes: Record<MenuIndex, string> = {
+    1: '/my/calendar',
+    2: '/my/puzzle-account',
+    3: '/my/contact',
+    4: '/my/about',
+    5: '/my/help',
+    6: '/my/feedback'
+};
+
+const getMenuText = (index: number): string => {
+    return menuTexts[index as MenuIndex] || '';
+};
+
+const handleMenuClick = (index: number) => {
+    const route = menuRoutes[index as MenuIndex];
+    if (route) {
+        go(route);
+    }
+};
 </script>
+
+<style>
+.container {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.header {
+    background-color: #F9B13C;
+    padding: 60rpx 30rpx 30rpx;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30rpx;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+}
+
+.user-text {
+    color: #fff;
+}
+
+.user-name {
+    font-size: 36rpx;
+    font-weight: bold;
+    margin-bottom: 8rpx;
+}
+
+.user-days {
+    font-size: 24rpx;
+    opacity: 0.9;
+}
+
+.header-icons {
+    display: flex;
+    gap: 20rpx;
+}
+
+.header-icon {
+    width: 60rpx;
+    height: 60rpx;
+}
+
+.hippo-card {
+    background-color: #FFF9E7;
+    border-radius: 20rpx;
+    padding: 30rpx;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 20rpx;
+}
+
+.hippo-image {
+    width: 120rpx;
+    height: 120rpx;
+    margin-right: 20rpx;
+}
+
+.hippo-text {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: bold;
+}
+
+.puzzle-piece {
+    width: 60rpx;
+    height: 60rpx;
+    position: absolute;
+    right: 30rpx;
+}
+
+.menu-list {
+    margin: 30rpx;
+    background-color: #fff;
+    border-radius: 20rpx;
+    overflow: hidden;
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+    border-bottom: 1rpx solid #eee;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-icon-wrapper {
+    width: 80rpx;
+    height: 80rpx;
+    border: 3rpx solid #FCE157;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20rpx;
+    background-color: transparent;
+}
+
+.menu-icon {
+    width: 44rpx;
+    height: 44rpx;
+}
+
+.menu-text {
+    flex: 1;
+    font-size: 28rpx;
+    color: #333;
+}
+
+.menu-arrow {
+    color: #999;
+    font-size: 24rpx;
+}
+
+.arrow {
+    font-family: "宋体";
+}
+</style>
