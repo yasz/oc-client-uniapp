@@ -38,7 +38,7 @@ export const puzzlePieces = [
     src: "/static/puzzles/completed/6.png",
     originalWidth: 0,
     originalHeight: 0,
-    x: 996,
+    x: 998,
     y: 1141,
   },
   {
@@ -105,7 +105,7 @@ export const puzzleBackgroundPieces = [
     src: "/static/puzzles/6.png",
     originalWidth: 0,
     originalHeight: 0,
-    x: 996,
+    x: 998,
     y: 1141,
   },
   {
