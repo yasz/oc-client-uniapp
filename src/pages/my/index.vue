@@ -1,7 +1,7 @@
 <template>
     <view class="container">
         <!-- 头部区域 -->
-        <view class="header">
+        <view class="header px-20 pt-20">
             <view class="header-content">
                 <view class="user-profile">
                     <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="140rpx" shape="circle"></u-avatar>
@@ -11,18 +11,17 @@
                     </view>
                 </view>
                 <view class="header-icons">
-                    <image src="/static/my/logo.png" mode="aspectFit" class="header-icon" />
-                    <image src="/static/my/logo_puzzle.png" mode="aspectFit" class="header-icon" />
+
                 </view>
             </view>
             <!-- 河马卡片 -->
-            <view class="hippo-card">
-                <image src="/static/my/hippo.png" mode="aspectFit" class="hippo-image" />
-                <view class="hippo-text">
-                    MERRY MANDARIN:
-                    <view>HAPPY AS A HIPPO</view>
-                </view>
-                <image src="/static/my/puzzle-piece.png" mode="aspectFit" class="puzzle-piece" />
+            <view class="hippo-card flex" style="height: 200rpx;">
+                <image src=" /static/my/logo.png" mode="aspectFit" class="pl-30 pt-6"
+                    style="width: 200rpx;height: 200rpx;" />
+                <image src="/static/my/title.png" mode="aspectFit" class="pt-40"
+                    style="width: 200rpx;height: 100rpx;" />
+                <image src="/static/my/logo_puzzle.png" mode="aspectFit" style="width: 120rpx;height: 120rpx;"
+                    class="pl-30 pt-40" />
             </view>
         </view>
 
@@ -34,7 +33,13 @@
                 </view>
                 <text class="menu-text">{{ getMenuText(i) }}</text>
                 <view class="menu-arrow">
-                    <text class="arrow">></text>
+                    <text v-if="i === 1">查看收藏课程</text>
+                    <text v-else-if="i === 2">新消息查看</text>
+                    <text v-else-if="i === 3">去联系</text>
+                    <text v-else-if="i === 4">去查看</text>
+                    <text v-else-if="i === 5">去查看</text>
+                    <text v-else>去查看</text>
+                    <text class="arrow pl-6"> ＞</text>
                 </view>
             </view>
         </view>
@@ -57,21 +62,21 @@ const logout = () => {
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
 
 const menuTexts: Record<MenuIndex, string> = {
-    1: '学习日历',
-    2: '拼图账户',
+    1: '我的收藏',
+    2: '系统提醒',
     3: '联系我们',
-    4: '关于我们',
-    5: '使用帮助',
-    6: '意见反馈'
+    4: '教学日志',
+    5: '学生作业',
+    6: '学生拼图账户'
 };
 
 const menuRoutes: Record<MenuIndex, string> = {
-    1: '/my/calendar',
-    2: '/my/puzzle-account',
+    1: '/my/favorites',
+    2: '/my/notifications',
     3: '/my/contact',
-    4: '/my/about',
-    5: '/my/help',
-    6: '/my/feedback'
+    4: '/my/teaching-log',
+    5: '/my/student-homework',
+    6: '/my/student-puzzle-account'
 };
 
 const getMenuText = (index: number): string => {
@@ -94,7 +99,7 @@ const handleMenuClick = (index: number) => {
 
 .header {
     background-color: #F9B13C;
-    padding: 60rpx 30rpx 30rpx;
+    border-radius: 0 0 40rpx 40rpx;
 }
 
 .header-content {
@@ -125,24 +130,10 @@ const handleMenuClick = (index: number) => {
     opacity: 0.9;
 }
 
-.header-icons {
-    display: flex;
-    gap: 20rpx;
-}
-
-.header-icon {
-    width: 60rpx;
-    height: 60rpx;
-}
 
 .hippo-card {
-    background-color: #FFF9E7;
-    border-radius: 20rpx;
-    padding: 30rpx;
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin-top: 20rpx;
+    background-color: #FCE157;
+    border-radius: 40rpx 40rpx 0 0;
 }
 
 .hippo-image {
@@ -169,14 +160,15 @@ const handleMenuClick = (index: number) => {
     background-color: #fff;
     border-radius: 20rpx;
     overflow: hidden;
-    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20rpx rgba(200, 200, 200, 0.5);
 }
 
 .menu-item {
     display: flex;
     align-items: center;
     padding: 30rpx;
-    border-bottom: 1rpx solid #eee;
+    border-bottom: 1rpx solid rgba(238, 238, 238, 0.6);
+    background-color: #fff;
 }
 
 .menu-item:last-child {
@@ -207,11 +199,8 @@ const handleMenuClick = (index: number) => {
 }
 
 .menu-arrow {
-    color: #999;
-    font-size: 24rpx;
-}
-
-.arrow {
-    font-family: "宋体";
+    color: #bbbbbb;
+    font-size: 22rpx;
+    display: flex;
 }
 </style>

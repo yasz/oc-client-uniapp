@@ -1,7 +1,6 @@
 <template>
     <view class="puzzle-container">
         <view class="puzzle-section">
-            <view class="puzzle-title">Completed Puzzle</view>
             <view class="puzzle-grid" :style="puzzleGridStyle">
                 <view v-for="(piece, index) in puzzlePieces" :key="index" class="puzzle-piece"
                     :style="pieceStyles[index]">
@@ -15,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { puzzlePieces as puzzleData, type PuzzlePiece } from './puzzle-data'
+import { puzzleBackgroundPieces as puzzleData, type PuzzlePiece } from './puzzle-data'
 
 const props = defineProps({
     scale: {
@@ -110,7 +109,7 @@ const pieceStyles = computed(() => {
 
         .puzzle-grid {
             margin: 0 auto;
-            background-color: #f0f0f0;
+            background-color: #fff;
             padding: 0;
             border-radius: 8rpx;
             transition: width 0.3s ease, height 0.3s ease;
