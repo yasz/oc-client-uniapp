@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { puzzleBackgroundPieces as puzzleData, type PuzzlePiece } from './puzzle-data'
+import { adjustedBackgroundPieces as puzzleData, type PuzzlePiece } from './puzzle-data'
 
 const props = defineProps({
     scale: {
@@ -23,7 +23,6 @@ const props = defineProps({
 const puzzlePieces = ref<PuzzlePiece[]>(puzzleData.map(p => ({ ...p })))
 
 const imagesLoaded = ref<boolean[]>(Array(puzzlePieces.value.length).fill(false))
-const allImagesLoaded = computed(() => imagesLoaded.value.every(loaded => loaded))
 
 const onImageLoad = (event: any, index: number) => {
     const { width, height } = event.detail
@@ -61,4 +60,10 @@ const pieceStyles = computed(() => {
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.puzzle-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+</style>

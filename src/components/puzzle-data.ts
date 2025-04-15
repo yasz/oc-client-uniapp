@@ -131,6 +131,26 @@ export const puzzleBackgroundPieces = [
   },
 ];
 
+// 计算并调整拼图位置到左上角
+export function adjustPuzzlePosition(pieces: PuzzlePiece[]): PuzzlePiece[] {
+  // 找到最小的x和y值
+  const minX = Math.min(...pieces.map((p) => p.x));
+  const minY = Math.min(...pieces.map((p) => p.y));
+
+  // 调整所有拼图块的位置
+  return pieces.map((piece) => ({
+    ...piece,
+    x: piece.x - minX,
+    y: piece.y - minY,
+  }));
+}
+
+// 导出调整后的拼图数据
+export const adjustedPuzzlePieces = adjustPuzzlePosition(puzzlePieces);
+export const adjustedBackgroundPieces = adjustPuzzlePosition(
+  puzzleBackgroundPieces
+);
+
 // Define the type for better intellisense/safety
 export interface PuzzlePiece {
   src: string;
