@@ -1,5 +1,5 @@
 <template>
-  <view style="width: 100%; margin: 0 auto;">
+  <view style="position: relative; width: 100vw; height: 100vh; transform: translateY(-10%);">
     <PuzzleGrid :scale="0.2" />
   </view>
 </template>
