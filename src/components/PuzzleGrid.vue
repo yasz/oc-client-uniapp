@@ -1,7 +1,7 @@
 <template>
     <view class="puzzle-container" :style="containerStyle">
-        <view v-for="(piece, index) in puzzlePieces" :key="index" class="puzzle-piece" :style="pieceStyles[index]">
-            <image :src="piece.src" mode="scaleToFill" :style="{ width: '100%', height: '100%' }"
+        <view v-for="(piece, index) in displayPieces" :key="index" class="puzzle-piece" :style="pieceStyles[index]">
+            <image :src="getPieceImage(index)" mode="scaleToFill" :style="{ width: '100%', height: '100%' }"
                 @load="onImageLoad($event, index)"></image>
         </view>
     </view>
@@ -9,22 +9,26 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { adjustedBackgroundPieces as puzzleData, type PuzzlePiece } from './puzzle-data'
+import { puzzlePieces as completedPieces, puzzleBackgroundPieces as backgroundPieces, type PuzzlePiece } from './puzzle-data'
 
 const props = defineProps({
     scale: {
         type: Number,
         default: 1
+    },
+    completed: {
+        type: Array as () => boolean[],
+        default: () => Array(9).fill(false)
     }
 })
 
-const puzzlePieces = ref<PuzzlePiece[]>(puzzleData.map(p => ({ ...p })))
-const imagesLoaded = ref<boolean[]>(Array(puzzlePieces.value.length).fill(false))
+// 使用 ref 来存储拼图块数据
+const displayPieces = ref<PuzzlePiece[]>(backgroundPieces.map(p => ({ ...p })))
+const imagesLoaded = ref<boolean[]>(Array(displayPieces.value.length).fill(false))
 const containerSize = ref({ width: 0, height: 0 })
 const screenSize = ref({ width: 0, height: 0 })
 
 onMounted(() => {
-    // 获取屏幕尺寸
     const systemInfo = uni.getSystemInfoSync()
     screenSize.value = {
         width: systemInfo.windowWidth,
@@ -32,15 +36,18 @@ onMounted(() => {
     }
 })
 
+const getPieceImage = (index: number) => {
+    return props.completed[index] ? completedPieces[index].src : backgroundPieces[index].src
+}
+
 const onImageLoad = (event: any, index: number) => {
     const { width, height } = event.detail
-    const pieceRef = puzzlePieces.value[index];
+    const pieceRef = displayPieces.value[index];
     if (pieceRef) {
         pieceRef.originalWidth = width
         pieceRef.originalHeight = height
         imagesLoaded.value[index] = true
 
-        // 当所有图片都加载完成后，计算容器尺寸
         if (imagesLoaded.value.every(loaded => loaded)) {
             calculateContainerSize()
         }
@@ -51,7 +58,7 @@ const calculateContainerSize = () => {
     let maxX = 0
     let maxY = 0
 
-    puzzlePieces.value.forEach(piece => {
+    displayPieces.value.forEach(piece => {
         const right = piece.x + piece.originalWidth
         const bottom = piece.y + piece.originalHeight
         maxX = Math.max(maxX, right)
@@ -69,8 +76,19 @@ const containerStyle = computed(() => {
         return {}
     }
 
-    const translateX = (screenSize.value.width - containerSize.value.width) / 2
-    const translateY = (screenSize.value.height - containerSize.value.height) / 2
+    // 获取第5块拼图（索引为4）的位置和尺寸
+    const centerPiece = displayPieces.value[4]
+    if (!centerPiece || !centerPiece.originalWidth || !centerPiece.originalHeight) {
+        return {}
+    }
+
+    // 计算中心块的中心点位置
+    const centerPieceCenterX = (centerPiece.x + centerPiece.originalWidth / 2) * props.scale
+    const centerPieceCenterY = (centerPiece.y + centerPiece.originalHeight / 2) * props.scale
+
+    // 计算需要移动的距离，使中心块居中
+    const translateX = screenSize.value.width / 2 - centerPieceCenterX
+    const translateY = screenSize.value.height / 2 - centerPieceCenterY
 
     return {
         transform: `translate(${translateX}px, ${translateY}px)`,
@@ -80,7 +98,7 @@ const containerStyle = computed(() => {
 })
 
 const pieceStyles = computed(() => {
-    return puzzlePieces.value.map((piece, index) => {
+    return displayPieces.value.map((piece, index) => {
         const currentOriginalWidth = piece.originalWidth > 0 ? piece.originalWidth : 0;
         const currentOriginalHeight = piece.originalHeight > 0 ? piece.originalHeight : 0;
 
