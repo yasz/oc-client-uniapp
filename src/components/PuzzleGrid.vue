@@ -1,6 +1,7 @@
 <template>
     <view class="puzzle-container" :style="containerStyle">
-        <view v-for="(piece, index) in displayPieces" :key="index" class="puzzle-piece" :style="pieceStyles[index]">
+        <view v-for="(piece, index) in displayPieces" :key="index" class="puzzle-piece" :style="pieceStyles[index]"
+            @click="onPieceClick(index)">
             <image :src="getPieceImage(index)" mode="scaleToFill" :style="{ width: '100%', height: '100%' }"
                 @load="onImageLoad($event, index)"></image>
         </view>
@@ -8,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { puzzlePieces as completedPieces, puzzleBackgroundPieces as backgroundPieces, type PuzzlePiece } from './puzzle-data'
 
 const props = defineProps({
@@ -21,6 +22,8 @@ const props = defineProps({
         default: () => Array(9).fill(false)
     }
 })
+
+const emit = defineEmits(['pieceClick', 'puzzleComplete'])
 
 // 使用 ref 来存储拼图块数据
 const displayPieces = ref<PuzzlePiece[]>(backgroundPieces.map(p => ({ ...p })))
@@ -119,6 +122,19 @@ const pieceStyles = computed(() => {
         }
     })
 })
+
+const onPieceClick = (index: number) => {
+    if (!props.completed[index]) {
+        emit('pieceClick', index)
+    }
+}
+
+// 监听 completed 变化，检查是否完成整幅拼图
+watch(() => props.completed, (newCompleted) => {
+    if (newCompleted.every(isCompleted => isCompleted)) {
+        emit('puzzleComplete')
+    }
+}, { deep: true })
 </script>
 
 <style lang="scss">
@@ -126,5 +142,9 @@ const pieceStyles = computed(() => {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.puzzle-piece {
+    cursor: pointer;
 }
 </style>
