@@ -110,4 +110,13 @@ const onPieceClick = (index: number) => {
 .puzzle-piece {
   cursor: pointer;
 }
+html,
+body {
+  overflow: hidden;
+  position: fixed; /* 防止内容因隐藏滚动条导致跳动 */
+  width: 100%;
+  height: 100%;
+  touch-action: none; /* 尽量禁止触摸行为 */
+  overscroll-behavior: none; /* 防止滚动穿透 */
+}
 </style>

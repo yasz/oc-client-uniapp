@@ -153,6 +153,9 @@ const soliRoutes = [
         navigationBarBackgroundColor: `#F8AE3D`,
         navigationBarTextStyle: `white`,
         name: "puzzle",
+        h5: {
+          bounce: "none",
+        },
       },
     }),
   },

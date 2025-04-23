@@ -1,5 +1,5 @@
 <template>
-  <view class="bg-primary" style="height: 100vh">
+  <view class="bg-primary" style="height: calc(100vh - 44px)">
     <view class="pt-40">
       <view class="flex flex-center-row">
         <image
@@ -27,6 +27,7 @@
           @pieceClick="handlePieceClick"
         />
       </view>
+      <view> 继续下一幅拼图 </view>
     </view>
 
     <!-- <u-button
