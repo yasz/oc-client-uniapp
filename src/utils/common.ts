@@ -92,7 +92,7 @@ export const go = (url: string) => {
     .navigateTo({ url })
     .then(() => {})
     .catch((err) => {
-      console.log("【调试】:【", err, "】");
+      console.log("【调试跳转url】:【", err, "】");
       // uni.switchTab({ url });
     });
 };

@@ -3,7 +3,7 @@
         <!-- 头部区域 -->
         <view class="header px-20 pt-20">
             <view class="header-content">
-                <view class="user-profile">
+                <view class="user-profile" @click="go('/my/profile')">
                     <u-avatar :src="'avatars/wechat/defaultAvatar.png'" size="140rpx" shape="circle"></u-avatar>
                     <view class="user-text">
                         <view class="user-name">{{ useAuthStore().token ? useAuthStore().nickname : 'MARY' }}</view>
@@ -49,15 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import Tabbar from "@/components/tabbar.vue";
-import LangSwitch from "@/components/langSwitch.vue";
+
 import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
 import Layout from "../layout.vue";
 
-const logout = () => {
-    useAuthStore().signOut();
-};
+
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
 

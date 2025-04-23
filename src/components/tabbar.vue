@@ -85,7 +85,7 @@ const change = (e: number) => {
     color: #999;
 
     &.active {
-      color: #FF7F50;
+      color: #F8AE3D;
     }
 
     .tab-icon {

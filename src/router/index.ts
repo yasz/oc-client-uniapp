@@ -125,6 +125,13 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/my/profile`,
+    component: __dynamicImportComponent__(`@/pages/my/profile.vue`, {
+      pageType: `top`,
+    }),
+  },
+
+  {
     path: `/my/calendar`,
     component: __dynamicImportComponent__(`@/pages/my/calendar.vue`, {
       pageType: `top`,
@@ -137,12 +144,13 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/puzzle`,
+    path: `/my/student-puzzle-account`,
     component: __dynamicImportComponent__(`@/pages/puzzles/index.vue`, {
       pageType: `top`,
       style: {
-        navigationBarTitleText: `Puzzle Game`,
-        navigationBarBackgroundColor: `#42b883`,
+        navigationStyle: "default",
+        // navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#F8AE3D`,
         navigationBarTextStyle: `white`,
         name: "puzzle",
       },

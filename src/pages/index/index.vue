@@ -201,7 +201,7 @@ const showDonatePopup = () => {
 }
 
 .search-bar {
-  background-color: #FF7F50;
+  background-color: #F8AE3D;
   padding: 20rpx;
 }
 
@@ -377,7 +377,7 @@ const showDonatePopup = () => {
 }
 
 .tab-item.active {
-  color: #FF7F50;
+  color: #F8AE3D;
 }
 
 .tab-icon {
