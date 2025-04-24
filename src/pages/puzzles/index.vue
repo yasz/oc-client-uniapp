@@ -52,32 +52,74 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import PuzzleGrid from "@/components/PuzzleGrid.vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { listStudentsByTeacherId } from "@/utils/api";
-//接下来是要做一个互动提示，点击灰色false块拼图会提示，是否赠送确认发放一块拼图给XX同学；
+import { useAuthStore } from "@/stores/authStore";
 
-const completedPieces = ref(Array(9).fill(false));
+const authStore = useAuthStore();
+
+const completedPieces = ref<boolean[]>(Array(9).fill(false));
+const studentInfo = ref<{
+  id: number;
+  nickname: string;
+  completedCount: number;
+} | null>(null);
 const isAllCompleted = computed(() => {
   return completedPieces.value.every((piece) => piece === true);
 });
+
+onLoad((options: any) => {
+  if (options.studentId) {
+    // 如果有参数，说明是教师查看学生的拼图
+    studentInfo.value = {
+      id: parseInt(options.studentId),
+      nickname: options.nickname,
+      completedCount: parseInt(options.completedCount),
+    };
+    // 解析进度数据
+    completedPieces.value = JSON.parse(decodeURIComponent(options.progress));
+  } else {
+    // 如果没有参数，说明是学生查看自己的拼图
+    // TODO: 获取学生自己的拼图进度
+  }
+});
+
 const handlePieceClick = (index: number) => {
+  const studentName = studentInfo.value?.nickname || "XX";
   uni.showModal({
     title: "赠送确认",
-    content: "是否赠送一块拼图给XX同学？",
+    content: `是否赠送一块拼图给${studentName}同学？`,
     success: (res) => {
       if (res.confirm) {
         completedPieces.value[index] = true;
+        // TODO: 调用API更新学生的拼图进度
       }
     },
   });
 };
 
-onLoad(() => {
-  listStudentsByTeacherId(12).then((res) => {
+onMounted(async () => {
+  // 如果是学生，直接跳转到拼图页面
+  if (authStore.userRole === "student") {
+    uni.redirectTo({
+      url: "/pages/my/student-puzzle-account",
+    });
+    return;
+  }
+
+  // 如果是教师，获取学生列表
+  try {
+    const res = await listStudentsByTeacherId(authStore.userId);
     console.log(res);
-  });
+  } catch (error) {
+    console.error("Failed to fetch students:", error);
+    uni.showToast({
+      title: "获取学生列表失败",
+      icon: "none",
+    });
+  }
 });
 
 const submit = () => {
