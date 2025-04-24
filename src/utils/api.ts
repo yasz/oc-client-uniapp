@@ -26,6 +26,16 @@ export const listCourses = async (filter?: string) => {
   }
 };
 
+export const listStudentsByTeacherId = async (teacherId: any) => {
+  const url = `students:list?appends[]=avatar&filter={"$and":[{"teacher_id":{"id":{"$eq":${teacherId}}}}]}`;
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 export const listAssignmentsByCourseId = async (id: any) => {
   const filter = `{"$and":[{"course_id":{"id":{"$eq":${id}}}}]}`;
   const url = `assignment:list?appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&filter=${filter}`;

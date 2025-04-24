@@ -285,7 +285,9 @@ $pt-values: (
 .bg-gray2 {
     background: #ededee;
 }
-
+.bg-orange{
+    background: linear-gradient(90deg, #F9BB3A 0%, #F59843 100%);
+}
 .bg-gray {
     background: linear-gradient(to right, #d6d9df, #d3f8ff);
 }

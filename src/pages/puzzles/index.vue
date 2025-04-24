@@ -27,7 +27,20 @@
           @pieceClick="handlePieceClick"
         />
       </view>
-      <view> 继续下一幅拼图 </view>
+
+      <view
+        v-if="isAllCompleted"
+        style="position: fixed; bottom: 20%; width: 80%; left: 10%"
+        class="flex flex-center-row"
+      >
+        <button
+          style="font-size: 20px; border-radius: 30px; color: #fff"
+          class="bg-orange px-40 py-6"
+          @click="submit"
+        >
+          继续下一幅拼图
+        </button>
+      </view>
     </view>
 
     <!-- <u-button
@@ -41,6 +54,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import PuzzleGrid from "@/components/PuzzleGrid.vue";
+import { onLoad } from "@dcloudio/uni-app";
+import { listStudentsByTeacherId } from "@/utils/api";
 //接下来是要做一个互动提示，点击灰色false块拼图会提示，是否赠送确认发放一块拼图给XX同学；
 
 const completedPieces = ref(Array(9).fill(false));
@@ -59,16 +74,23 @@ const handlePieceClick = (index: number) => {
   });
 };
 
-const handlePuzzleComplete = () => {
-  uni.showModal({
-    title: "拼图完成",
-    content: "XX同学已经收集完一副拼图！",
-    showCancel: false,
-    success: () => {
-      // 重置所有拼图块
-      // completedPieces.value = Array(9).fill(false)
-    },
+onLoad(() => {
+  listStudentsByTeacherId(12).then((res) => {
+    console.log(res);
   });
+});
+
+const submit = () => {
+  if (!isAllCompleted.value) {
+    uni.showToast({
+      title: "请先完成当前拼图",
+      icon: "none",
+    });
+    return;
+  }
+  // 重置拼图状态
+  completedPieces.value = Array(9).fill(false);
+  // TODO: 这里可以添加其他逻辑，比如记录完成情况、切换到下一幅拼图等
 };
 </script>
 
