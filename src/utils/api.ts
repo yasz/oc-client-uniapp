@@ -201,3 +201,38 @@ export const listCMSByIds = async (ids: number[]) => {
     throw error;
   }
 };
+
+// 更新学生的拼图进度
+export const updateStudentPuzzleProgress = async (
+  studentId: number,
+  progress: boolean[]
+) => {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      brick_current_progress: progress,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 更新学生的完成数量并重置进度
+export const completeStudentPuzzle = async (
+  studentId: number,
+  completedCount: number
+) => {
+  const url = `student:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      brick_completed_count: completedCount,
+      brick_current_progress: Array(9).fill(false),
+    });
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};

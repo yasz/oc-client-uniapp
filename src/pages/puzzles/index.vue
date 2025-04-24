@@ -55,7 +55,11 @@
 import { computed, ref, onMounted } from "vue";
 import PuzzleGrid from "@/components/PuzzleGrid.vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { listStudentsByTeacherId } from "@/utils/api";
+import {
+  listStudentsByTeacherId,
+  updateStudentPuzzleProgress,
+  completeStudentPuzzle,
+} from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 
 const authStore = useAuthStore();
@@ -86,15 +90,29 @@ onLoad((options: any) => {
   }
 });
 
-const handlePieceClick = (index: number) => {
+const handlePieceClick = async (index: number) => {
   const studentName = studentInfo.value?.nickname || "XX";
   uni.showModal({
     title: "赠送确认",
     content: `是否赠送一块拼图给${studentName}同学？`,
-    success: (res) => {
+    success: async (res) => {
       if (res.confirm) {
         completedPieces.value[index] = true;
-        // TODO: 调用API更新学生的拼图进度
+        // 更新拼图进度
+        if (studentInfo.value) {
+          try {
+            await updateStudentPuzzleProgress(
+              studentInfo.value.id,
+              completedPieces.value
+            );
+          } catch (error) {
+            console.error("Failed to update progress:", error);
+            uni.showToast({
+              title: "更新进度失败",
+              icon: "none",
+            });
+          }
+        }
       }
     },
   });
@@ -122,7 +140,7 @@ onMounted(async () => {
   }
 });
 
-const submit = () => {
+const submit = async () => {
   if (!isAllCompleted.value) {
     uni.showToast({
       title: "请先完成当前拼图",
@@ -130,9 +148,29 @@ const submit = () => {
     });
     return;
   }
-  // 重置拼图状态
-  completedPieces.value = Array(9).fill(false);
-  // TODO: 这里可以添加其他逻辑，比如记录完成情况、切换到下一幅拼图等
+
+  if (studentInfo.value) {
+    try {
+      // 更新完成数量并重置进度
+      const newCompletedCount = studentInfo.value.completedCount + 1;
+      await completeStudentPuzzle(studentInfo.value.id, newCompletedCount);
+
+      // 更新本地状态
+      studentInfo.value.completedCount = newCompletedCount;
+      completedPieces.value = Array(9).fill(false);
+
+      uni.showToast({
+        title: "恭喜完成一幅拼图！",
+        icon: "success",
+      });
+    } catch (error) {
+      console.error("Failed to complete puzzle:", error);
+      uni.showToast({
+        title: "保存进度失败",
+        icon: "none",
+      });
+    }
+  }
 };
 </script>
 
