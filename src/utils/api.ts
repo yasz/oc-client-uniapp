@@ -224,7 +224,7 @@ export const completeStudentPuzzle = async (
   studentId: number,
   completedCount: number
 ) => {
-  const url = `student:update?filterByTk=${studentId}`;
+  const url = `students:update?filterByTk=${studentId}`;
   try {
     const response = await postAPIAxios(url, {
       brick_completed_count: completedCount,

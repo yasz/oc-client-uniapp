@@ -7,7 +7,7 @@
         :key="student.id"
         class="student-item"
         :class="{ 'student-item--active': selectedId === student.id }"
-        @click="selectStudent(student)"
+        @click="handleStudentClick(student)"
       >
         <image
           class="student-avatar"
@@ -30,10 +30,11 @@ import { listStudentsByTeacherId } from "@/utils/api";
 import { onMounted, ref } from "vue";
 
 import { useAuthStore } from "@/stores/authStore";
+import { onShow } from "@dcloudio/uni-app";
 
 const authStore = useAuthStore();
 const students = ref<any[]>([]);
-onMounted(async () => {
+onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
 
   if (authStore.role.indexOf("teacher") == -1) {
@@ -65,24 +66,9 @@ onMounted(async () => {
 const emit = defineEmits(["select"]);
 const selectedId = ref<number>();
 
-const selectStudent = (student: any) => {
-  selectedId.value = student.id;
-  // 将需要的数据编码为URL参数
-  const params = {
-    studentId: student.id,
-    nickname: student.nickname,
-    progress: JSON.stringify(
-      student.brick_current_progress || Array(9).fill(false)
-    ),
-    completedCount: student.brick_completed_count || 0,
-  };
-
-  const query = Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join("&");
-
+const handleStudentClick = (student: any) => {
   uni.navigateTo({
-    url: `/my/student-puzzle-account?${query}`,
+    url: `/pages/puzzles/index?studentId=${student.id}`,
   });
 };
 </script>

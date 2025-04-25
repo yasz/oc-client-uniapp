@@ -52,126 +52,128 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
-import PuzzleGrid from "@/components/PuzzleGrid.vue";
+import { ref, computed, onMounted } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
+import PuzzleGrid from "@/components/PuzzleGrid.vue";
 import {
-  listStudentsByTeacherId,
   updateStudentPuzzleProgress,
   completeStudentPuzzle,
 } from "@/utils/api";
+import { getAPIAxios } from "@/utils/common";
 import { useAuthStore } from "@/stores/authStore";
 
 const authStore = useAuthStore();
-
+const puzzleGridRef = ref();
+const student = ref<any>(null);
 const completedPieces = ref<boolean[]>(Array(9).fill(false));
-const studentInfo = ref<{
-  id: number;
-  nickname: string;
-  completedCount: number;
-} | null>(null);
+const completedCount = ref<number>(0);
+
+// 检查是否所有拼图都完成
 const isAllCompleted = computed(() => {
   return completedPieces.value.every((piece) => piece === true);
 });
 
-onLoad((options: any) => {
-  if (options.studentId) {
-    // 如果有参数，说明是教师查看学生的拼图
-    studentInfo.value = {
-      id: parseInt(options.studentId),
-      nickname: options.nickname,
-      completedCount: parseInt(options.completedCount),
-    };
-    // 解析进度数据
-    completedPieces.value = JSON.parse(decodeURIComponent(options.progress));
-  } else {
-    // 如果没有参数，说明是学生查看自己的拼图
-    // TODO: 获取学生自己的拼图进度
+// 获取学生数据
+const fetchStudentData = async (studentId: number) => {
+  try {
+    const response = await getAPIAxios(
+      `students:get?filterByTk=${studentId}`,
+      null
+    );
+    if (response && response.data) {
+      student.value = response.data;
+      // 初始化拼图状态
+      completedPieces.value =
+        student.value.brick_current_progress || Array(9).fill(false);
+      completedCount.value = student.value.brick_completed_count || 0;
+    }
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    uni.showToast({
+      title: "获取学生数据失败",
+      icon: "none",
+    });
   }
-});
+};
 
+// 处理拼图点击
 const handlePieceClick = async (index: number) => {
-  const studentName = studentInfo.value?.nickname || "XX";
+  const studentName = student.value?.nickname || "XX";
   uni.showModal({
     title: "赠送确认",
     content: `是否赠送一块拼图给${studentName}同学？`,
     success: async (res) => {
       if (res.confirm) {
-        completedPieces.value[index] = true;
-        // 更新拼图进度
-        if (studentInfo.value) {
-          try {
-            await updateStudentPuzzleProgress(
-              studentInfo.value.id,
-              completedPieces.value
-            );
-          } catch (error) {
-            console.error("Failed to update progress:", error);
-            uni.showToast({
-              title: "更新进度失败",
-              icon: "none",
-            });
-          }
+        try {
+          // 更新本地状态
+          completedPieces.value[index] = true;
+
+          // 调用API更新进度
+          await updateStudentPuzzleProgress(
+            student.value.id,
+            completedPieces.value
+          );
+
+          // 检查是否完成所有拼图
+          // if (isAllCompleted.value) {
+          //   uni.showModal({
+          //     title: "恭喜",
+          //     content: "你已完成所有拼图，是否提交？",
+          //     success: async (res) => {
+          //       if (res.confirm) {
+          //         await submit();
+          //       }
+          //     },
+          //   });
+          // }
+        } catch (error) {
+          console.error("Error updating progress:", error);
+          completedPieces.value[index] = false; // 还原状态
+          uni.showToast({
+            title: "更新进度失败",
+            icon: "none",
+          });
         }
       }
     },
   });
 };
 
-onMounted(async () => {
-  // 如果是学生，直接跳转到拼图页面
-  if (authStore.userRole === "student") {
-    uni.redirectTo({
-      url: "/pages/my/student-puzzle-account",
-    });
-    return;
-  }
-
-  // 如果是教师，获取学生列表
-  try {
-    const res = await listStudentsByTeacherId(authStore.userId);
-    console.log(res);
-  } catch (error) {
-    console.error("Failed to fetch students:", error);
-    uni.showToast({
-      title: "获取学生列表失败",
-      icon: "none",
-    });
-  }
-});
-
+// 提交完成的拼图
 const submit = async () => {
   if (!isAllCompleted.value) {
     uni.showToast({
-      title: "请先完成当前拼图",
+      title: "请先完成所有拼图",
       icon: "none",
     });
     return;
   }
 
-  if (studentInfo.value) {
-    try {
-      // 更新完成数量并重置进度
-      const newCompletedCount = studentInfo.value.completedCount + 1;
-      await completeStudentPuzzle(studentInfo.value.id, newCompletedCount);
+  try {
+    const newCompletedCount = completedCount.value + 1;
+    await completeStudentPuzzle(student.value.id, newCompletedCount);
 
-      // 更新本地状态
-      studentInfo.value.completedCount = newCompletedCount;
-      completedPieces.value = Array(9).fill(false);
+    completedCount.value = newCompletedCount;
+    completedPieces.value = Array(9).fill(false);
 
-      uni.showToast({
-        title: "恭喜完成一幅拼图！",
-        icon: "success",
-      });
-    } catch (error) {
-      console.error("Failed to complete puzzle:", error);
-      uni.showToast({
-        title: "保存进度失败",
-        icon: "none",
-      });
-    }
+    uni.showToast({
+      title: "提交成功",
+      icon: "success",
+    });
+  } catch (error) {
+    console.error("Error submitting puzzle:", error);
+    uni.showToast({
+      title: "提交失败",
+      icon: "none",
+    });
   }
 };
+
+onLoad((options: any) => {
+  if (options.studentId) {
+    fetchStudentData(parseInt(options.studentId));
+  }
+});
 </script>
 
 <style lang="scss"></style>
