@@ -236,3 +236,38 @@ export const completeStudentPuzzle = async (
     throw error;
   }
 };
+
+// 更新学生的日历进度
+export const updateStudentCalendarProgress = async (
+  studentId: number,
+  progress: boolean[]
+) => {
+  const url = `student:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      calendar_current_progress: progress,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 更新学生的完成数量并重置进度
+export const completeStudentCalendar = async (
+  studentId: number,
+  completedCount: number
+) => {
+  const url = `student:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      calendar_completed_count: completedCount,
+      calendar_current_progress: Array(31).fill(false),
+    });
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
