@@ -144,7 +144,7 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/my/student-puzzle-list`,
+    path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
       pageType: `top`,
       style: {
@@ -157,8 +157,37 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/my/student-puzzle-account`,
+    path: `/my/puzzles`,
     component: __dynamicImportComponent__(`@/pages/puzzles/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        // navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "puzzle",
+        h5: {
+          bounce: "none",
+        },
+      },
+    }),
+  },
+  {
+    path: `/my/calendar-list`,
+    component: __dynamicImportComponent__(`@/pages/calendars/list.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        // navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "puzzle",
+      },
+    }),
+  },
+  {
+    path: `/my/calendars`,
+    component: __dynamicImportComponent__(`@/pages/calendars/index.vue`, {
       pageType: `top`,
       style: {
         navigationStyle: "default",

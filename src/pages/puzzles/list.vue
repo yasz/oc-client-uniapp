@@ -39,7 +39,7 @@ onShow(async () => {
 
   if (authStore.role.indexOf("teacher") == -1) {
     uni.redirectTo({
-      url: "/my/student-puzzle-account",
+      url: "/my/puzzles",
     });
     return;
   }

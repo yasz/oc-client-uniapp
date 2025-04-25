@@ -93,9 +93,9 @@ const menuRoutes: Record<MenuIndex, string> = {
   1: "/my/favorites",
   2: "/my/notifications",
   3: "/my/contact",
-  4: "/my/teaching-log",
+  4: "/my/calendar-list",
   5: "/my/student-homework",
-  6: "/my/student-puzzle-list",
+  6: "/my/puzzle-list",
 };
 
 const getMenuText = (index: number): string => {
