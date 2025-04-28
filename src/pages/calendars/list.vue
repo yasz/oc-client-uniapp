@@ -67,7 +67,9 @@ const selectedId = ref<number>();
 
 const handleStudentClick = (student: any) => {
   uni.navigateTo({
-    url: `/my/calendars?studentId=${student.id}`,
+    url: `/pages/calendars/index?studentId=${
+      student.id
+    }&nickname=${encodeURIComponent(student.nickname)}`,
   });
 };
 </script>

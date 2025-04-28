@@ -7,7 +7,7 @@
         class="arrow left"
         mode="aspectFit"
       ></image>
-      <text class="t">{{ headText }}</text>
+      <text class="t" style="font-size: 24px">{{ headText }}</text>
       <image
         @click="onChange('next')"
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAY5JREFUaEPtmEtugzAQhsc3aW5SbhI2SSOVCJ+g6QmoQqWWbspRcpNyELArQojUVqmw52EswYaNH/PNP57xWEHkn4rcflgAQiu4KBC9AsXxYw2qa6CFRutdIw2ECqGirA4K4GkwWp1s26XSECiAl7KyPzxuobGdSSQhaAF6GmEIegBhCB6AS1xZMInOdifOg80KcBbDqlTvNzUXBDvAEFHwrLPtgQNCBIATQgxghIDW1JRpVhSAA0IcgLpqBwKgu3oEBKCp2mEBCKp2eICxardm5ZOdZgMwiOF+9ZgVQN9T5NkmcanY8wKw0OT77SpaAJ+L32wU8In/czVxkev32D8tpedivsaHB+jbT2VSTNMTTgEC4wMq4J4ub0VnAAXojA+gAK3xsgDK1vnjQ+qZqG5OEwmhqJt6TI6foharAtzGs54BCeN5AIgK1JTwwQMcqy9QcHfdTPhlGg/w+v4JVq3HpxLXZmSql/8bhzrE/cJF+Xbf/zEXMgwIGgCzOcXcBYDCi5g1FgUw3qOYG70C39PtD0Aq3TXKAAAAAElFTkSuQmCC"
@@ -99,13 +99,14 @@ export default {
   },
   computed: {
     headText() {
-      if (this.format === "/") {
-        return `${this.year}/${this.month}`;
-      } else {
-        return this.isEn
-          ? `${calendar.getEn(this.month)}, ${this.year}`
-          : `${this.year}年${this.month}月`;
-      }
+      // if (this.format === "/") {
+      //   return `${this.year}/${this.month}`;
+      // } else {
+      //   return this.isEn
+      //     ? `${calendar.getEn(this.month)}, ${this.year}`
+      //     : `${this.year}.${this.month}`;
+      // }
+      return `${this.year}.${this.month.toString().padStart(2, "0")}`;
     },
     labels() {
       return this.isEn ? calendar.labels_en : calendar.labels_zh;
@@ -202,7 +203,7 @@ export default {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 30px;
+  /* margin-left: 30px; */
   padding: 8px 0px;
 }
 
@@ -220,6 +221,7 @@ export default {
   /* #endif */
   flex-direction: row;
   height: 36px;
+
   align-items: center;
   background: #f7f7f7;
   border-top: 1px solid #f0f0f0;

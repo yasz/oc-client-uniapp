@@ -271,3 +271,10 @@ export const completeStudentCalendar = async (
     throw error;
   }
 };
+
+export const getStudentCalendar = async (studentId: number) => {
+  return getAPIAxios(
+    `meetings:list?appends[]=host_user_id&appends[]=participant_user_id&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,
+    null
+  );
+};
