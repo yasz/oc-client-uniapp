@@ -1,7 +1,7 @@
 <template>
   <view class="student-selector">
     <view class="student-list">
-      {{ authStore }}
+      <!-- {{ authStore }} -->
       <view
         v-for="student in students"
         :key="student.id"
@@ -38,7 +38,7 @@ onShow(async () => {
 
   if (authStore.role.indexOf("teacher") == -1) {
     uni.redirectTo({
-      url: "/my/calendars?studentId=${student.id}",
+      url: "/my/calendars?studentId",
     });
     return;
   }

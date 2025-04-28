@@ -10,7 +10,6 @@ export const useAuthStore = defineStore("authStore", {
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
     role: "" as string, // 用户角色
-    isAuthInitialized: false,
   }),
 
   getters: {
