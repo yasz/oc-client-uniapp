@@ -164,10 +164,13 @@ export default {
     onChoose(item) {
       if (!item.show) return;
       this.active = item.date;
+      const dateItems = this.getDateItems(item.date);
+      console.log("Calendar item clicked:", item);
+      console.log("Date items:", dateItems);
       this.$nextTick(() => {
         this.$emit("choose", {
           date: item.date,
-          data: item.data,
+          data: dateItems.length > 0 ? dateItems[0] : null,
         });
       });
     },

@@ -1,60 +1,28 @@
 <template>
-  <view class="bg-primary" style="height: calc(100vh - 44px)">
-    <view class="pt-40">
-      {{ calendarList }}
-      <view class="flex flex-center-row">
-        <image
-          src="/static/calendars/title1.png"
-          style="width: 50vw"
-          mode="widthFix"
-        />
-      </view>
+  <view class="" style="height: calc(100vh - 44px)">
+    <view>
+      <view class="flex flex-center-row"> </view>
 
       <view class="pt-20 px-20">
-        <view class="calendar-container">
-          <view class="calendar-header">
-            <text class="student-name">{{ studentNickname }}的日历</text>
-          </view>
-          <wn-calendar
-            :modelValue="calendarList"
-            :isBorder="true"
-            :isEn="true"
-            @choose="handleDateChoose"
-          />
+        <view class="calendar-header">
+          <text class="student-name">{{ studentNickname }}的日历</text>
         </view>
+        <wn-calendar
+          :modelValue="calendarList"
+          :isBorder="true"
+          :isEn="false"
+          @choose="handleDateChoose"
+        />
       </view>
     </view>
 
     <!-- 会议详情弹窗 -->
-    <u-modal
-      v-model="showModal"
-      :title="selectedMeeting?.title || ''"
-      :show-cancel-button="true"
-      confirm-text="关闭"
-    >
-      <view class="modal-content" v-if="selectedMeeting">
-        <view class="info-item">
-          <text class="label">时间：</text>
-          <text class="value">{{ formatDateTime(selectedMeeting.start) }}</text>
-        </view>
-        <view class="info-item">
-          <text class="label">时长：</text>
-          <text class="value"
-            >{{
-              getDuration(selectedMeeting.start, selectedMeeting.end)
-            }}分钟</text
-          >
-        </view>
-        <view class="info-item">
-          <text class="label">教师：</text>
-          <text class="value">{{ selectedMeeting.teacher }}</text>
-        </view>
-        <view class="info-item">
-          <text class="label">学生：</text>
-          <text class="value">{{ selectedMeeting.student }}</text>
-        </view>
-      </view>
-    </u-modal>
+    <calendar-modal
+      v-model:show="showModal"
+      :date="selectedDate"
+      :meetings="selectedDateMeetings"
+      @linkClick="handleMeetingLinkClick"
+    />
   </view>
 </template>
 
@@ -65,6 +33,7 @@ import { getStudentCalendar } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
+import CalendarModal from "./modal.vue";
 
 interface Meeting {
   id: number;
@@ -95,6 +64,7 @@ interface CalendarItem {
   student: string;
   date: string;
   color: string;
+  meeting_link?: string;
 }
 
 const authStore = useAuthStore();
@@ -102,7 +72,8 @@ const studentId = ref<number>();
 const studentNickname = ref<string>("");
 const calendarList = ref<CalendarItem[]>([]);
 const showModal = ref(false);
-const selectedMeeting = ref<CalendarItem | null>(null);
+const selectedDate = ref<string | null>(null);
+const selectedDateMeetings = ref<CalendarItem[]>([]);
 
 // 格式化日期时间
 const formatDateTime = (dateTime: string) => {
@@ -118,10 +89,17 @@ const getDuration = (start: string, end: string) => {
 
 // 处理日期选择
 const handleDateChoose = (event: any) => {
-  const { date, data } = event;
-  if (data) {
-    selectedMeeting.value = data;
-    showModal.value = true;
+  console.log("Date chosen:", event);
+  const { date } = event;
+  if (date) {
+    selectedDate.value = date;
+    selectedDateMeetings.value = calendarList.value.filter(
+      (item) => item.date === date
+    );
+    console.log("Selected meetings:", selectedDateMeetings.value);
+    if (selectedDateMeetings.value.length > 0) {
+      showModal.value = true;
+    }
   }
 };
 
@@ -129,6 +107,7 @@ const handleDateChoose = (event: any) => {
 const fetchCalendarData = async () => {
   try {
     const response = await getStudentCalendar(studentId.value!);
+    console.log("Calendar data:", response.data); // 添加调试日志
 
     if (response && response.data) {
       calendarList.value = response.data.map((meeting: Meeting) => ({
@@ -141,13 +120,25 @@ const fetchCalendarData = async () => {
         teacher: meeting.host_user_id.nickname,
         student: meeting.participant_user_id.nickname,
         date: dayjs(meeting.meeting_time).format("YYYY/M/D"),
-        color: meeting.mark_color,
+        color: meeting.mark_color || "#2979ff", // 使用后端返回的颜色，如果没有则使用默认颜色
       }));
+      console.log("Processed calendar list:", calendarList.value); // 添加调试日志
     }
   } catch (error) {
     console.error("Error fetching calendar data:", error);
     uni.showToast({
       title: "获取日历数据失败",
+      icon: "none",
+    });
+  }
+};
+
+// 处理会议链接点击
+const handleMeetingLinkClick = (meeting: CalendarItem) => {
+  if (meeting.meeting_link) {
+    // 这里可以添加跳转到会议链接的逻辑
+    uni.showToast({
+      title: "正在跳转到会议...",
       icon: "none",
     });
   }
@@ -198,5 +189,34 @@ onLoad((options: any) => {
     flex: 1;
     color: #333;
   }
+}
+
+.meeting-item {
+  margin-bottom: 16px;
+}
+
+.meeting-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.meeting-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-right: 8px;
+}
+
+.meeting-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 12px 0;
 }
 </style>
