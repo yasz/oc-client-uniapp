@@ -36,18 +36,18 @@
         v-for="(item, ind) in days.slice(row * 7, (row + 1) * 7)"
         :key="item.date"
       >
-        <text :class="item.date == curDate ? 'text-primary' : ''" class="t">{{
-          item.label
-        }}</text>
-        <view class="flex">
-          <u-image
-            v-if="item.data?.icons"
-            :key="url"
-            v-for="url in item.data.icons"
-            height="35rpx"
-            width="35rpx"
-            :src="`${bucketURL}/icons/${url}.png`"
-          />
+        <view class="day-content">
+          <text :class="item.date == curDate ? 'text-primary' : ''" class="t">{{
+            item.label
+          }}</text>
+          <view class="dots-container" v-if="getDateItems(item.date).length">
+            <view
+              v-for="(data, index) in getDateItems(item.date)"
+              :key="index"
+              class="color-dot"
+              :style="{ backgroundColor: data.color }"
+            ></view>
+          </view>
         </view>
       </view>
     </view>
@@ -170,6 +170,10 @@ export default {
           data: item.data,
         });
       });
+    },
+
+    getDateItems(date) {
+      return this.modelValue.filter((item) => item.date === date);
     },
   },
 };
@@ -305,5 +309,26 @@ export default {
   word-wrap: anywhere;
   /* #endif */
   color: #3a3a3a;
+}
+
+.day-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.color-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 </style>

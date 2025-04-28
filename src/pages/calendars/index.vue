@@ -64,6 +64,7 @@ import { onLoad } from "@dcloudio/uni-app";
 import { getStudentCalendar } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
+import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
 
 interface Meeting {
   id: number;
@@ -82,6 +83,7 @@ interface Meeting {
     id: number;
     name: string;
   };
+  mark_color: string;
 }
 
 interface CalendarItem {
@@ -92,7 +94,7 @@ interface CalendarItem {
   teacher: string;
   student: string;
   date: string;
-  color?: string;
+  color: string;
 }
 
 const authStore = useAuthStore();
@@ -139,7 +141,7 @@ const fetchCalendarData = async () => {
         teacher: meeting.host_user_id.nickname,
         student: meeting.participant_user_id.nickname,
         date: dayjs(meeting.meeting_time).format("YYYY/M/D"),
-        color: "#2979ff",
+        color: meeting.mark_color,
       }));
     }
   } catch (error) {
