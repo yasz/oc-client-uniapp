@@ -272,6 +272,42 @@ export const completeStudentCalendar = async (
   }
 };
 
+export const createMeeting = async (data: {
+  timezone_id: number;
+  duration: number;
+  meeting_time: string;
+  participant_user_id: number;
+  host_user_id: number;
+}) => {
+  const url = `meetings:create`;
+  try {
+    const response = await postAPIAxios(url, {
+      timezone_id: { id: data.timezone_id },
+      duration: data.duration,
+      meeting_time: data.meeting_time,
+      participant_user_id: { id: data.participant_user_id },
+      host_user_id: { id: data.host_user_id },
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const deleteMeeting = async (meetingId: number) => {
+  const url = `meetings:destroy?filterByTk=${meetingId}`;
+  try {
+    const response = await postAPIAxios(url, {});
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
 export const getStudentCalendar = async (studentId: number) => {
   return getAPIAxios(
     `meetings:list?appends[]=host_user_id&appends[]=participant_user_id&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,

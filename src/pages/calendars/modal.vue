@@ -9,6 +9,9 @@
             class="meeting-item"
             :style="{ '--mark-color': meeting.color }"
           >
+            <view class="delete-btn" @click="handleDelete(meeting)">
+              <text class="delete-icon">-</text>
+            </view>
             <text class="t-16">{{ meeting.title }} 会议时间：</text>
             <view class="flex-col t-12 text-gray">
               <text>{{ formatDateTime(meeting.start) }}</text>
@@ -30,6 +33,7 @@
 import { ref, computed, watch } from "vue";
 import dayjs from "dayjs";
 import { go } from "@/utils/common";
+import { deleteMeeting } from "@/utils/api";
 
 interface Meeting {
   id: number;
@@ -52,6 +56,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: "update:show", value: boolean): void;
   (e: "linkClick", meeting: Meeting): void;
+  (e: "delete", meeting: Meeting): void;
 }>();
 
 const localShow = ref(props.show);
@@ -73,6 +78,7 @@ watch(
 const formatDateTime = (dateTime: string) => {
   return dayjs(dateTime).format("YYYY-MM-DD HH:mm");
 };
+
 const handleLinkClick = (meeting: Meeting) => {
   if (meeting.meeting_link) {
     // #ifdef APP-PLUS
@@ -83,6 +89,22 @@ const handleLinkClick = (meeting: Meeting) => {
     // #ifdef H5
     window.open(meeting.meeting_link, "_blank");
     // #endif
+  }
+};
+
+const handleDelete = async (meeting: Meeting) => {
+  try {
+    await deleteMeeting(meeting.id);
+    emit("delete", meeting);
+    uni.showToast({
+      title: "删除成功",
+      icon: "success",
+    });
+  } catch (error) {
+    uni.showToast({
+      title: "删除失败",
+      icon: "error",
+    });
   }
 };
 </script>
@@ -121,6 +143,26 @@ const handleLinkClick = (meeting: Meeting) => {
     width: 100rpx;
     background-color: var(--mark-color);
   }
+}
+
+.delete-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.delete-icon {
+  font-size: 20px;
+  color: #666;
+  line-height: 1;
 }
 
 .meeting-title {

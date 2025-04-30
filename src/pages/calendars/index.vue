@@ -1,7 +1,11 @@
 <template>
   <view class="" style="height: calc(100vh - 44px)">
     <view>
-      <view class="flex flex-center-row"> </view>
+      <view class="flex flex-center-row">
+        <view class="create-btn" @click="handleCreate">
+          <text class="create-icon">+</text>
+        </view>
+      </view>
 
       <view class="pt-20 px-20">
         <view class="calendar-header">
@@ -22,6 +26,7 @@
       :date="selectedDate"
       :meetings="selectedDateMeetings"
       @linkClick="handleMeetingLinkClick"
+      @delete="handleMeetingDelete"
     />
   </view>
 </template>
@@ -29,7 +34,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getStudentCalendar } from "@/utils/api";
+import { getStudentCalendar, createMeeting } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
@@ -146,6 +151,48 @@ const handleMeetingLinkClick = (meeting: CalendarItem) => {
   }
 };
 
+const handleCreate = async () => {
+  try {
+    // 这里需要添加创建会议的参数
+    const meetingData = {
+      timezone_id: 1, // 需要根据实际情况设置
+      duration: 60, // 默认60分钟
+      meeting_time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      participant_user_id: studentId.value,
+      host_user_id: authStore.userId,
+    };
+
+    await createMeeting(meetingData);
+    uni.showToast({
+      title: "创建成功",
+      icon: "success",
+    });
+    // 刷新日历数据
+    fetchCalendarData();
+  } catch (error) {
+    uni.showToast({
+      title: "创建失败",
+      icon: "error",
+    });
+  }
+};
+
+const handleMeetingDelete = (meeting: CalendarItem) => {
+  // 从日历列表中移除被删除的会议
+  calendarList.value = calendarList.value.filter(
+    (item) => item.id !== meeting.id
+  );
+  // 如果当前显示的会议被删除，更新显示
+  if (selectedDateMeetings.value.some((item) => item.id === meeting.id)) {
+    selectedDateMeetings.value = selectedDateMeetings.value.filter(
+      (item) => item.id !== meeting.id
+    );
+    if (selectedDateMeetings.value.length === 0) {
+      showModal.value = false;
+    }
+  }
+};
+
 onLoad((options: any) => {
   if (options.studentId) {
     studentId.value = parseInt(options.studentId);
@@ -220,5 +267,26 @@ onLoad((options: any) => {
   height: 1px;
   background-color: #eee;
   margin: 12px 0;
+}
+
+.create-btn {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #f8ae3d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.create-icon {
+  font-size: 24px;
+  color: #fff;
+  line-height: 1;
 }
 </style>
