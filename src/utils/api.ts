@@ -278,6 +278,9 @@ export const createMeeting = async (data: {
   meeting_time: string;
   participant_user_id: number;
   host_user_id: number;
+  title: string;
+  meeting_link: string;
+  mark_color: string;
 }) => {
   const url = `meetings:create`;
   try {
@@ -287,6 +290,9 @@ export const createMeeting = async (data: {
       meeting_time: data.meeting_time,
       participant_user_id: { id: data.participant_user_id },
       host_user_id: { id: data.host_user_id },
+      title: data.title,
+      meeting_link: data.meeting_link,
+      mark_color: data.mark_color,
     });
     console.log("Response:", response);
     return response;

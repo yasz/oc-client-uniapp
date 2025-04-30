@@ -2,7 +2,7 @@
   <view class="" style="height: calc(100vh - 44px)">
     <view>
       <view class="flex flex-center-row">
-        <view class="create-btn" @click="handleCreate">
+        <view class="create-btn mt-40" @click="showCreateModal = true">
           <text class="create-icon">+</text>
         </view>
       </view>
@@ -28,6 +28,13 @@
       @linkClick="handleMeetingLinkClick"
       @delete="handleMeetingDelete"
     />
+
+    <!-- 创建会议弹窗 -->
+    <create-modal
+      v-model:show="showCreateModal"
+      :studentId="studentId"
+      @created="fetchCalendarData"
+    />
   </view>
 </template>
 
@@ -39,6 +46,7 @@ import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
 import CalendarModal from "./modal.vue";
+import CreateModal from "./create-modal.vue";
 
 interface Meeting {
   id: number;
@@ -80,6 +88,7 @@ const calendarList = ref<CalendarItem[]>([]);
 const showModal = ref(false);
 const selectedDate = ref<string | null>(null);
 const selectedDateMeetings = ref<CalendarItem[]>([]);
+const showCreateModal = ref(false);
 
 // 格式化日期时间
 const formatDateTime = (dateTime: string) => {
