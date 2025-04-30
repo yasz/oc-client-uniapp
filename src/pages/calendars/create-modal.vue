@@ -36,7 +36,6 @@
               v-model="formData.meeting_time"
               type="datetime"
               :start="minDate"
-              :end="maxDate"
               @change="handleDateTimeChange"
             />
           </view>
