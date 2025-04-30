@@ -44,6 +44,7 @@ interface Meeting {
     id: number;
     nickname: string;
   };
+  meeting_link: string;
   participant_user_id: {
     id: number;
     nickname: string;
@@ -120,6 +121,7 @@ const fetchCalendarData = async () => {
         teacher: meeting.host_user_id.nickname,
         student: meeting.participant_user_id.nickname,
         date: dayjs(meeting.meeting_time).format("YYYY/M/D"),
+        meeting_link: meeting.meeting_link,
         color: meeting.mark_color || "#2979ff", // 使用后端返回的颜色，如果没有则使用默认颜色
       }));
       console.log("Processed calendar list:", calendarList.value); // 添加调试日志
