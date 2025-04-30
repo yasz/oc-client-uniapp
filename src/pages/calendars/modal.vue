@@ -1,31 +1,24 @@
 <template>
   <u-popup :show="localShow" @close="localShow = false" mode="bottom">
-    <view style="background-color: rgba(0, 0, 0, 0.5)">
+    <view class="container bg-primary">
       <view class="popup-content bg-primary">
-        <view class="modal-content pt-40" v-if="meetings.length">
+        <view class="modal-content" v-if="meetings.length">
           <view
             v-for="meeting in meetings"
             :key="meeting.id"
             class="meeting-item"
+            :style="{ '--mark-color': meeting.color }"
           >
-            <view class="meeting-header">
-              <text class="meeting-title">{{ meeting.title }}</text>
-              <view
-                class="meeting-dot"
-                :style="{ backgroundColor: meeting.color }"
-              ></view>
+            <text class="t-16">{{ meeting.title }} 会议时间：</text>
+            <view class="flex-col t-12 text-gray">
+              <text>{{ formatDateTime(meeting.start) }}</text>
+              <view>
+                <text class="label">链接：</text>
+                <text class="value link" @click="handleLinkClick(meeting)">{{
+                  meeting.meeting_link
+                }}</text>
+              </view>
             </view>
-            <view class="info-item">
-              <text class="label">时间：</text>
-              <text class="value">{{ formatDateTime(meeting.start) }}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">会议链接：</text>
-              <text class="value link" @click="handleLinkClick(meeting)">{{
-                meeting.meeting_link
-              }}</text>
-            </view>
-            <view class="divider"></view>
           </view>
         </view>
       </view>
@@ -95,10 +88,44 @@ const handleLinkClick = (meeting: Meeting) => {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .popup-content {
   border-radius: 0 48px 0 0;
   padding: 20px;
   max-height: 70vh;
   overflow-y: auto;
+}
+
+.modal-content {
+  padding-top: 20px;
+}
+
+.meeting-item {
+  background-color: #fff;
+  border-radius: 26px;
+  padding: 10px;
+  padding-left: 120rpx;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100rpx;
+    background-color: var(--mark-color);
+  }
+}
+
+.meeting-title {
+  font-weight: bold;
+  color: #333;
+  padding-left: 8px;
 }
 </style>
