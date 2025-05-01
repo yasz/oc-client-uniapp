@@ -16,7 +16,7 @@
         />
         <text class="student-name">{{ student.nickname }}</text>
         <view class="progress-info">
-          <text class="">课表添加</text>
+          <text class="">作业批改</text>
           <text class="arrow pl-6"> ＞</text>
         </view>
       </view>
@@ -38,7 +38,7 @@ onShow(async () => {
 
   if (authStore.role.indexOf("teacher") == -1) {
     uni.redirectTo({
-      url: "/my/calendars?studentId=" + authStore.userId,
+      url: "/my/homework?studentId=" + authStore.userId,
     });
     return;
   }
@@ -67,9 +67,9 @@ const selectedId = ref<number>();
 
 const handleStudentClick = (student: any) => {
   uni.navigateTo({
-    url: `/my/calendars?studentId=${student.id}&nickname=${encodeURIComponent(
-      student.nickname
-    )}`,
+    url: `/pages/calendars/index?studentId=${
+      student.id
+    }&nickname=${encodeURIComponent(student.nickname)}`,
   });
 };
 </script>

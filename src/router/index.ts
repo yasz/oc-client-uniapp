@@ -178,10 +178,9 @@ const soliRoutes = [
       pageType: `top`,
       style: {
         navigationStyle: "default",
-        // navigationBarTitleText: `Puzzle Game`,
         navigationBarBackgroundColor: `#F8AE3D`,
         navigationBarTextStyle: `white`,
-        name: "puzzle",
+        name: "list",
       },
     }),
   },
@@ -191,13 +190,33 @@ const soliRoutes = [
       pageType: `top`,
       style: {
         navigationStyle: "default",
-        // navigationBarTitleText: `Puzzle Game`,
         navigationBarBackgroundColor: `#F8AE3D`,
         navigationBarTextStyle: `white`,
-        name: "puzzle",
-        h5: {
-          bounce: "none",
-        },
+        name: "calendars",
+      },
+    }),
+  },
+  {
+    path: `/my/homework-list`,
+    component: __dynamicImportComponent__(`@/pages/homework/list.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "list",
+      },
+    }),
+  },
+  {
+    path: `/my/homework`,
+    component: __dynamicImportComponent__(`@/pages/homework/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "homework",
       },
     }),
   },

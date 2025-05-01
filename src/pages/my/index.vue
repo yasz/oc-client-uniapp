@@ -94,7 +94,7 @@ const menuRoutes: Record<MenuIndex, string> = {
   2: "/my/notifications",
   3: "/my/contact",
   4: "/my/calendar-list",
-  5: "/my/student-homework",
+  5: "/my/homework-list",
   6: "/my/puzzle-list",
 };
 
