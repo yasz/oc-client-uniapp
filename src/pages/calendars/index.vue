@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getStudentCalendar, createMeeting } from "@/utils/api";
+import { getCalendar, createMeeting } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
@@ -121,7 +121,7 @@ const handleDateChoose = (event: any) => {
 // 获取日历数据
 const fetchCalendarData = async () => {
   try {
-    const response = await getStudentCalendar(studentId.value!);
+    const response = await getCalendar(studentId.value!);
     console.log("Calendar data:", response.data); // 添加调试日志
 
     if (response && response.data) {
