@@ -38,7 +38,7 @@ onShow(async () => {
 
   if (authStore.role.indexOf("teacher") == -1) {
     uni.redirectTo({
-      url: "/my/homework?studentId=" + authStore.userId,
+      url: "/my/assignment?studentId=" + authStore.userId,
     });
     return;
   }

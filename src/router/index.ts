@@ -197,8 +197,8 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/my/homework-list`,
-    component: __dynamicImportComponent__(`@/pages/homework/list.vue`, {
+    path: `/my/assignment-list`,
+    component: __dynamicImportComponent__(`@/pages/assignments/list.vue`, {
       pageType: `top`,
       style: {
         navigationStyle: "default",
@@ -209,14 +209,14 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/my/homework`,
-    component: __dynamicImportComponent__(`@/pages/homework/index.vue`, {
+    path: `/my/assignments`,
+    component: __dynamicImportComponent__(`@/pages/assignments/index.vue`, {
       pageType: `top`,
       style: {
         navigationStyle: "default",
         navigationBarBackgroundColor: `#F8AE3D`,
         navigationBarTextStyle: `white`,
-        name: "homework",
+        name: "assignment",
       },
     }),
   },
