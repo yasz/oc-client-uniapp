@@ -132,18 +132,6 @@ const soliRoutes = [
   },
 
   {
-    path: `/my/calendar`,
-    component: __dynamicImportComponent__(`@/pages/my/calendar.vue`, {
-      pageType: `top`,
-      style: {
-        navigationBarTitleText: `%my%`,
-        navigationBarBackgroundColor: `#42b883`,
-        navigationBarTextStyle: `white`,
-        name: "calendar",
-      },
-    }),
-  },
-  {
     path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
       pageType: `top`,

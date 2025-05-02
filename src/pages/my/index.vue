@@ -77,8 +77,16 @@
 import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
 import Layout from "../layout.vue";
+import { onLoad } from "@dcloudio/uni-app";
+import { getUserInfo } from "@/utils/api";
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
+onLoad(() => {
+  console.log(useAuthStore().token);
+  getUserInfo(12).then((res) => {
+    console.log(res);
+  });
+});
 
 const menuTexts: Record<MenuIndex, string> = {
   1: "我的收藏",

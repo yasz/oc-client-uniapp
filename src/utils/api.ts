@@ -320,3 +320,7 @@ export const getCalendar = async (studentId: number) => {
     null
   );
 };
+
+export const getUserInfo = async (userId: number) => {
+  return getAPIAxios(`users:get?filterByTk=${userId}`, null);
+};
