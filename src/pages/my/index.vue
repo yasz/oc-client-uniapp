@@ -5,9 +5,10 @@
       <view class="header-content">
         <view class="user-profile" @click="go('/my/profile')">
           <u-avatar
-            :src="'avatars/wechat/defaultAvatar.png'"
+            :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
             size="140rpx"
             shape="circle"
+            mode="aspectFill"
           ></u-avatar>
           <view class="user-text">
             <view class="user-name">{{
@@ -81,12 +82,12 @@ import { onLoad } from "@dcloudio/uni-app";
 import { getUserInfo } from "@/utils/api";
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
-onLoad(() => {
-  console.log(useAuthStore().token);
-  getUserInfo(12).then((res) => {
-    console.log(res);
-  });
-});
+// onLoad(() => {
+//   console.log(useAuthStore().token);
+//   getUserInfo(12).then((res) => {
+//     console.log(res);
+//   });
+// });
 
 const menuTexts: Record<MenuIndex, string> = {
   1: "我的收藏",

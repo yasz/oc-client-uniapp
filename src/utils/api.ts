@@ -322,5 +322,5 @@ export const getCalendar = async (studentId: number) => {
 };
 
 export const getUserInfo = async (userId: number) => {
-  return getAPIAxios(`users:get?filterByTk=${userId}`, null);
+  return getAPIAxios(`users:get?appends[]=avatar&filterByTk=${userId}`, null);
 };
