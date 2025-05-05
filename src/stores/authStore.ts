@@ -2,7 +2,6 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { watch } from "vue";
 import pinia from "./store";
-import { getUserInfo } from "@/utils/api";
 
 // 创建 Pinia store 来管理认证状态
 export const useAuthStore = defineStore("authStore", {
@@ -11,7 +10,6 @@ export const useAuthStore = defineStore("authStore", {
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
     role: "" as string, // 用户角色
-    avatar: null as string | null, // 用户头像
   }),
 
   getters: {
@@ -33,26 +31,13 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
+
           const { id, nickname, roles } = response.data.data;
           this.userId = id;
           this.nickname = nickname;
           this.role = roles.map((e: any) => {
             return e.name;
           });
-
-          // 获取用户详细信息，包括头像
-          if (id) {
-            try {
-              const userInfo = await getUserInfo(parseInt(id));
-              if (userInfo?.data?.avatar?.[0]?.url) {
-                this.avatar =
-                  import.meta.env.VITE_BUCKET_ENDPOINT +
-                  userInfo.data.avatar[0].url;
-              }
-            } catch (error) {
-              console.error("获取用户信息失败:", error);
-            }
-          }
         }
         return response.data;
       } catch (error) {
@@ -69,7 +54,6 @@ export const useAuthStore = defineStore("authStore", {
       this.userId = null;
       this.nickname = null;
       this.role = ""; // 清空状态
-      this.avatar = null; // 清空头像
     },
 
     // 从存储中加载 token 并验证
