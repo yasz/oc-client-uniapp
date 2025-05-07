@@ -235,7 +235,7 @@ export function http(method: any, url: string, data: any) {
   });
 }
 export async function getAPIAxios(url: string, data: any) {
-  const token = useAuthStore().token || uni.getStorageSync("authToken");
+  const token = uni.getStorageSync("authToken");
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
@@ -259,7 +259,7 @@ export async function getAPIAxios(url: string, data: any) {
   }
 }
 export async function postAPIAxios(url: string, data: any) {
-  const token = useAuthStore().token || uni.getStorageSync("authToken");
+  const token = uni.getStorageSync("authToken");
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/${url}`,

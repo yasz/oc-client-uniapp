@@ -82,12 +82,17 @@ import { onLoad } from "@dcloudio/uni-app";
 import { getUserInfo } from "@/utils/api";
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
-// onLoad(() => {
-//   console.log(useAuthStore().token);
-//   getUserInfo(12).then((res) => {
-//     console.log(res);
-//   });
-// });
+onLoad(() => {
+  const authStore = useAuthStore();
+  if (authStore.userId) {
+    getUserInfo(parseInt(authStore.userId)).then((res) => {
+      if (res?.data?.avatar?.[0]?.url) {
+        authStore.avatar =
+          import.meta.env.VITE_BUCKET_ENDPOINT + res.data.avatar[0].url;
+      }
+    });
+  }
+});
 
 const menuTexts: Record<MenuIndex, string> = {
   1: "我的收藏",

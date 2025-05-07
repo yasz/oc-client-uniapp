@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("authStore", {
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
     role: "" as string, // 用户角色
+    avatar: null as string | null, // 用户头像
   }),
 
   getters: {
@@ -31,7 +32,6 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
-
           const { id, nickname, roles } = response.data.data;
           this.userId = id;
           this.nickname = nickname;
@@ -54,6 +54,7 @@ export const useAuthStore = defineStore("authStore", {
       this.userId = null;
       this.nickname = null;
       this.role = ""; // 清空状态
+      this.avatar = null; // 清空头像
     },
 
     // 从存储中加载 token 并验证
