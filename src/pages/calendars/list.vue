@@ -1,7 +1,25 @@
 <template>
   <view class="student-selector">
     <view class="student-list">
-      <!-- {{ authStore }} -->
+      <!-- 教师本人卡片 -->
+      <view
+        v-if="authStore.role.includes('teacher')"
+        class="student-item bg-primary"
+        @click="handleTeacherClick"
+      >
+        <image
+          class="student-avatar"
+          mode="aspectFill"
+          :src="authStore.avatar || '/static/avatars/wechat/defaultAvatar.png'"
+        />
+        <text class="student-name text-white">{{ authStore.nickname }}</text>
+        <view class="progress-info">
+          <text class="text-white">教学课表查询</text>
+          <text class="arrow pl-6 text-white"> ＞</text>
+        </view>
+      </view>
+
+      <!-- 学生列表 -->
       <view
         v-for="student in students"
         :key="student.id"
@@ -27,7 +45,6 @@
 <script setup lang="ts">
 import { listStudentsByTeacherId } from "@/utils/api";
 import { onMounted, ref } from "vue";
-
 import { useAuthStore } from "@/stores/authStore";
 import { onShow } from "@dcloudio/uni-app";
 
@@ -35,7 +52,6 @@ const authStore = useAuthStore();
 const students = ref<any[]>([]);
 onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
-
   if (authStore.role.indexOf("teacher") == -1) {
     uni.redirectTo({
       url: "/my/calendars?studentId=" + authStore.userId,
@@ -62,8 +78,17 @@ onShow(async () => {
     });
   }
 });
+
 const emit = defineEmits(["select"]);
 const selectedId = ref<number>();
+
+const handleTeacherClick = () => {
+  uni.navigateTo({
+    url: `/my/calendars?studentId=${
+      authStore.userId
+    }&nickname=${encodeURIComponent(authStore.nickname || "")}`,
+  });
+};
 
 const handleStudentClick = (student: any) => {
   uni.navigateTo({
@@ -89,7 +114,7 @@ const handleStudentClick = (student: any) => {
   display: flex;
   align-items: center;
   padding: 20rpx;
-  background-color: #fff;
+
   border-radius: 16rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
 
@@ -110,6 +135,10 @@ const handleStudentClick = (student: any) => {
   flex: 1;
   font-size: 28rpx;
   color: #333;
+}
+
+.text-white {
+  color: #fff;
 }
 
 .progress-info {
