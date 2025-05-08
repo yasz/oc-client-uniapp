@@ -46,7 +46,7 @@
     <view class="menu-list">
       <view
         class="menu-item"
-        v-for="i in 6"
+        v-for="i in getVisibleMenuItems()"
         :key="i"
         @click="handleMenuClick(i)"
       >
@@ -79,18 +79,60 @@ import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
 import Layout from "../layout.vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getUserInfo } from "@/utils/api";
+import { ref } from "vue";
+import { getUserInfo, listStudentsByTeacherId } from "@/utils/api";
+import axios from "axios";
+
+interface Student {
+  id: number;
+  nickname: string;
+  avatar: Array<{ url: string }>;
+}
+
+interface ApiResponse<T> {
+  data: T;
+}
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
-onLoad(() => {
+const hasStudents = ref(false);
+
+onLoad(async () => {
   const authStore = useAuthStore();
   if (authStore.userId) {
-    getUserInfo(parseInt(authStore.userId)).then((res) => {
+    // 获取用户头像
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/users:get?appends[]=avatar&filterByTk=${authStore.userId}`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SPECIAL_TOKEN}`,
+          },
+        }
+      );
+      const res = response.data;
       if (res?.data?.avatar?.[0]?.url) {
         authStore.avatar =
           import.meta.env.VITE_BUCKET_ENDPOINT + res.data.avatar[0].url;
       }
-    });
+    } catch (error) {
+      console.error("获取用户信息失败:", error);
+    }
+
+    // 如果是教师，检查是否有学生
+    if (authStore.role.includes("teacher")) {
+      try {
+        const res = (await listStudentsByTeacherId(
+          authStore.userId
+        )) as ApiResponse<Student[]>;
+        hasStudents.value = Array.isArray(res?.data) && res.data.length > 0;
+      } catch (error) {
+        console.error("获取学生列表失败:", error);
+      }
+    }
   }
 });
 
@@ -114,6 +156,21 @@ const menuRoutes: Record<MenuIndex, string> = {
 
 const getMenuText = (index: number): string => {
   return menuTexts[index as MenuIndex] || "";
+};
+
+const getVisibleMenuItems = () => {
+  const authStore = useAuthStore();
+  const isTeacher = authStore.role.includes("teacher");
+
+  // 基础菜单项（所有用户都可见）
+  const baseItems = [1, 2, 3];
+
+  // 如果是教师且有学生，添加教师专属菜单
+  if (isTeacher && hasStudents.value) {
+    return [...baseItems, 4, 5, 6];
+  }
+
+  return baseItems;
 };
 
 const handleMenuClick = (index: number) => {

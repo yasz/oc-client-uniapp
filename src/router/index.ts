@@ -231,7 +231,7 @@ router.beforeEach((to, from) => {
 });
 
 function checkAuth(url: string) {
-  if (["/index", "/sign-in", "/my", "/sign-up"].includes(url)) {
+  if (["/sign-in", "/my", "/sign-up"].includes(url)) {
     // 白名单页面，不需要校验token
     return true;
   }
