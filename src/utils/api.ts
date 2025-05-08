@@ -316,7 +316,7 @@ export const deleteMeeting = async (meetingId: number) => {
 
 export const getCalendar = async (studentId: number) => {
   return getAPIAxios(
-    `meetings:list?appends[]=host_user_id&appends[]=participant_user_id&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,
+    `meetings:list?appends[]=host_user_id&appends[]=participant_user_id.avatar&appends[]=participant_user_id&appends[]=participant_user_id.avatar&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,
     null
   );
 };

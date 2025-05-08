@@ -9,19 +9,35 @@
             class="meeting-item"
             :style="{ '--mark-color': meeting.color }"
           >
-            <view class="delete-btn" @click="handleDelete(meeting)">
-              <text class="delete-icon">-</text>
-            </view>
-            <text class="t-16">{{ meeting.title }} 会议时间：</text>
-            <view class="flex-col t-12 text-gray">
-              <text>{{ formatDateTime(meeting.start) }}</text>
+            <view class="justify-between">
               <view>
-                <text class="label">链接：</text>
-                <text class="value link" @click="handleLinkClick(meeting)">{{
-                  meeting.meeting_link
-                }}</text>
+                <view class="delete-btn" @click="handleDelete(meeting)">
+                  <text class="delete-icon">-</text>
+                </view>
+                <text class="t-16">{{ meeting.title }} 会议时间：</text>
+                <view class="flex-col t-12 text-gray">
+                  <text>{{ formatDateTime(meeting.start) }}</text>
+                  <view>
+                    <text class="label">链接：</text>
+                    <text
+                      class="value link"
+                      @click="handleLinkClick(meeting)"
+                      >{{ meeting.meeting_link }}</text
+                    >
+                  </view>
+                </view>
               </view>
-            </view>
+              <view class="flex-col baseline">
+                <image
+                  class="student-avatar"
+                  mode="aspectFill"
+                  :src="getAvatarUrl(meeting.student.avatar)"
+                />
+                <text class="t-12 text-gray">{{
+                  meeting.student.nickname
+                }}</text>
+              </view></view
+            >
           </view>
         </view>
       </view>
@@ -41,16 +57,24 @@ interface Meeting {
   start: string;
   end: string;
   teacher: string;
-  student: string;
+  student: any;
   date: string;
   color: string;
   meeting_link?: string;
+  participant_user_id: {
+    id: number;
+    nickname: string;
+    avatar: Array<{
+      url: string;
+    }>;
+  };
 }
 
 const props = defineProps<{
   show: boolean;
   date: string | null;
   meetings: Meeting[];
+  isTeacher?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -60,6 +84,23 @@ const emit = defineEmits<{
 }>();
 
 const localShow = ref(props.show);
+
+// 从第一个会议中获取学生信息
+const studentInfo = computed(() => {
+  if (props.meetings.length > 0) {
+    const firstMeeting = props.meetings[0];
+    return {
+      nickname: firstMeeting.participant_user_id.nickname,
+      avatarUrl:
+        import.meta.env.VITE_BUCKET_ENDPOINT +
+        (firstMeeting.participant_user_id.avatar[0]?.url || ""),
+    };
+  }
+  return {
+    nickname: "",
+    avatarUrl: "",
+  };
+});
 
 watch(
   () => props.show,
@@ -107,6 +148,10 @@ const handleDelete = async (meeting: Meeting) => {
     });
   }
 };
+
+const getAvatarUrl = (avatar: Array<{ url: string }>) => {
+  return import.meta.env.VITE_BUCKET_ENDPOINT + (avatar[0]?.url || "");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -123,6 +168,12 @@ const handleDelete = async (meeting: Meeting) => {
 
 .modal-content {
   padding-top: 20px;
+}
+
+.student-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 
 .meeting-item {

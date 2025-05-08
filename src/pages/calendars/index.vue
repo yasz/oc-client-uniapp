@@ -29,6 +29,7 @@
       v-model:show="showModal"
       :date="selectedDate"
       :meetings="selectedDateMeetings"
+      :isTeacher="isTeacher"
       @linkClick="handleMeetingLinkClick"
       @delete="handleMeetingDelete"
     />
@@ -49,7 +50,7 @@ import { getCalendar, createMeeting } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
-import CalendarModal from "./modal.vue";
+import CalendarModal from "./list-modal.vue";
 import CreateModal from "./create-modal.vue";
 
 interface Meeting {
@@ -138,7 +139,7 @@ const fetchCalendarData = async () => {
           new Date(meeting.meeting_time).getTime() + meeting.duration * 60000
         ).toISOString(),
         teacher: meeting.host_user_id.nickname,
-        student: meeting.participant_user_id.nickname,
+        student: meeting.participant_user_id,
         date: dayjs(meeting.meeting_time).format("YYYY/M/D"),
         meeting_link: meeting.meeting_link,
         color: meeting.mark_color || "#2979ff", // 使用后端返回的颜色，如果没有则使用默认颜色
