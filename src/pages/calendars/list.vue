@@ -86,7 +86,7 @@ const handleTeacherClick = () => {
   uni.navigateTo({
     url: `/my/calendars?studentId=${
       authStore.userId
-    }&nickname=${encodeURIComponent(authStore.nickname || "")}`,
+    }&nickname=${encodeURIComponent(authStore.nickname || "")}&isTeacher=true`,
   });
 };
 

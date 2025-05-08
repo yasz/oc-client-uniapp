@@ -2,7 +2,11 @@
   <view class="" style="height: calc(100vh - 44px)">
     <view>
       <view class="flex flex-center-row">
-        <view class="create-btn mt-40" @click="showCreateModal = true">
+        <view
+          v-if="!isTeacher"
+          class="create-btn mt-40"
+          @click="showCreateModal = true"
+        >
           <text class="create-icon">+</text>
         </view>
       </view>
@@ -89,6 +93,7 @@ const showModal = ref(false);
 const selectedDate = ref<string | null>(null);
 const selectedDateMeetings = ref<CalendarItem[]>([]);
 const showCreateModal = ref(false);
+const isTeacher = ref(false);
 
 // 格式化日期时间
 const formatDateTime = (dateTime: string) => {
@@ -206,6 +211,7 @@ onLoad((options: any) => {
   if (options.studentId) {
     studentId.value = parseInt(options.studentId);
     studentNickname.value = decodeURIComponent(options.nickname);
+    isTeacher.value = options.isTeacher === "true";
     fetchCalendarData();
   }
 });
