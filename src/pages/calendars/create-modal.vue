@@ -31,6 +31,20 @@
           </view>
 
           <view class="form-item">
+            <text class="label">时区</text>
+            <u-picker
+              :columns="[timezones.map((t) => t.name)]"
+              @confirm="handleTimezoneConfirm"
+              :defaultIndex="[8]"
+            >
+              <view class="picker-trigger">
+                <text>{{ selectedTimezone?.name || "请选择时区" }}</text>
+                <text class="arrow">▼</text>
+              </view>
+            </u-picker>
+          </view>
+
+          <view class="form-item">
             <text class="label">会议时间</text>
             <uni-datetime-picker
               v-model="formData.meeting_time"
@@ -56,10 +70,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import dayjs from "dayjs";
 import { createMeeting } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
+
+interface Timezone {
+  id: number;
+  value: number;
+  name: string;
+}
 
 const props = defineProps<{
   show: boolean;
@@ -72,6 +92,8 @@ const emit = defineEmits<{
 }>();
 
 const authStore = useAuthStore();
+const timezones = ref<Timezone[]>([]);
+const selectedTimezone = ref<Timezone | null>(null);
 
 const colors = [
   "#F8AE3D", // 橙色
@@ -101,6 +123,47 @@ const maxDate = computed(() => {
   return dayjs().add(1, "year").valueOf();
 });
 
+// 获取时区列表
+const fetchTimezones = async () => {
+  try {
+    const response = await fetch(
+      "https://a.praise.site:3002/api/dim_timezone:list?pageSize=20&filter=%7B%7D",
+      {
+        headers: {
+          accept: "application/json",
+          authorization: `Bearer ${authStore.token}`,
+          "x-hostname": "a.praise.site",
+          "x-locale": "zh-CN",
+          "x-role": "admin",
+          "x-timezone": "+08:00",
+          "x-with-acl-meta": "true",
+        },
+      }
+    );
+    const data = await response.json();
+    timezones.value = data.data;
+    // 默认选择 UTC+8
+    selectedTimezone.value =
+      timezones.value.find((t) => t.value === 8) || timezones.value[0];
+    formData.value.timezone_id = selectedTimezone.value.id;
+  } catch (error) {
+    console.error("Failed to fetch timezones:", error);
+    uni.showToast({
+      title: "获取时区列表失败",
+      icon: "none",
+    });
+  }
+};
+
+const handleTimezoneConfirm = (e: any) => {
+  const selectedName = e.value[0];
+  const timezone = timezones.value.find((t) => t.name === selectedName);
+  if (timezone) {
+    selectedTimezone.value = timezone;
+    formData.value.timezone_id = timezone.id;
+  }
+};
+
 const handleClose = () => {
   emit("update:show", false);
 };
@@ -125,6 +188,10 @@ const handleSubmit = async () => {
 const handleDateTimeChange = (value: string) => {
   // Handle date time change if needed
 };
+
+onMounted(() => {
+  fetchTimezones();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -179,6 +246,22 @@ const handleDateTimeChange = (value: string) => {
 
   .u-button {
     flex: 1;
+  }
+}
+
+.picker-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  cursor: pointer;
+
+  .arrow {
+    font-size: 12px;
+    color: #909399;
   }
 }
 </style>

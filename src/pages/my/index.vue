@@ -2,8 +2,17 @@
   <view class="container">
     <!-- 头部区域 -->
     <view class="header px-20 pt-20">
+      <view class="flex justify-end">
+        <image
+          src=" /static/my/setting.png"
+          mode="aspectFit"
+          class="pl-30 pt-6"
+          style="width: 70rpx; height: 70rpx"
+          @click="go('/my/profile')"
+        />
+      </view>
       <view class="header-content">
-        <view class="user-profile" @click="go('/my/profile')">
+        <view class="user-profile">
           <u-avatar
             :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
             size="140rpx"
@@ -14,7 +23,7 @@
             <view class="user-name">{{
               useAuthStore().token ? useAuthStore().nickname : "MARY"
             }}</view>
-            <view class="user-days">加入Lifefunner的第120天</view>
+            <view class="user-days">加入Lifefunner的第{{ day }}天</view>
           </view>
         </view>
         <view class="header-icons"> </view>
