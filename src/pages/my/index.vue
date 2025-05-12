@@ -23,7 +23,9 @@
             <view class="user-name">{{
               useAuthStore().token ? useAuthStore().nickname : "MARY"
             }}</view>
-            <view class="user-days">加入Lifefunner的第{{ day }}天</view>
+            <view class="user-days" v-if="day !== null"
+              >加入Lifefunner的第{{ day }}天</view
+            >
           </view>
         </view>
         <view class="header-icons"> </view>
@@ -88,9 +90,10 @@ import { useAuthStore } from "@/stores/authStore";
 import { bucketURL, go } from "@/utils/common";
 import Layout from "../layout.vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
-import { getUserInfo, listStudentsByTeacherId } from "@/utils/api";
+import { ref, onMounted, watch } from "vue";
+import { listStudentsByTeacherId } from "@/utils/api";
 import axios from "axios";
+import dayjs from "dayjs";
 
 interface Student {
   id: number;
@@ -104,9 +107,29 @@ interface ApiResponse<T> {
 
 type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
 const hasStudents = ref(false);
+const day = ref<number | null>(null);
+const authStore = useAuthStore();
+
+const calculateDays = () => {
+  if (authStore.createdAt) {
+    const startDate = dayjs(authStore.createdAt);
+    const endDate = dayjs();
+    day.value = endDate.diff(startDate, "day");
+  }
+};
+
+onMounted(() => {
+  calculateDays();
+});
+
+watch(
+  () => authStore.createdAt,
+  () => {
+    calculateDays();
+  }
+);
 
 onLoad(async () => {
-  const authStore = useAuthStore();
   if (authStore.userId) {
     // 如果是教师，检查是否有学生
     if (authStore.role.includes("teacher")) {
@@ -145,7 +168,6 @@ const getMenuText = (index: number): string => {
 };
 
 const getVisibleMenuItems = () => {
-  const authStore = useAuthStore();
   const isTeacher = authStore.role.includes("teacher");
 
   // 基础菜单项（所有用户都可见）

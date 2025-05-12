@@ -1,4 +1,5 @@
 import { getAPI, getAPIAxios, postAPI, postAPIAxios } from "./common";
+import axios from "axios";
 
 export const listCourseSessions = async () => {
   const url =
@@ -321,6 +322,21 @@ export const getCalendar = async (studentId: number) => {
   );
 };
 
-export const getUserInfo = async (userId: number) => {
-  return getAPIAxios(`users:get?appends[]=avatar&filterByTk=${userId}`, null);
+// export const getUserInfo = async (userId: number) => {
+//   return getAPIAxios(`users:get?appends[]=avatar&filterByTk=${userId}`, null);
+// };
+
+export const getUserInfoWithSpecialToken = async (userId: number) => {
+  return axios.get(
+    `${
+      import.meta.env.VITE_API_ENDPOINT
+    }/users:get?appends[]=avatar&filterByTk=${userId}`,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_SPECIAL_TOKEN}`,
+      },
+    }
+  );
 };

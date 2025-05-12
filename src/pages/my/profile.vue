@@ -24,23 +24,39 @@
 
     <!-- 基本信息 -->
     <view class="menu-section">
-      <MenuItem label="名字" :value="userInfo.name" @click="handleNameClick" />
+      <MenuItem label="头像" :arrow="false" @click="handleAvatarClick">
+        <template #value>
+          <u-avatar
+            :src="
+              authStore.avatar || '/static/avatars/wechat/defaultAvatar.png'
+            "
+            size="80rpx"
+            shape="circle"
+            mode="aspectFill"
+          ></u-avatar>
+        </template>
+      </MenuItem>
+      <MenuItem
+        label="昵称"
+        :value="userInfo.nickname"
+        @click="handleNameClick"
+      />
       <MenuItem
         label="性别"
-        :value="userInfo.gender === 'female' ? '女' : '男'"
+        :value="userInfo.gender === 'male' ? '男' : '女'"
         @click="handleGenderClick"
       />
       <MenuItem
-        label="手机"
+        label="手机号"
         :value="userInfo.phone"
         @click="handlePhoneClick"
       />
-      <MenuItem
+      <!-- <MenuItem
         label="微信"
         value="已绑定"
         :valueColor="'#52c41a'"
         :arrow="false"
-      />
+      /> -->
       <MenuItem
         label="邮箱"
         value="已绑定"
@@ -63,9 +79,9 @@
           <LangSwitch />
         </view>
       </view>
-      <!-- <MenuItem label="通知设置" @click="handleNotificationClick" />
-            <MenuItem label="隐私设置" @click="handlePrivacyClick" />
-            <MenuItem label="关于我们" @click="handleAboutClick" /> -->
+      <MenuItem label="通知设置" @click="handleNotificationClick" />
+      <MenuItem label="隐私设置" @click="handlePrivacyClick" />
+      <MenuItem label="关于我们" @click="handleAboutClick" />
     </view>
 
     <!-- 退出登录 -->
@@ -81,26 +97,86 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import LangSwitch from "@/components/langSwitch.vue";
 import MenuItem from "@/components/MenuItem.vue";
 import { useAuthStore } from "@/stores/authStore";
-import { go, go2 } from "@/utils/common";
+import { go } from "@/utils/common";
+import { getUserInfoWithSpecialToken } from "@/utils/api";
+import { uploadFile } from "@/utils/common";
 
+const authStore = useAuthStore();
 const userInfo = ref({
-  name: "MARY",
+  nickname: "",
   gender: "female",
-  phone: "18888888888",
+  phone: "",
 });
+
+// 获取用户信息
+const fetchUserInfo = async () => {
+  try {
+    const response = await getUserInfoWithSpecialToken(
+      Number(authStore.userId)
+    );
+    if (response?.data) {
+      userInfo.value = {
+        nickname: response.data.nickname || "",
+        gender: response.data.gender || "female",
+        phone: response.data.phone || "",
+      };
+    }
+  } catch (error) {
+    console.error("获取用户信息失败:", error);
+  }
+};
+
+onMounted(() => {
+  fetchUserInfo();
+});
+
+const handleAvatarClick = () => {
+  uni.chooseImage({
+    count: 1,
+    success: async (res) => {
+      try {
+        const tempFilePath = res.tempFilePaths[0];
+        const uploadRes = await uploadFile({
+          url: "attachments:upload",
+          file: {
+            url: tempFilePath,
+            name: "avatar.jpg",
+          },
+        });
+
+        if (uploadRes?.data?.url) {
+          const avatarUrl =
+            import.meta.env.VITE_BUCKET_ENDPOINT + uploadRes.data.url;
+          authStore.avatar = avatarUrl;
+          uni.showToast({
+            title: "头像更新成功",
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        console.error("上传头像失败:", error);
+        uni.showToast({
+          title: "上传头像失败",
+          icon: "error",
+        });
+      }
+    },
+  });
+};
 
 const handleNameClick = () => {
   uni.showModal({
     title: "修改名字",
     editable: true,
-    content: userInfo.value.name,
+    content: userInfo.value.nickname,
     success: (res) => {
       if (res.confirm && res.content) {
-        userInfo.value.name = res.content;
+        userInfo.value.nickname = res.content;
+        // TODO: 调用API更新昵称
       }
     },
   });
@@ -111,6 +187,7 @@ const handleGenderClick = () => {
     itemList: ["男", "女"],
     success: (res) => {
       userInfo.value.gender = res.tapIndex === 0 ? "male" : "female";
+      // TODO: 调用API更新性别
     },
   });
 };
@@ -146,8 +223,7 @@ const handleLogout = () => {
     content: "是否确认退出登录？",
     success: (res) => {
       if (res.confirm) {
-        // TODO: 执行退出登录逻辑
-        useAuthStore().signOut();
+        authStore.signOut();
         go("/sign-in");
       }
     },
