@@ -41,6 +41,7 @@
 import useModal from "@/hooks/useModal";
 
 import { useAuthStore } from "@/stores/authStore";
+import { getUserInfoWithSpecialToken } from "@/utils/api";
 import { go } from "@/utils/common";
 import axios from "axios";
 import { ref } from "vue";
@@ -72,6 +73,24 @@ const handleSignIn = async () => {
     authStore.token = token;
     await authStore.refreshAuthStore();
     // authStore.initUserInfo();
+    if (authStore.userId) {
+      try {
+        const response = await getUserInfoWithSpecialToken(
+          Number(authStore.userId)
+        );
+        const res = response.data;
+        if (res?.data?.avatar?.[0]?.url) {
+          authStore.avatar =
+            import.meta.env.VITE_BUCKET_ENDPOINT + res.data.avatar[0].url;
+        }
+        // 存储用户创建时间
+        if (res?.data?.createdAt) {
+          authStore.createdAt = res.data.createdAt;
+        }
+      } catch (error) {
+        console.error("获取用户信息失败:", error);
+      }
+    }
   } catch (err: any) {
     useModal().modal(err.message);
     return;
