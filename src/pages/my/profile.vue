@@ -1,6 +1,6 @@
 <template>
   <view class="flex-col bg-primary">
-    <view class="py-10 f-c-c">
+    <view class="py-10 f-c-c" @click="handleAvatarClick">
       <u-avatar
         :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
         size="120rpx"
@@ -101,6 +101,10 @@ const userInfo = ref({
   email: "",
 });
 
+const SPECIAL_TOKEN = import.meta.env.VITE_SPECIAL_TOKEN;
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const BUCKET_ENDPOINT = import.meta.env.VITE_BUCKET_ENDPOINT;
+
 // 获取用户信息
 const fetchUserInfo = async () => {
   try {
@@ -130,29 +134,56 @@ const handleAvatarClick = () => {
     success: async (res) => {
       try {
         const tempFilePath = res.tempFilePaths[0];
-        const uploadRes = await uploadFile({
-          url: "attachments:upload",
-          file: {
-            url: tempFilePath,
-            name: "avatar.jpg",
-          },
-        });
-
-        if (uploadRes?.data?.url) {
-          const avatarUrl =
-            import.meta.env.VITE_BUCKET_ENDPOINT + uploadRes.data.url;
-          authStore.avatar = avatarUrl;
-          uni.showToast({
-            title: "头像更新成功",
-            icon: "success",
+        // 1. 上传图片到服务器（special token）
+        await new Promise((resolve, reject) => {
+          uni.uploadFile({
+            url: `${API_ENDPOINT}/attachments:create?attachmentField=users.avatar`,
+            filePath: tempFilePath,
+            name: "file",
+            header: {
+              Authorization: `Bearer ${SPECIAL_TOKEN}`,
+            },
+            success: async (uploadRes) => {
+              let uploadData = {};
+              try {
+                uploadData = JSON.parse(uploadRes.data);
+              } catch (e) {
+                return reject("上传返回数据解析失败");
+              }
+              if (!uploadData?.data?.id) return reject("上传失败");
+              // 2. 获取当前用户信息
+              const userRes = await getUserInfoWithSpecialToken(
+                Number(authStore.userId)
+              );
+              const userData = userRes.data.data;
+              // 3. 更新用户信息，avatar 字段用新上传的附件对象
+              userData.avatar = uploadData.data;
+              // 4. 更新用户（以教师为例）
+              await fetch(
+                `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`,
+                {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${SPECIAL_TOKEN}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(userData),
+                }
+              );
+              // 5. 刷新本地头像
+              authStore.avatar = BUCKET_ENDPOINT + uploadData.data.url;
+              uni.showToast({ title: "头像更新成功", icon: "success" });
+              resolve();
+            },
+            fail: (err) => {
+              uni.showToast({ title: "上传头像失败", icon: "error" });
+              reject(err);
+            },
           });
-        }
+        });
       } catch (error) {
         console.error("上传头像失败:", error);
-        uni.showToast({
-          title: "上传头像失败",
-          icon: "error",
-        });
+        uni.showToast({ title: "上传头像失败", icon: "error" });
       }
     },
   });
