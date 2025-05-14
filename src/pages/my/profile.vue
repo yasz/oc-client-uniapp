@@ -134,8 +134,7 @@ const handleAvatarClick = () => {
     success: async (res) => {
       try {
         const tempFilePath = res.tempFilePaths[0];
-        // 1. 上传图片到服务器（special token）
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           uni.uploadFile({
             url: `${API_ENDPOINT}/attachments:create?attachmentField=users.avatar`,
             filePath: tempFilePath,
@@ -144,7 +143,7 @@ const handleAvatarClick = () => {
               Authorization: `Bearer ${SPECIAL_TOKEN}`,
             },
             success: async (uploadRes) => {
-              let uploadData = {};
+              let uploadData: any = {};
               try {
                 uploadData = JSON.parse(uploadRes.data);
               } catch (e) {
@@ -158,18 +157,25 @@ const handleAvatarClick = () => {
               const userData = userRes.data.data;
               // 3. 更新用户信息，avatar 字段用新上传的附件对象
               userData.avatar = uploadData.data;
-              // 4. 更新用户（以教师为例）
-              await fetch(
-                `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`,
-                {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${SPECIAL_TOKEN}`,
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(userData),
-                }
-              );
+              // 4. 判断角色，更新 teachers 或 students
+              let updateUrl = "";
+              if (
+                Array.isArray(authStore.role)
+                  ? authStore.role.includes("teacher")
+                  : authStore.role === "teacher"
+              ) {
+                updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
+              } else {
+                updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
+              }
+              await fetch(updateUrl, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${SPECIAL_TOKEN}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+              });
               // 5. 刷新本地头像
               authStore.avatar = BUCKET_ENDPOINT + uploadData.data.url;
               uni.showToast({ title: "头像更新成功", icon: "success" });
