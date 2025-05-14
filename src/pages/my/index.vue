@@ -1,7 +1,7 @@
 <template>
   <view>
     <!-- 头部区域 -->
-    <view class="header px-20 pt-20">
+    <view class="header bg-primary px-20 pt-20">
       <view class="flex justify-end">
         <image
           src=" /static/my/setting.png"
@@ -30,7 +30,7 @@
         </view>
         <view class="header-icons"> </view>
       </view>
-      <!-- 河马卡片 -->
+
       <HippoCard />
     </view>
 
@@ -172,7 +172,6 @@ const handleMenuClick = (index: number) => {
 
 <style>
 .header {
-  background-color: #f9b13c;
   border-radius: 0 0 40rpx 40rpx;
 }
 

@@ -1,10 +1,21 @@
 <template>
-  <view class="">
+  <view class="flex-col bg-primary">
+    <view class="py-10 f-c-c">
+      <u-avatar
+        :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
+        size="120rpx"
+        shape="circle"
+        mode="aspectFill"
+      />
+    </view>
     <view>
-      <view class="">
+      <view class="px-10">
         <HippoCard />
       </view>
     </view>
+  </view>
+
+  <view class="">
     <view class="menu-section">
       <MenuItem
         :label="t('nickname')"
@@ -218,8 +229,20 @@ const handleLogout = () => {
   overflow: hidden;
 }
 
-.hippo-card {
-  background-color: #fff;
-  margin-bottom: 20rpx;
+.profile-avatar-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48rpx;
+  margin-bottom: 32rpx;
+}
+.avatar-list {
+  display: flex;
+  margin-top: 16rpx;
+}
+.avatar-empty {
+  color: #bbb;
+  font-size: 24rpx;
+  margin-top: 16rpx;
 }
 </style>
