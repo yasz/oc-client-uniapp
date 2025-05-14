@@ -38,8 +38,19 @@
       />
     </view>
 
-    <view class="menu-section" style="height: 60rpx; align-items: center">
-      <view class="flex px-20 justify-between">
+    <view
+      class="menu-section"
+      style="
+        height: 60rpx;
+        align-items: center;
+        border-bottom: 2rpx solid #f5f5f5;
+        display: flex;
+      "
+    >
+      <view
+        class="flex px-20 justify-between"
+        style="width: 100%; align-items: center"
+      >
         <view class="">
           <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
         </view>
