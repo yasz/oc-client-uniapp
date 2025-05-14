@@ -7,17 +7,17 @@
     </view>
     <view class="menu-section">
       <MenuItem
-        label="昵称"
+        :label="t('nickname')"
         :value="userInfo.nickname"
         @click="handleNameClick"
       />
       <MenuItem
-        label="性别"
+        :label="t('gender')"
         :value="userInfo.gender === 'male' ? '男' : '女'"
         @click="handleGenderClick"
       />
       <MenuItem
-        label="手机号"
+        :label="t('phone')"
         :value="userInfo.phone"
         @click="handlePhoneClick"
       />
@@ -28,7 +28,7 @@
         :arrow="false"
       /> -->
       <MenuItem
-        label="邮箱"
+        :label="t('email')"
         value="已绑定"
         :valueColor="'#52c41a'"
         :arrow="false"
@@ -36,34 +36,30 @@
     </view>
 
     <!-- 设置 -->
-    <view class="menu-section">
-      <view class="flex-col px-20">
-        <view
-          class="flex py-10 baseline fixed-height"
-          style="align-items: center"
-        >
-          <view class="mr-20">
-            <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
-          </view>
-
-          <LangSwitch />
-        </view>
-      </view>
-    </view>
 
     <!-- 退出登录 -->
-    <view class="menu-section">
+    <view class="">
       <MenuItem
-        label="退出登录"
+        :label="t('logout')"
         :arrow="false"
         valueColor="#ff4d4f"
         @click="handleLogout"
       />
     </view>
+    <view class="menu-section">
+      <view class="flex px-20">
+        <view class="mr-20">
+          <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
+        </view>
+        <LangSwitch />
+      </view>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { ref, onMounted } from "vue";
 import LangSwitch from "@/components/langSwitch.vue";
 import MenuItem from "@/components/MenuItem.vue";

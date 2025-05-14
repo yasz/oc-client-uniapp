@@ -39,6 +39,7 @@ defineProps({
   justify-content: space-between;
   align-items: center;
   padding: 32rpx;
+
   background-color: #fff;
   border-bottom: 2rpx solid #f5f5f5;
 

@@ -33,6 +33,9 @@ const zhCN: Record<string, any> = {
   "Are you sure?": "确认操作？",
   "apply logoff": "申请注销",
   logout: "退出登录",
+  email: "邮箱",
+  gender: "性别",
+
   cancel: "取消",
 
   assignment: "作业",
@@ -52,7 +55,7 @@ const zhCN: Record<string, any> = {
   "My Publish": "我发布的",
   "My Participation": "我报名的",
   "My Draft": "我的稿件",
-
+  phone: "手机号",
   "click to upload": "点击上传",
   "activity name": "活动名称",
   "group name": "小组名称",
