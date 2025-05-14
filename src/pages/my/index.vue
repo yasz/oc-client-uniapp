@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view>
     <!-- 头部区域 -->
     <view class="header px-20 pt-20">
       <view class="flex justify-end">
@@ -31,26 +31,7 @@
         <view class="header-icons"> </view>
       </view>
       <!-- 河马卡片 -->
-      <view class="hippo-card flex" style="height: 200rpx">
-        <image
-          src=" /static/my/logo.png"
-          mode="aspectFit"
-          class="pl-30 pt-6"
-          style="width: 200rpx; height: 200rpx"
-        />
-        <image
-          src="/static/my/title.png"
-          mode="aspectFit"
-          class="pt-40"
-          style="width: 200rpx; height: 100rpx"
-        />
-        <image
-          src="/static/my/logo_puzzle.png"
-          mode="aspectFit"
-          style="width: 120rpx; height: 120rpx"
-          class="pl-30 pt-40"
-        />
-      </view>
+      <HippoCard />
     </view>
 
     <!-- 菜单按钮区域 -->
@@ -92,7 +73,7 @@ import Layout from "../layout.vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref, onMounted, watch } from "vue";
 import { listStudentsByTeacherId } from "@/utils/api";
-import axios from "axios";
+import HippoCard from "@/components/HippoCard.vue";
 import dayjs from "dayjs";
 
 interface Student {
@@ -190,11 +171,6 @@ const handleMenuClick = (index: number) => {
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  background-color: #fff;
-}
-
 .header {
   background-color: #f9b13c;
   border-radius: 0 0 40rpx 40rpx;

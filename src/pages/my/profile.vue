@@ -1,41 +1,11 @@
 <template>
-  <view class="profile-page">
-    <!-- 顶部卡片 -->
-    <view class="hippo-card flex" style="height: 200rpx">
-      <image
-        src="/static/my/logo.png"
-        mode="aspectFit"
-        class="pl-30 pt-6"
-        style="width: 200rpx; height: 200rpx"
-      />
-      <image
-        src="/static/my/title.png"
-        mode="aspectFit"
-        class="pt-40"
-        style="width: 200rpx; height: 100rpx"
-      />
-      <image
-        src="/static/my/logo_puzzle.png"
-        mode="aspectFit"
-        style="width: 120rpx; height: 120rpx"
-        class="pl-30 pt-40"
-      />
+  <view class="">
+    <view>
+      <view class="">
+        <HippoCard />
+      </view>
     </view>
-
-    <!-- 基本信息 -->
     <view class="menu-section">
-      <MenuItem label="头像" :arrow="false" @click="handleAvatarClick">
-        <template #value>
-          <u-avatar
-            :src="
-              authStore.avatar || '/static/avatars/wechat/defaultAvatar.png'
-            "
-            size="80rpx"
-            shape="circle"
-            mode="aspectFill"
-          ></u-avatar>
-        </template>
-      </MenuItem>
       <MenuItem
         label="昵称"
         :value="userInfo.nickname"
@@ -79,9 +49,6 @@
           <LangSwitch />
         </view>
       </view>
-      <MenuItem label="通知设置" @click="handleNotificationClick" />
-      <MenuItem label="隐私设置" @click="handlePrivacyClick" />
-      <MenuItem label="关于我们" @click="handleAboutClick" />
     </view>
 
     <!-- 退出登录 -->
@@ -104,7 +71,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { go } from "@/utils/common";
 import { getUserInfoWithSpecialToken } from "@/utils/api";
 import { uploadFile } from "@/utils/common";
-
+import HippoCard from "@/components/HippoCard.vue";
 const authStore = useAuthStore();
 const userInfo = ref({
   nickname: "",
@@ -232,12 +199,6 @@ const handleLogout = () => {
 </script>
 
 <style lang="scss">
-.profile-page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 32rpx;
-}
-
 .menu-section {
   margin-top: 20rpx;
   background-color: #fff;
