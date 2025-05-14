@@ -10,16 +10,19 @@
         :label="t('nickname')"
         :value="userInfo.nickname"
         @click="handleNameClick"
+        :height="60"
       />
-      <MenuItem
+      <!-- <MenuItem
         :label="t('gender')"
         :value="userInfo.gender === 'male' ? '男' : '女'"
         @click="handleGenderClick"
-      />
+        :height="60"
+      /> -->
       <MenuItem
         :label="t('phone')"
         :value="userInfo.phone"
         @click="handlePhoneClick"
+        :height="60"
       />
       <!-- <MenuItem
         label="微信"
@@ -29,31 +32,30 @@
       /> -->
       <MenuItem
         :label="t('email')"
-        value="已绑定"
-        :valueColor="'#52c41a'"
+        :value="userInfo.email"
         :arrow="false"
+        :height="60"
       />
     </view>
 
-    <!-- 设置 -->
-
-    <!-- 退出登录 -->
-    <view class="">
-      <MenuItem
-        :label="t('logout')"
-        :arrow="false"
-        valueColor="#ff4d4f"
-        @click="handleLogout"
-      />
-    </view>
-    <view class="menu-section">
-      <view class="flex px-20">
-        <view class="mr-20">
+    <view class="menu-section" style="height: 60rpx; align-items: center">
+      <view class="flex px-20 justify-between">
+        <view class="">
           <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
         </view>
-        <LangSwitch />
+        <view class="">
+          <LangSwitch />
+        </view>
       </view>
     </view>
+
+    <MenuItem
+      :label="t('logout')"
+      :arrow="false"
+      valueColor="#ff4d4f"
+      @click="handleLogout"
+      :height="60"
+    />
   </view>
 </template>
 
@@ -68,32 +70,35 @@ import { go } from "@/utils/common";
 import { getUserInfoWithSpecialToken } from "@/utils/api";
 import { uploadFile } from "@/utils/common";
 import HippoCard from "@/components/HippoCard.vue";
+import { onLoad } from "@dcloudio/uni-app";
 const authStore = useAuthStore();
 const userInfo = ref({
   nickname: "",
   gender: "female",
   phone: "",
+  email: "",
 });
 
 // 获取用户信息
 const fetchUserInfo = async () => {
   try {
-    const response = await getUserInfoWithSpecialToken(
-      Number(authStore.userId)
-    );
+    const response = (
+      await getUserInfoWithSpecialToken(Number(authStore.userId))
+    ).data;
+
     if (response?.data) {
       userInfo.value = {
         nickname: response.data.nickname || "",
         gender: response.data.gender || "female",
         phone: response.data.phone || "",
+        email: response.data.email || "",
       };
     }
   } catch (error) {
     console.error("获取用户信息失败:", error);
   }
 };
-
-onMounted(() => {
+onLoad(() => {
   fetchUserInfo();
 });
 

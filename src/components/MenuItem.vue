@@ -1,5 +1,9 @@
 <template>
-  <view class="menu-item" @click="$emit('click')">
+  <view
+    class="menu-item"
+    @click="$emit('click')"
+    :style="height ? `height: ${height}rpx` : ''"
+  >
     <view class="menu-item__left">
       <text class="menu-item__label">{{ label }}</text>
     </view>
@@ -13,7 +17,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { defineProps } from "vue";
+
+const props = defineProps({
   label: {
     type: String,
     required: true,
@@ -29,6 +35,10 @@ defineProps({
   valueColor: {
     type: String,
     default: "#999",
+  },
+  height: {
+    type: [String, Number],
+    default: null,
   },
 });
 </script>
