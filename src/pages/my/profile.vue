@@ -43,9 +43,11 @@
       /> -->
       <MenuItem
         :label="t('email')"
-        :value="userInfo.email"
+        :value="userInfo.email || '未设置'"
         :arrow="false"
+        :valueColor="'#52c41a'"
         :height="60"
+        @click="handleEmailClick"
       />
     </view>
 
@@ -200,10 +202,39 @@ const handleNameClick = () => {
     title: "修改名字",
     editable: true,
     content: userInfo.value.nickname,
-    success: (res) => {
+    success: async (res) => {
       if (res.confirm && res.content) {
-        userInfo.value.nickname = res.content;
-        // TODO: 调用API更新昵称
+        try {
+          userInfo.value.nickname = res.content;
+          // 获取当前用户信息
+          const userRes = await getUserInfoWithSpecialToken(
+            Number(authStore.userId)
+          );
+          const userData = userRes.data.data;
+          userData.nickname = res.content;
+          // 判断角色
+          let updateUrl = "";
+          if (
+            Array.isArray(authStore.role)
+              ? authStore.role.includes("teacher")
+              : authStore.role === "teacher"
+          ) {
+            updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
+          } else {
+            updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
+          }
+          await fetch(updateUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${SPECIAL_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+          uni.showToast({ title: "昵称修改成功", icon: "success" });
+        } catch (error) {
+          uni.showToast({ title: "昵称修改失败", icon: "error" });
+        }
       }
     },
   });
@@ -220,9 +251,88 @@ const handleGenderClick = () => {
 };
 
 const handlePhoneClick = () => {
-  uni.showToast({
-    title: "暂不支持修改手机号",
-    icon: "none",
+  uni.showModal({
+    title: "修改手机号",
+    editable: true,
+    content: userInfo.value.phone,
+    success: async (res) => {
+      if (res.confirm && res.content) {
+        try {
+          userInfo.value.phone = res.content;
+          // 获取当前用户信息
+          const userRes = await getUserInfoWithSpecialToken(
+            Number(authStore.userId)
+          );
+          const userData = userRes.data.data;
+          userData.phone = res.content;
+          // 判断角色
+          let updateUrl = "";
+          if (
+            Array.isArray(authStore.role)
+              ? authStore.role.includes("teacher")
+              : authStore.role === "teacher"
+          ) {
+            updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
+          } else {
+            updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
+          }
+          await fetch(updateUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${SPECIAL_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+          uni.showToast({ title: "手机号修改成功", icon: "success" });
+        } catch (error) {
+          uni.showToast({ title: "手机号修改失败", icon: "error" });
+        }
+      }
+    },
+  });
+};
+
+const handleEmailClick = () => {
+  uni.showModal({
+    title: "修改邮箱",
+    editable: true,
+    content: userInfo.value.email,
+    success: async (res) => {
+      if (res.confirm && res.content) {
+        try {
+          userInfo.value.email = res.content;
+          // 获取当前用户信息
+          const userRes = await getUserInfoWithSpecialToken(
+            Number(authStore.userId)
+          );
+          const userData = userRes.data.data;
+          userData.email = res.content;
+          // 判断角色
+          let updateUrl = "";
+          if (
+            Array.isArray(authStore.role)
+              ? authStore.role.includes("teacher")
+              : authStore.role === "teacher"
+          ) {
+            updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
+          } else {
+            updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
+          }
+          await fetch(updateUrl, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${SPECIAL_TOKEN}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+          uni.showToast({ title: "邮箱修改成功", icon: "success" });
+        } catch (error) {
+          uni.showToast({ title: "邮箱修改失败", icon: "error" });
+        }
+      }
+    },
   });
 };
 

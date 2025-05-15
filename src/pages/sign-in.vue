@@ -1,37 +1,75 @@
 <template>
-  <view class="container">
-    <image class="logo" src="@/static/images/logo.png" />
-    <view class="form-container">
-      <!-- 本地图片 logo -->
-      <!-- 输入邮箱 -->
-      <input
-        class="input"
-        v-model="username"
-        type="text"
-        placeholder="Please input username"
-      />
+  <view class="full">
+    <div class="bg-layer"></div>
+    <view class="bg ab-c-x">
+      <view :style="{ transform: `scale(0.5) translateY(20rpx)` }">
+        <image
+          class="hippo"
+          src="@/static/index/signin/hippo.png"
+          mode="aspectFit"
+        />
+      </view>
+      <view style="transform: scale(0.7)">
+        <image src="@/static/index/signin/logo.png" mode="aspectFit" />
+      </view>
+    </view>
 
-      <!-- 输入密码 -->
-      <input
-        class="input"
-        v-model="password"
-        type="password"
-        placeholder="Please input Password"
-      />
+    <view class="content">
+      <!-- <view class="form-container">
+        <view class="input-group">
+          <view class="input-wrapper">
+            <u-icon name="account" size="20"></u-icon>
+            <input
+              class="input"
+              v-model="username"
+              type="text"
+              :placeholder="$t('请输入手机号码')"
+            />
+          </view>
+          <view class="input-wrapper">
+            <u-icon name="lock" size="20"></u-icon>
+            <input
+              class="input"
+              v-model="password"
+              type="password"
+              :placeholder="$t('请输入密码')"
+            />
+          </view>
+        </view>
 
-      <!-- 登录按钮 -->
+        <view class="action-row">
+          <text class="forgot-text">通过问题</text>
+          <text class="forgot-text">忘记密码？</text>
+        </view>
 
-      <view class="flex">
         <button
           class="sign-in-button"
           :disabled="loading"
           @click="handleSignIn"
         >
-          {{ $t("sign in") }}
+          登录 SIGN IN
         </button>
-        <button class="sign-in-button" @click="go('/sign-up')">
-          {{ $t("signup") }}
-        </button>
+
+        <view class="divider">
+          <text class="divider-text">其他方式登录</text>
+        </view>
+
+        <view class="social-icons">
+          <view class="icon-wrapper">
+            <u-icon name="weixin-fill" color="#333" size="24"></u-icon>
+          </view>
+          <view class="icon-wrapper">
+            <u-icon name="email" color="#333" size="24"></u-icon>
+          </view>
+          <view class="icon-wrapper">
+            <u-icon name="bell" color="#333" size="24"></u-icon>
+          </view>
+        </view>
+      </view> -->
+
+      <view class="signup-card">
+        <text>还没有登录账号？</text>
+        <text class="link" @click="go('/sign-up')">立即注册</text>
       </view>
     </view>
   </view>
@@ -39,22 +77,20 @@
 
 <script setup lang="ts">
 import useModal from "@/hooks/useModal";
-
 import { useAuthStore } from "@/stores/authStore";
 import { getUserInfoWithSpecialToken } from "@/utils/api";
 import { go } from "@/utils/common";
 import axios from "axios";
 import { ref } from "vue";
 
-// 定义状态
-const username = ref("nocobase");
-const password = ref("admin123");
+const username = ref("");
+const password = ref("");
 const loading = ref(false);
 const authStore = useAuthStore();
-// 登录处理
+
 const handleSignIn = async () => {
   if (!username.value || !password.value) {
-    // alert('提示', '请输入邮箱和密码');
+    useModal().modal("请输入账号和密码");
     return;
   }
   loading.value = true;
@@ -72,7 +108,6 @@ const handleSignIn = async () => {
     const { token } = response.data.data;
     authStore.token = token;
     await authStore.refreshAuthStore();
-    // authStore.initUserInfo();
     if (authStore.userId) {
       try {
         const response = await getUserInfoWithSpecialToken(
@@ -83,7 +118,6 @@ const handleSignIn = async () => {
           authStore.avatar =
             import.meta.env.VITE_BUCKET_ENDPOINT + res.data.avatar[0].url;
         }
-        // 存储用户创建时间
         if (res?.data?.createdAt) {
           authStore.createdAt = res.data.createdAt;
         }
@@ -91,59 +125,13 @@ const handleSignIn = async () => {
         console.error("获取用户信息失败:", error);
       }
     }
+    go("/index");
   } catch (err: any) {
     useModal().modal(err.message);
-    return;
+  } finally {
+    loading.value = false;
   }
-  go("/index");
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #ff8800;
-}
-
-.container::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: url("/static/images/title.jpg") no-repeat bottom center;
-  background-size: cover;
-}
-
-.form-container {
-  width: 80%;
-  padding: 20px;
-  z-index: 1;
-  background-color: #fff;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: -30px;
-  z-index: 0;
-}
-
-.input {
-  width: 80%;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  padding-left: 8px;
-}
-</style>
+<style scoped></style>

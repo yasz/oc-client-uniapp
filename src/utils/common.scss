@@ -121,7 +121,34 @@ $pt-values: (
 .w-full {
     width: 100%;
 }
+.full {
+    width: 100vw;
+    height: 100vh;
+}
+.bg-layer{
+    position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #F8AE3D; /* 你想要的背景色 */
+  z-index: -10;
+}
+.ab-c-x {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.ab-c-y {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
+.bg{
+    position: absolute;
+    z-index: -1;
+}
 .flex {
     display: flex;
 }
