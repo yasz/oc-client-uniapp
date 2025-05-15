@@ -33,10 +33,14 @@ onHide(() => {
   console.log("App Hide");
 });
 </script>
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</style>
 <style lang="scss">
 /* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 @import "uview-plus/index.scss";
-
 @font-face {
   font-family: "DIN-Regular";
   src: local("DIN-Regular"), local("DIN"),

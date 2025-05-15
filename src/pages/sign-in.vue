@@ -1,78 +1,59 @@
 <template>
-  <view class="full">
-    <div class="bg-layer"></div>
-    <view class="bg ab-c-x">
-      <view :style="{ transform: `scale(0.5) translateY(20rpx)` }">
-        <image
-          class="hippo"
-          src="@/static/index/signin/hippo.png"
-          mode="aspectFit"
+  <div class="min-h-screen flex flex-col justify-between bg-orange-400">
+    <div class="flex flex-col items-center mt-12">
+      <img
+        class="w-48 h-48 mb-4"
+        src="@/static/index/signin/hippo.png"
+        alt="hippo"
+      />
+      <img class="w-60 h-20" src="@/static/index/signin/logo.png" alt="logo" />
+    </div>
+    <div class="flex flex-col items-center">
+      <div class="bg-white rounded-2xl shadow-lg p-8 w-11/12 max-w-md">
+        <input
+          class="block w-full mb-4 px-4 py-2 border rounded"
+          placeholder="请输入手机号码"
         />
-      </view>
-      <view style="transform: scale(0.7)">
-        <image src="@/static/index/signin/logo.png" mode="aspectFit" />
-      </view>
-    </view>
-
-    <view class="content">
-      <!-- <view class="form-container">
-        <view class="input-group">
-          <view class="input-wrapper">
-            <u-icon name="account" size="20"></u-icon>
-            <input
-              class="input"
-              v-model="username"
-              type="text"
-              :placeholder="$t('请输入手机号码')"
-            />
-          </view>
-          <view class="input-wrapper">
-            <u-icon name="lock" size="20"></u-icon>
-            <input
-              class="input"
-              v-model="password"
-              type="password"
-              :placeholder="$t('请输入密码')"
-            />
-          </view>
-        </view>
-
-        <view class="action-row">
-          <text class="forgot-text">通过问题</text>
-          <text class="forgot-text">忘记密码？</text>
-        </view>
-
+        <input
+          class="block w-full mb-4 px-4 py-2 border rounded"
+          type="password"
+          placeholder="请输入密码"
+        />
+        <div class="flex justify-between text-sm text-gray-500 mb-4">
+          <span>通过问题</span>
+          <span>忘记密码？</span>
+        </div>
         <button
-          class="sign-in-button"
-          :disabled="loading"
-          @click="handleSignIn"
+          class="w-full py-3 bg-orange-400 text-white font-bold rounded-full mb-4"
         >
           登录 SIGN IN
         </button>
-
-        <view class="divider">
-          <text class="divider-text">其他方式登录</text>
-        </view>
-
-        <view class="social-icons">
-          <view class="icon-wrapper">
-            <u-icon name="weixin-fill" color="#333" size="24"></u-icon>
-          </view>
-          <view class="icon-wrapper">
-            <u-icon name="email" color="#333" size="24"></u-icon>
-          </view>
-          <view class="icon-wrapper">
-            <u-icon name="bell" color="#333" size="24"></u-icon>
-          </view>
-        </view>
-      </view> -->
-
-      <view class="signup-card">
-        <text>还没有登录账号？</text>
-        <text class="link" @click="go('/sign-up')">立即注册</text>
-      </view>
-    </view>
-  </view>
+        <div class="flex justify-center space-x-6 mb-4">
+          <span
+            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
+          >
+            <i class="iconfont icon-weixin"></i>
+          </span>
+          <span
+            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
+          >
+            <i class="iconfont icon-email"></i>
+          </span>
+          <span
+            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
+          >
+            <i class="iconfont icon-bell"></i>
+          </span>
+        </div>
+      </div>
+      <div
+        class="bg-white rounded-2xl shadow-lg p-4 mt-6 w-11/12 max-w-md flex justify-center text-gray-600 text-base"
+      >
+        <span>还没有登录账号？</span>
+        <span class="text-orange-400 ml-2 cursor-pointer">立即注册</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -133,5 +114,3 @@ const handleSignIn = async () => {
   }
 };
 </script>
-
-<style scoped></style>

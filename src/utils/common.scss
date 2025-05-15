@@ -29,7 +29,19 @@ $pt-values: (
         border-top-right-radius: #{ $i * 2 }rpx;
     }
 }
+$z-values: ();
 
+// 生成 -10 到 -1 的 z-index 列表
+@for $i from -10 through -1 {
+  $z-values: append($z-values, $i);
+}
+
+// 生成对应的类名
+@each $z in $z-values {
+  .z-#{$z} {
+    z-index: #{$z};
+  }
+}
 @for $i from 2 through 40 {
     $value: $i * 2;
     $pt-values: append($pt-values, $value) !global;
@@ -125,6 +137,7 @@ $pt-values: (
     width: 100vw;
     height: 100vh;
 }
+
 .bg-layer{
     position: absolute;
   top: 0;
