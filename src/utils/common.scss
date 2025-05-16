@@ -9,9 +9,7 @@
 .disable-input {
     pointer-events: none;
 }
-.text-primary {
-	color: #FB5226 !important;
-}
+
 .card2 {
     margin: 0rpx 20rpx 0;
     border-radius: 40rpx;
@@ -335,7 +333,9 @@ $z-values: ();
 .bg-primary {
     background-color: #F8AE3D;
 }
-
+.text-primary {
+	color: #F8AE3D !important;
+}
 
 .bg-protect {
     background-color: #C7EDCC;

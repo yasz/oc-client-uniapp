@@ -28,21 +28,55 @@
       </view>
     </view>
     <!-- 第四层 -->
-    <view
-      class="absolute pointer-events-none inset-0 flex-col items-center justify-center z-2"
-    >
-      <view class="w-[90%] h-[40vh] mt-[-20vh] bg-white rounded-2xl shadow-lg">
-        <span class="text-gray-400 text-sm cursor-pointer justify-self-end"
-          >忘记密码</span
+    <view class="relative inset-0 flex-col items-center justify-center z-3">
+      <view
+        class="w-[90%] h-[40vh] mt-[-103vh] bg-white rounded-2xl shadow-lg px-6 py-8 flex flex-col items-stretch"
+      >
+        <!-- 手机号输入框 -->
+        <view
+          class="flex w-[80%] mx-auto mt-20 items-center bg-gray-100 rounded-full py-10 px-10"
         >
-        <view class="w-[80%] mx-auto pt-40">
+          <u-icon
+            name="account"
+            color="#F9B33B"
+            size="22"
+            class="ml-1"
+          ></u-icon>
+          <input
+            class="flex-1 bg-transparent border-none outline-none ml-3 text-gray-700 text-base"
+            v-model="username"
+            placeholder-style="color: #bbb"
+            placeholder="请输入账号"
+            type="text"
+          />
+        </view>
+        <!-- 密码输入框 -->
+        <view
+          class="flex w-[80%] my-20 mx-auto items-center bg-gray-100 rounded-full py-10 px-10"
+        >
+          <u-icon name="lock" color="#F9B33B" size="22" class="ml-1"></u-icon>
+          <input
+            class="flex-1 bg-transparent border-none outline-none ml-3 text-gray-700 text-base"
+            placeholder-style="color: #bbb"
+            v-model="password"
+            placeholder="请输入密码"
+            type="password"
+          />
+        </view>
+        <!-- 忘记密码 -->
+        <view class="flex justify-end mb-4">
+          <span class="text-gray-400 text-sm cursor-pointer">忘记密码</span>
+        </view>
+        <!-- 登录按钮 -->
+        <view class="pt-20">
           <button
-            class="w-full py-3 rounded-full text-white font-bold text-lg"
+            class="w-[90%] py-3 rounded-full text-white font-bold text-lg"
             style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
+            @click="handleSignIn"
           >
             登录 SIGN IN
-          </button></view
-        >
+          </button>
+        </view>
       </view>
     </view>
   </view>
