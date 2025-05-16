@@ -1,59 +1,37 @@
 <template>
-  <div class="min-h-screen flex flex-col justify-between bg-orange-400">
-    <div class="flex flex-col items-center mt-12">
+  <view class="">
+    <!-- 第一层 打底色-->
+    <view class="fixed inset-0 bg-gradient-yellow z--3"></view>
+    <!-- 第二层 图片 -->
+    <view class="flex-col items-center z--2">
       <img
-        class="w-48 h-48 mb-4"
+        class="w-32 mt-[10vh]"
         src="@/static/index/signin/hippo.png"
         alt="hippo"
       />
-      <img class="w-60 h-20" src="@/static/index/signin/logo.png" alt="logo" />
-    </div>
-    <div class="flex flex-col items-center">
-      <div class="bg-white rounded-2xl shadow-lg p-8 w-11/12 max-w-md">
-        <input
-          class="block w-full mb-4 px-4 py-2 border rounded"
-          placeholder="请输入手机号码"
-        />
-        <input
-          class="block w-full mb-4 px-4 py-2 border rounded"
-          type="password"
-          placeholder="请输入密码"
-        />
-        <div class="flex justify-between text-sm text-gray-500 mb-4">
-          <span>通过问题</span>
-          <span>忘记密码？</span>
-        </div>
-        <button
-          class="w-full py-3 bg-orange-400 text-white font-bold rounded-full mb-4"
-        >
-          登录 SIGN IN
-        </button>
-        <div class="flex justify-center space-x-6 mb-4">
-          <span
-            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-          >
-            <i class="iconfont icon-weixin"></i>
-          </span>
-          <span
-            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-          >
-            <i class="iconfont icon-email"></i>
-          </span>
-          <span
-            class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center"
-          >
-            <i class="iconfont icon-bell"></i>
-          </span>
-        </div>
-      </div>
-      <div
-        class="bg-white rounded-2xl shadow-lg p-4 mt-6 w-11/12 max-w-md flex justify-center text-gray-600 text-base"
+      <div class="h-[60vh]"></div>
+      <img class="w-40" src="@/static/index/signin/logo.png" alt="logo" />
+    </view>
+    <!-- 第三层 登录框 -->
+    <view
+      class="absolute inset-0 flex flex-col items-center justify-center z-[-1]"
+    >
+      <view
+        class="relative w-[80%] h-[40vh] bg-white rounded-2xl flex items-center justify-center"
       >
-        <span>还没有登录账号？</span>
-        <span class="text-orange-400 ml-2 cursor-pointer">立即注册</span>
-      </div>
-    </div>
-  </div>
+        <text
+          class="bottom-[30rpx] t-14 absolute text-base text-gray-400 text-center"
+        >
+          还没有登录账号？立即注册
+        </text>
+      </view>
+    </view>
+    <!-- 第四层 -->
+    <view class="absolute inset-0 flex-col items-center justify-center z-2">
+      <view class="w-[90%] h-[40vh] mt-[-20vh] bg-white rounded-2xl shadow-lg">
+      </view>
+    </view>
+  </view>
 </template>
 
 <script setup lang="ts">
