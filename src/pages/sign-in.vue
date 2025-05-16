@@ -14,7 +14,7 @@
     </view>
     <!-- 第三层 登录框 -->
     <view
-      class="absolute inset-0 flex flex-col items-center justify-center z-[-1]"
+      class="absolute inset-0 flex flex-col items-center justify-center z-1"
     >
       <view
         class="relative w-[80%] h-[40vh] bg-white rounded-2xl flex items-center justify-center"
@@ -22,13 +22,27 @@
         <text
           class="bottom-[30rpx] t-14 absolute text-base text-gray-400 text-center"
         >
-          还没有登录账号？立即注册
+          还没有登录账号？
+          <text class="text-primary" @click="go('/sign-up')">立即注册</text>
         </text>
       </view>
     </view>
     <!-- 第四层 -->
-    <view class="absolute inset-0 flex-col items-center justify-center z-2">
+    <view
+      class="absolute pointer-events-none inset-0 flex-col items-center justify-center z-2"
+    >
       <view class="w-[90%] h-[40vh] mt-[-20vh] bg-white rounded-2xl shadow-lg">
+        <span class="text-gray-400 text-sm cursor-pointer justify-self-end"
+          >忘记密码</span
+        >
+        <view class="w-[80%] mx-auto pt-40">
+          <button
+            class="w-full py-3 rounded-full text-white font-bold text-lg"
+            style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
+          >
+            登录 SIGN IN
+          </button></view
+        >
       </view>
     </view>
   </view>
@@ -38,7 +52,7 @@
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/stores/authStore";
 import { getUserInfoWithSpecialToken } from "@/utils/api";
-import { go } from "@/utils/common";
+import { go, go2 } from "@/utils/common";
 import axios from "axios";
 import { ref } from "vue";
 
