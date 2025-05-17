@@ -5,20 +5,32 @@
     </view> -->
 
     <view class="welcome-section">
-      <view class="pl-30" style="position: relative; z-index: 1;">
-        <image src="/static/index/logo.png" mode="aspectFit" class="welcome-logo" />
+      <view class="pl-30" style="position: relative; z-index: 1">
+        <image
+          src="/static/index/logo.png"
+          mode="aspectFit"
+          class="welcome-logo"
+        />
       </view>
-      <view class="welcome-text pt-60" style="margin-left: -100rpx; position: relative; z-index: 2;">
+      <view
+        class="welcome-text pt-60"
+        style="margin-left: -100rpx; position: relative; z-index: 2"
+      >
         <text class="welcome-title pr-6">WELCOME</text>
         <text class="welcome-subtitle">欢迎来到Lifefunner"乐凡中文"！</text>
       </view>
-      <view style="z-index: 3;" class="donate-btn" @click="showDonatePopup">
+      <view style="z-index: 3" class="donate-btn" @click="showDonatePopup">
         <text>支持/DONATE</text>
       </view>
     </view>
 
     <view class="course-grid">
-      <view v-for="(course, index) in courses" :key="index" class="course-card" @click="showDetail('course', index)">
+      <view
+        v-for="(course, index) in courses"
+        :key="index"
+        class="course-card"
+        @click="showDetail('course', index)"
+      >
         <image :src="course.image" mode="aspectFit" class="course-icon" />
         <view class="course-text">
           <text class="course-name">{{ course.line1 }}</text>
@@ -40,7 +52,12 @@
     <view class="moments-section">
       <text class="section-title">精彩时刻</text>
       <view class="moments-grid pt-20">
-        <view v-for="(moment, index) in moments" :key="index" class="moment-card" @click="showDetail('moment', index)">
+        <view
+          v-for="(moment, index) in moments"
+          :key="index"
+          class="moment-card"
+          @click="showDetail('moment', index)"
+        >
           <image :src="moment.image" mode="aspectFill" class="moment-image" />
           <text class="moment-desc">{{ moment.description }}</text>
         </view>
@@ -53,23 +70,24 @@
         <view class="popup-title">支持/Donate</view>
         <view class="popup-divider"></view>
         <view class="donate-qr-container">
-          <image src="/static/index/wechat.png" style="width: 480rpx; height: 360rpx;" />
-          <image src="/static/index/alipay.png" style="width: 480rpx; height: 360rpx;" />
+          <image
+            src="/static/index/wechat.png"
+            style="width: 480rpx; height: 360rpx"
+          />
+          <image
+            src="/static/index/alipay.png"
+            style="width: 480rpx; height: 360rpx"
+          />
         </view>
         <view class="flex-col flex-center-column">
           <view class="t-10 text-gray">验证提示：马*乐</view>
 
-          <view class="t-12 pt-20 f-c-b">
-            感谢您的赠予！
-          </view>
+          <view class="t-12 pt-20 f-c-b"> 感谢您的赠予！ </view>
           <text class="t-12">投我以木桃，报之以琼瑶。</text>
-          <text class="t-12">
-            我们将以热忱的工作和教学回馈您的
-          </text>
+          <text class="t-12"> 我们将以热忱的工作和教学回馈您的 </text>
           <text class="t-12">信任和支持。</text>
         </view>
       </view>
-
     </uni-popup>
 
     <Layout />
@@ -77,18 +95,16 @@
 </template>
 
 <script setup lang="ts">
-import {
-  go
-} from "@/utils/common";
+import { go } from "@/utils/common";
 import { listCMSByIds } from "@/utils/api";
 
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
 import Layout from "../layout.vue";
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
 const { t, locale } = useI18n();
-const searchKeyword = ref('');
-const currentTab = ref('home');
+const searchKeyword = ref("");
+const currentTab = ref("home");
 
 interface Course {
   line1: string;
@@ -106,7 +122,9 @@ interface CMSItem {
 
 const courses = ref<Course[]>([]);
 const cmsData = ref<CMSItem[]>([]);
-const moments = ref<{ image: string; description: string; content: string }[]>([]);
+const moments = ref<{ image: string; description: string; content: string }[]>(
+  []
+);
 
 // 获取所有课程信息
 const fetchCourses = async () => {
@@ -118,27 +136,33 @@ const fetchCourses = async () => {
       courses.value = response.data.map((item: any) => ({
         line1: item.title,
         line2: item.sub_title,
-        image: item.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}` : ''
+        image: item.cover?.[0]
+          ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}`
+          : "",
       }));
     }
   } catch (error) {
-    console.error('Failed to fetch courses:', error);
+    console.error("Failed to fetch courses:", error);
   }
 };
 
 // 获取精彩时刻
 const fetchMoments = async () => {
   try {
-    const response: any = await listCMSByIds([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
+    const response: any = await listCMSByIds([
+      6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+    ]);
     if (response?.data) {
       moments.value = response.data.map((item: any) => ({
-        image: item.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}` : '',
+        image: item.cover?.[0]
+          ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${item.cover[0].url}`
+          : "",
         description: item.title,
-        content: item.content
+        content: item.content,
       }));
     }
   } catch (error) {
-    console.error('Failed to fetch moments:', error);
+    console.error("Failed to fetch moments:", error);
   }
 };
 
@@ -147,7 +171,6 @@ onMounted(() => {
   fetchCourses();
   fetchMoments();
 });
-
 
 interface DetailItem {
   icon: string;
@@ -159,15 +182,19 @@ const currentDetail = ref<DetailItem | null>(null);
 const popup: any = ref(null);
 const donatePopup: any = ref(null);
 
-const showDetail = async (type: 'course' | 'moment', index: number) => {
+const showDetail = async (type: "course" | "moment", index: number) => {
   try {
-    if (type === 'course') {
+    if (type === "course") {
       if (cmsData.value[index]) {
         const courseDetail = cmsData.value[index];
         currentDetail.value = {
-          icon: courseDetail.cover?.[0] ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${courseDetail.cover[0]?.url}` : '',
+          icon: courseDetail.cover?.[0]
+            ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${
+                courseDetail.cover[0]?.url
+              }`
+            : "",
           title: courseDetail.title + courseDetail.sub_title,
-          description: courseDetail.content
+          description: courseDetail.content,
         };
       }
     } else {
@@ -176,21 +203,20 @@ const showDetail = async (type: 'course' | 'moment', index: number) => {
         currentDetail.value = {
           icon: momentDetail.image,
           title: momentDetail.description,
-          description: momentDetail.content
+          description: momentDetail.content,
         };
       }
     }
     popup.value?.open();
   } catch (error) {
-    console.error('Failed to show detail:', error);
+    console.error("Failed to show detail:", error);
   }
 };
 
 const showDonatePopup = () => {
   donatePopup.value?.open();
-  console.log(donatePopup.value)
+  console.log(donatePopup.value);
 };
-
 </script>
 
 <style>
@@ -201,12 +227,12 @@ const showDonatePopup = () => {
 }
 
 .search-bar {
-  background-color: #F8AE3D;
+  background-color: #f8ae3d;
   padding: 20rpx;
 }
 
 .welcome-section {
-  background: linear-gradient(180deg, #FFB800 0%, #ff9d00 100%);
+  background: linear-gradient(180deg, #ffb800 0%, #ff9d00 100%);
 
   position: relative;
   display: flex;
@@ -239,7 +265,7 @@ const showDonatePopup = () => {
 .welcome-subtitle {
   font-size: 28rpx;
   font-weight: 500;
-  color: #8B4513;
+  color: #8b4513;
   line-height: 1.4;
   letter-spacing: 1rpx;
   display: block;
@@ -377,7 +403,7 @@ const showDonatePopup = () => {
 }
 
 .tab-item.active {
-  color: #F8AE3D;
+  color: #f8ae3d;
 }
 
 .tab-icon {
@@ -411,7 +437,7 @@ const showDonatePopup = () => {
 
 .popup-divider {
   height: 4rpx;
-  background: #FFB800;
+  background: #ffb800;
   width: 60rpx;
   margin: 0 auto 30rpx;
 }

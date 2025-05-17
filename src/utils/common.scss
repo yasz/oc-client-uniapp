@@ -329,7 +329,9 @@ $z-values: ();
 .bg-gray {
     background: linear-gradient(to right, #d6d9df, #d3f8ff);
 }
-
+.bold{
+    -webkit-text-stroke: 3px #754D39;
+}
 .bg-primary {
     background-color: #F8AE3D;
 }

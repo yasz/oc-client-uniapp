@@ -43,7 +43,7 @@
             class="ml-1"
           ></u-icon>
           <input
-            class="flex-1 bg-transparent border-none outline-none ml-3 text-gray-700 text-base"
+            class="flex-1 t-16 bg-transparent border-none outline-none ml-3 text-gray-700 text-20"
             v-model="username"
             placeholder-style="color: #bbb"
             placeholder="请输入账号"
@@ -56,7 +56,7 @@
         >
           <u-icon name="lock" color="#F9B33B" size="22" class="ml-1"></u-icon>
           <input
-            class="flex-1 bg-transparent border-none outline-none ml-3 text-gray-700 text-base"
+            class="flex-1 ml-3 t-16 text-gray-700 text-base"
             placeholder-style="color: #bbb"
             v-model="password"
             placeholder="请输入密码"
@@ -65,7 +65,9 @@
         </view>
         <!-- 忘记密码 -->
         <view class="flex justify-end mb-4">
-          <span class="text-gray-400 text-sm cursor-pointer">忘记密码</span>
+          <span class="text-gray-400 text-sm cursor-pointer mr-12"
+            >忘记密码</span
+          >
         </view>
         <!-- 登录按钮 -->
         <view class="pt-20">
