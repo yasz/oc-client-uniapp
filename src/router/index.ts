@@ -125,6 +125,18 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/teacher-sign-up`,
+    component: __dynamicImportComponent__(`@/pages/teacher-sign-up.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `sign-up`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "sign-up",
+      },
+    }),
+  },
+  {
     path: `/my`,
     component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
       pageType: `top`,
@@ -243,7 +255,16 @@ router.beforeEach((to, from) => {
 });
 
 function checkAuth(url: string) {
-  if (["/sign-in", "/my", "/sign-up"].includes(url)) {
+  if (
+    [
+      "/sign-in",
+      "/sign-in",
+      "/my",
+      "/sign-up",
+      "/teacher-sign-up",
+      "/student-sign-up",
+    ].includes(url)
+  ) {
     // 白名单页面，不需要校验token
     return true;
   }
