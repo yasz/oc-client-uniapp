@@ -340,3 +340,25 @@ export const getUserInfoWithSpecialToken = async (userId: number) => {
     }
   );
 };
+
+export async function postTeacherSignUp(data: any) {
+  const SPECIAL_TOKEN = import.meta.env.VITE_SPECIAL_TOKEN;
+  const url = "https://a.praise.site:3002/api/teachers:create";
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        accept: "application/json, text/plain, */*",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        authorization: `Bearer ${SPECIAL_TOKEN}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+      credentials: "include",
+      mode: "cors",
+    });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+}
