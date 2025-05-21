@@ -31,6 +31,13 @@
         />
         <input
           class="input-item"
+          v-model="formModel.phone"
+          placeholder="手机号码(必填)"
+          required
+          placeholder-style="color: #d1d5db;"
+        />
+        <input
+          class="input-item"
           v-model="formModel.password"
           type="password"
           placeholder="请输入密码(必填)"
@@ -154,12 +161,13 @@ const loading = ref(false);
 const formModel = ref({
   username: "test1",
   email: "test@a.com",
+  phone: "",
   password: "123123",
   confirmPassword: "123123",
   realname: "",
   contact: "",
-  gender: "",
-  birth: "",
+  gender: "女",
+  birth: "1991-01-01",
   english_level: "",
   religion: "",
   experience: "",
@@ -167,7 +175,7 @@ const formModel = ref({
   remark: "",
 });
 
-const genderOptions = ["男", "女", "其他"];
+const genderOptions = ["男", "女"];
 const religionOptions = ["无", "佛教", "基督教", "伊斯兰教", "其他"];
 const englishLevelOptions = ["CET4以下", "CET4", "CET6", "CET6以上"];
 
@@ -224,15 +232,16 @@ const submitForm = async () => {
       username: formModel.value.username,
       email: formModel.value.email,
       password: formModel.value.password,
-      realname: formModel.value.realname,
-      //   contact: formModel.value.contact,
-      //   gender: formModel.value.gender,
-      //   birth: formModel.value.birth,
-      //   english_level: formModel.value.english_level,
-      //   religion: formModel.value.religion,
-      //   experience: formModel.value.experience,
-      //   chinese_level: formModel.value.chinese_level,
-      //   remark: formModel.value.remark,
+      name: formModel.value.realname,
+      contact: formModel.value.contact,
+      gender: formModel.value.gender,
+      phone: formModel.value.phone,
+      birth: formModel.value.birth,
+      english_level: formModel.value.english_level,
+      religion: formModel.value.religion,
+      experience: formModel.value.experience,
+      chinese_level: formModel.value.chinese_level,
+      remark: formModel.value.remark,
     });
     if (res.ok) {
       await modal("提交成功！");
