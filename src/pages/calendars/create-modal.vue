@@ -132,11 +132,6 @@ const fetchTimezones = async () => {
         headers: {
           accept: "application/json",
           authorization: `Bearer ${authStore.token}`,
-          "x-hostname": "a.praise.site",
-          "x-locale": "zh-CN",
-          "x-role": "admin",
-          "x-timezone": "+08:00",
-          "x-with-acl-meta": "true",
         },
       }
     );
