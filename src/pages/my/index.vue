@@ -1,63 +1,75 @@
 <template>
   <view>
     <!-- 头部区域 -->
-    <view class="header bg-primary px-20 pt-20">
+    <view class="bg-primary px-5 pt-5 rounded-b-[40rpx]">
       <view class="flex justify-end">
         <image
           src=" /static/my/setting.png"
           mode="aspectFit"
-          class="pl-30 pt-6"
-          style="width: 70rpx; height: 70rpx"
+          class="pl-8 pt-2 w-[70rpx] h-[70rpx]"
           @click="go('/my/profile')"
         />
       </view>
-      <view class="header-content">
-        <view class="user-profile">
+      <view class="flex justify-between items-start mb-8">
+        <view class="flex items-center gap-5">
           <u-avatar
             :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
             size="140rpx"
             shape="circle"
             mode="aspectFill"
           ></u-avatar>
-          <view class="user-text">
-            <view class="user-name">{{
+          <view class="text-white">
+            <view class="text-[36rpx] font-bold mb-2">{{
               useAuthStore().token ? useAuthStore().nickname : "MARY"
             }}</view>
-            <view class="user-days" v-if="day !== null"
+            <view class="text-[24rpx] opacity-90" v-if="day !== null"
               >加入Lifefunner的第{{ day }}天</view
             >
           </view>
         </view>
-        <view class="header-icons"> </view>
+        <view></view>
       </view>
-
       <HippoCard />
     </view>
 
     <!-- 菜单按钮区域 -->
-    <view class="menu-list">
+    <view
+      class="m-[20rpx] bg-white rounded-[24rpx] shadow-[0_0_20rpx_rgba(252,225,87,0.3)]"
+    >
       <view
-        class="menu-item"
-        v-for="i in getVisibleMenuItems()"
+        v-for="(i, idx) in getVisibleMenuItems()"
         :key="i"
+        class="flex items-center py-[20rpx] px-[24rpx] border-b border-[#eeeeee] last:border-b-0"
         @click="handleMenuClick(i)"
       >
-        <view class="menu-icon-wrapper">
+        <view
+          class="w-[64rpx] h-[64rpx] border-[3rpx] border-[#fce157] rounded-full flex justify-center items-center mr-[16rpx] bg-transparent"
+        >
           <image
             :src="`/static/my/i${i}.png`"
             mode="aspectFit"
-            class="menu-icon"
+            class="w-[36rpx] h-[36rpx]"
           />
         </view>
-        <text class="menu-text">{{ getMenuText(i) }}</text>
-        <view class="menu-arrow">
-          <text v-if="i === 1">查看收藏课程</text>
-          <text v-else-if="i === 2">新消息查看</text>
-          <text v-else-if="i === 3">去联系</text>
-          <text v-else-if="i === 4">去查看</text>
-          <text v-else-if="i === 5">去查看</text>
-          <text v-else>去查看</text>
-          <text class="arrow pl-6"> ＞</text>
+        <text class="flex-1 text-[28rpx] text-[#333]">{{
+          getMenuText(i)
+        }}</text>
+        <view class="flex items-center gap-[8rpx] text-[#bbbbbb] text-[22rpx]">
+          <template v-if="i === 2">
+            <view
+              v-if="unreadCount > 0"
+              class="w-[16rpx] h-[16rpx] bg-red-500 rounded-full"
+            ></view>
+            <text>新消息查看</text>
+          </template>
+          <template v-else>
+            <text>
+              <span v-if="i === 1">查看收藏课程</span>
+              <span v-else-if="i === 3">去联系</span>
+              <span v-else>去查看</span>
+            </text>
+          </template>
+          <text class="pl-[6rpx]">＞</text>
         </view>
       </view>
     </view>
@@ -72,7 +84,7 @@ import { go } from "@/utils/common";
 import Layout from "../layout.vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref, onMounted, watch } from "vue";
-import { listStudentsByTeacherId } from "@/utils/api";
+import { listStudentsByTeacherId, listMessages } from "@/utils/api";
 import HippoCard from "@/components/HippoCard.vue";
 import dayjs from "dayjs";
 
@@ -90,6 +102,7 @@ type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
 const hasStudents = ref(false);
 const day = ref<number | null>(null);
 const authStore = useAuthStore();
+const unreadCount = ref(0);
 
 const calculateDays = () => {
   if (authStore.createdAt) {
@@ -99,8 +112,28 @@ const calculateDays = () => {
   }
 };
 
+// 获取未读消息数量
+const fetchUnreadCount = async () => {
+  try {
+    const response = await listMessages(authStore.userId);
+    if (response?.data) {
+      unreadCount.value = response.data.filter(
+        (msg: any) => !msg.status
+      ).length;
+    }
+  } catch (error) {
+    console.error("获取未读消息数量失败:", error);
+  }
+};
+
 onMounted(() => {
   calculateDays();
+});
+
+// Use onShow from uni-app
+import { onShow } from "@dcloudio/uni-app";
+onShow(() => {
+  fetchUnreadCount();
 });
 
 watch(
@@ -169,110 +202,3 @@ const handleMenuClick = (index: number) => {
   }
 };
 </script>
-
-<style>
-.header {
-  border-radius: 0 0 40rpx 40rpx;
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 30rpx;
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 20rpx;
-}
-
-.user-text {
-  color: #fff;
-}
-
-.user-name {
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.user-days {
-  font-size: 24rpx;
-  opacity: 0.9;
-}
-
-.hippo-card {
-  background-color: #fce157;
-  border-radius: 40rpx 40rpx 0 0;
-}
-
-.hippo-image {
-  width: 120rpx;
-  height: 120rpx;
-  margin-right: 20rpx;
-}
-
-.hippo-text {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-}
-
-.puzzle-piece {
-  width: 60rpx;
-  height: 60rpx;
-  position: absolute;
-  right: 30rpx;
-}
-
-.menu-list {
-  margin: 30rpx;
-  background-color: #fff;
-  border-radius: 20rpx;
-  overflow: hidden;
-  box-shadow: 0 0 20rpx rgba(200, 200, 200, 0.5);
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 30rpx;
-  border-bottom: 1rpx solid rgba(238, 238, 238, 0.6);
-  background-color: #fff;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-icon-wrapper {
-  width: 80rpx;
-  height: 80rpx;
-  border: 3rpx solid #fce157;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20rpx;
-  background-color: transparent;
-}
-
-.menu-icon {
-  width: 44rpx;
-  height: 44rpx;
-}
-
-.menu-text {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.menu-arrow {
-  color: #bbbbbb;
-  font-size: 22rpx;
-  display: flex;
-}
-</style>
