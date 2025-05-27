@@ -241,6 +241,18 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/my/calendars/create`,
+    component: __dynamicImportComponent__(`@/pages/calendars/create.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "create-calendar",
+      },
+    }),
+  },
+  {
     path: `/my/assignment-list`,
     component: __dynamicImportComponent__(`@/pages/assignments/list.vue`, {
       pageType: `top`,

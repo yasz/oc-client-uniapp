@@ -24,10 +24,12 @@
                 :key="color"
                 :style="{
                   backgroundColor: color,
-                  borderColor:
-                    formData.mark_color === color ? '#333' : 'transparent',
+                  border:
+                    formData.mark_color === color
+                      ? '3px solid #333'
+                      : '3px solid transparent',
                 }"
-                class="w-[30px] h-[30px] rounded-full border-2 cursor-pointer"
+                class="w-[30px] h-[30px] rounded-full cursor-pointer"
                 @click="formData.mark_color = color"
               ></view>
             </view>
@@ -44,18 +46,28 @@
           </view>
           <view class="mb-[20px]">
             <text class="block mb-[8px] text-[14px] text-[#333]">时区</text>
-            <view
-              class="flex justify-between items-center px-[12px] py-[8px] bg-white rounded-[4px] border border-[#dcdfe6] cursor-pointer"
-              @click="showTimezonePicker = true"
+            <picker
+              :range="timezones.map((t) => t.name)"
+              :value="
+                selectedTimezone
+                  ? timezones.findIndex((t) => t.id === selectedTimezone.id)
+                  : 0
+              "
+              @change="
+                (e) => {
+                  const idx = e.detail.value;
+                  selectedTimezone.value = timezones.value[idx];
+                  formData.value.timezone_id = selectedTimezone.value.id;
+                }
+              "
             >
-              <text>{{ selectedTimezone?.name || "选择时区" }}</text>
-              <text class="text-[12px] text-[#909399]">▼</text>
-            </view>
-            <u-picker
-              v-model="showTimezonePicker"
-              :columns="[timezones.map((t) => t.name)]"
-              @confirm="handleTimezoneConfirm"
-            />
+              <view
+                class="flex justify-between items-center px-[12px] py-[8px] bg-white rounded-[4px] border border-[#dcdfe6] cursor-pointer"
+              >
+                <text>{{ selectedTimezone?.name || "选择时区" }}</text>
+                <text class="text-[12px] text-[#909399]">▼</text>
+              </view>
+            </picker>
           </view>
           <view class="mb-[20px]">
             <text class="block mb-[8px] text-[14px] text-[#333]"
@@ -100,6 +112,7 @@ const emit = defineEmits<{
 const authStore = useAuthStore();
 const timezones = ref<Timezone[]>([]);
 const selectedTimezone = ref<Timezone | null>(null);
+const showTimezonePicker = ref(false);
 
 const colors = [
   "#F8AE3D", // 橙色

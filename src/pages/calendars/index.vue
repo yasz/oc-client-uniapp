@@ -51,7 +51,7 @@ import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
 import CalendarModal from "./list-modal.vue";
-import CreateModal from "./create-modal.vue";
+import CreateModal from "./create.vue";
 
 interface Meeting {
   id: number;
@@ -95,18 +95,6 @@ const selectedDate = ref<string | null>(null);
 const selectedDateMeetings = ref<CalendarItem[]>([]);
 const showCreateModal = ref(false);
 const isTeacher = ref(false);
-
-// 格式化日期时间
-const formatDateTime = (dateTime: string) => {
-  return dayjs(dateTime).format("YYYY-MM-DD HH:mm");
-};
-
-// 计算会议时长
-const getDuration = (start: string, end: string) => {
-  const startTime = dayjs(start);
-  const endTime = dayjs(end);
-  return endTime.diff(startTime, "minute");
-};
 
 // 处理日期选择
 const handleDateChoose = (event: any) => {
