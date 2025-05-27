@@ -38,7 +38,7 @@
         <div class="text-base text-gray-900 font-medium">
           yangjiahao@outlook.com
         </div>
-        <div class="text-xs text-gray-400">技术问题</div>
+        <div class="text-xs text-gray-400">平台技术问题</div>
       </div>
       <div class="text-xs text-gray-400">&gt;</div>
     </div>

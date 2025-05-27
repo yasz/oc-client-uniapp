@@ -1,67 +1,73 @@
 <template>
-  <u-popup :show="show" @close="handleClose" mode="bottom">
-    <view class="container bg-primary">
-      <view class="popup-content bg-primary">
-        <view class="modal-content">
-          <view class="form-item">
-            <text class="label">会议名称</text>
-            <u-input v-model="formData.title" placeholder="请输入会议名称" />
+  <u-popup :show="show" mode="bottom" @close="handleClose">
+    <view class="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+      <view
+        class="w-full bg-white rounded-t-[48px] p-[20px] max-h-[70vh] overflow-y-auto"
+      >
+        <view class="pt-[20px]">
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]">标题</text>
+            <u-input v-model="formData.title" placeholder="请输入标题" />
           </view>
-
-          <view class="form-item">
-            <text class="label">会议链接</text>
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]">会议链接</text>
             <u-input
               v-model="formData.meeting_link"
               placeholder="请输入会议链接"
             />
           </view>
-
-          <view class="form-item">
-            <text class="label">标记颜色</text>
-            <view class="color-picker">
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]">颜色标记</text>
+            <view class="flex gap-[10px] flex-wrap">
               <view
                 v-for="color in colors"
                 :key="color"
-                class="color-item"
-                :style="{ backgroundColor: color }"
-                :class="{ active: formData.mark_color === color }"
+                :style="{
+                  backgroundColor: color,
+                  borderColor:
+                    formData.mark_color === color ? '#333' : 'transparent',
+                }"
+                class="w-[30px] h-[30px] rounded-full border-2 cursor-pointer"
                 @click="formData.mark_color = color"
-              />
+              ></view>
             </view>
           </view>
-
-          <view class="form-item">
-            <text class="label">时区</text>
-            <u-picker
-              :columns="[timezones.map((t) => t.name)]"
-              @confirm="handleTimezoneConfirm"
-              :defaultIndex="[8]"
-            >
-              <view class="picker-trigger">
-                <text>{{ selectedTimezone?.name || "请选择时区" }}</text>
-                <text class="arrow">▼</text>
-              </view>
-            </u-picker>
-          </view>
-
-          <view class="form-item">
-            <text class="label">会议时间</text>
-            <uni-datetime-picker
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]">会议时间</text>
+            <u-datetime-picker
               v-model="formData.meeting_time"
               type="datetime"
-              :start="minDate"
+              :min-date="minDate"
+              :max-date="maxDate"
               @change="handleDateTimeChange"
             />
           </view>
-
-          <view class="form-item">
-            <text class="label">持续时间（分钟）</text>
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]">时区</text>
+            <view
+              class="flex justify-between items-center px-[12px] py-[8px] bg-white rounded-[4px] border border-[#dcdfe6] cursor-pointer"
+              @click="showTimezonePicker = true"
+            >
+              <text>{{ selectedTimezone?.name || "选择时区" }}</text>
+              <text class="text-[12px] text-[#909399]">▼</text>
+            </view>
+            <u-picker
+              v-model="showTimezonePicker"
+              :columns="[timezones.map((t) => t.name)]"
+              @confirm="handleTimezoneConfirm"
+            />
+          </view>
+          <view class="mb-[20px]">
+            <text class="block mb-[8px] text-[14px] text-[#333]"
+              >持续时间（分钟）</text
+            >
             <u-number-box v-model="formData.duration" :min="15" :step="15" />
           </view>
-
-          <view class="button-group">
-            <u-button type="primary" @click="handleSubmit">创建</u-button>
-            <u-button @click="handleClose">取消</u-button>
+          <view class="flex gap-[10px] mt-[20px]">
+            <u-button type="primary" class="flex-1" @click="handleSubmit"
+              >创建</u-button
+            >
+            <u-button class="flex-1" @click="handleClose">取消</u-button>
           </view>
         </view>
       </view>
@@ -180,74 +186,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.container {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.popup-content {
-  border-radius: 0 48px 0 0;
-  padding: 20px;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.modal-content {
-  padding-top: 20px;
-}
-
-.form-item {
-  margin-bottom: 20px;
-
-  .label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #333;
-  }
-}
-
-.color-picker {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.color-item {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-
-  &.active {
-    border-color: #333;
-  }
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-
-  .u-button {
-    flex: 1;
-  }
-}
-
-.picker-trigger {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #fff;
-  border-radius: 4px;
-  border: 1px solid #dcdfe6;
-  cursor: pointer;
-
-  .arrow {
-    font-size: 12px;
-    color: #909399;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
