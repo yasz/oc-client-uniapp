@@ -376,3 +376,49 @@ export async function postTeacherSignUp(data: any) {
     throw err;
   }
 }
+
+export const listMessages = async (receiverId?: number) => {
+  const filter = receiverId
+    ? `{"$and":[{"receiver_id":{"id":{"$eq":${receiverId}}}}]}`
+    : "{}";
+  const url = `messages:list?pageSize=20&sort=-created_at&appends[]=sender_id&appends[]=receiver_id&filter=${filter}`;
+
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const createMessage = async (data: {
+  sender_id: number;
+  receiver_id: number;
+  content: string;
+  title?: string;
+}) => {
+  const url = `messages:create`;
+  try {
+    const response = await postAPI(url, data);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+export const updateMessage = async (messageId: number) => {
+  const url = `messages:update?filterByTk=${messageId}`;
+  try {
+    const response = await postAPI(url, {
+      status: true,
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
