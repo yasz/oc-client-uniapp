@@ -56,7 +56,6 @@
           v-for="(moment, index) in moments"
           :key="index"
           class="moment-card"
-          @click="showDetail('moment', index)"
         >
           <image :src="moment.image" mode="aspectFill" class="moment-image" />
           <text class="moment-desc">{{ moment.description }}</text>
