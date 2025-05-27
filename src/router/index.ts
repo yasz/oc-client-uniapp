@@ -175,6 +175,19 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/my/messages`,
+    component: __dynamicImportComponent__(`@/pages/my/messages.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "messages",
+        navigationBarTitleText: `系统提醒`,
+      },
+    }),
+  },
+  {
     path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
       pageType: `top`,

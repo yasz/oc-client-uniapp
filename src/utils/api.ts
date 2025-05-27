@@ -381,7 +381,7 @@ export const listMessages = async (receiverId?: number) => {
   const filter = receiverId
     ? `{"$and":[{"receiver_id":{"id":{"$eq":${receiverId}}}}]}`
     : "{}";
-  const url = `messages:list?pageSize=20&sort=-created_at&appends[]=sender_id&appends[]=receiver_id&filter=${filter}`;
+  const url = `messages:list?pageSize=20&sort=-createdAt&appends[]=sender_id&appends[]=receiver_id&filter=${filter}`;
 
   try {
     const response = await getAPI(url, null);

@@ -137,7 +137,7 @@ const menuTexts: Record<MenuIndex, string> = {
 
 const menuRoutes: Record<MenuIndex, string> = {
   1: "/my/favorites",
-  2: "/my/notifications",
+  2: "/my/messages",
   3: "/my/contact",
   4: "/my/calendar-list",
   5: "/my/assignment-list",

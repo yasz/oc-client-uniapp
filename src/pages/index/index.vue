@@ -94,7 +94,6 @@
 </template>
 
 <script setup lang="ts">
-import { go } from "@/utils/common";
 import { listCMSByIds } from "@/utils/api";
 
 import { useI18n } from "vue-i18n";
