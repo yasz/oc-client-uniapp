@@ -341,9 +341,23 @@ export const getUserInfoWithSpecialToken = async (userId: number) => {
   );
 };
 
+// 获取时区列表
+export async function getTimezoneList() {
+  try {
+    const response = await getAPIAxios(
+      `dim_timezone:list?pageSize=20&filter=%7B%7D`,
+      null
+    );
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+// 教师注册
 export async function postTeacherSignUp(data: any) {
   const SPECIAL_TOKEN = import.meta.env.VITE_SPECIAL_TOKEN;
-  const url = "https://a.praise.site:3002/api/teachers:create";
+  const url = `${import.meta.env.VITE_API_ENDPOINT}/teachers:create`;
   try {
     const res = await fetch(url, {
       method: "POST",

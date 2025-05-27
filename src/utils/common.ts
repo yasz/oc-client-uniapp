@@ -1,8 +1,6 @@
 import { useAuthStore } from "@/stores/authStore";
 import axios from "axios";
 
-export const bucketURL = "https://a.praise.site:3003/ps13";
-
 /**
  * 解析页面参数
  * @param { String } url 待解析地址，可为空（默认解析当前url)

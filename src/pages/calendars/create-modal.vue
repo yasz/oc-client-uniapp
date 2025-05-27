@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import dayjs from "dayjs";
-import { createMeeting } from "@/utils/api";
+import { createMeeting, getTimezoneList } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 
 interface Timezone {
@@ -126,17 +126,8 @@ const maxDate = computed(() => {
 // 获取时区列表
 const fetchTimezones = async () => {
   try {
-    const response = await fetch(
-      "https://a.praise.site:3002/api/dim_timezone:list?pageSize=20&filter=%7B%7D",
-      {
-        headers: {
-          accept: "application/json",
-          authorization: `Bearer ${authStore.token}`,
-        },
-      }
-    );
-    const data = await response.json();
-    timezones.value = data.data;
+    timezones.value = (await getTimezoneList()).data;
+
     // 默认选择 UTC+8
     selectedTimezone.value =
       timezones.value.find((t) => t.value === 8) || timezones.value[0];

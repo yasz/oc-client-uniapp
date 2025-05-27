@@ -54,8 +54,6 @@
   </view>
 </template>
 <script>
-import { bucketURL } from "@/utils/common";
-
 import calendar from "./calendar";
 import dayjs from "dayjs";
 
@@ -114,8 +112,6 @@ export default {
   },
   data() {
     return {
-      // labels:
-      bucketURL: bucketURL,
       curDate: dayjs().format("YYYY/M/D"),
       active: "",
       rows: [0, 1, 2, 3, 4, 5, 6],

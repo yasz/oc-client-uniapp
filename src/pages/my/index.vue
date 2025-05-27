@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/authStore";
-import { bucketURL, go } from "@/utils/common";
+import { go } from "@/utils/common";
 import Layout from "../layout.vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref, onMounted, watch } from "vue";
