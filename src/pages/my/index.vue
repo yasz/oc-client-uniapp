@@ -33,17 +33,21 @@
     </view>
 
     <!-- 菜单按钮区域 -->
-    <view
-      class="m-[20rpx] bg-white rounded-[24rpx] shadow-[0_0_20rpx_rgba(252,225,87,0.3)]"
-    >
+    <view class="m-[20rpx] bg-white rounded-[24rpx] shadow">
       <view
         v-for="(i, idx) in getVisibleMenuItems()"
         :key="i"
-        class="flex items-center py-[20rpx] px-[24rpx] border-b border-[#eeeeee] last:border-b-0"
+        class="flex items-center py-[20rpx] px-[24rpx]"
+        :style="
+          idx !== getVisibleMenuItems().length - 1
+            ? 'border-bottom: 1px solid #f0f0f0;'
+            : ''
+        "
         @click="handleMenuClick(i)"
       >
         <view
-          class="w-[64rpx] h-[64rpx] border-[3rpx] border-[#fce157] rounded-full flex justify-center items-center mr-[16rpx] bg-transparent"
+          class="w-[64rpx] h-[64rpx] rounded-full flex justify-center items-center mr-[16rpx]"
+          :style="'border: 3rpx solid #fce157;'"
         >
           <image
             :src="`/static/my/i${i}.png`"
