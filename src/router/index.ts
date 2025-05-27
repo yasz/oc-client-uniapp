@@ -152,9 +152,28 @@ const soliRoutes = [
     path: `/my/profile`,
     component: __dynamicImportComponent__(`@/pages/my/profile.vue`, {
       pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "contact",
+        // navigationBarTitleText: ``,
+      },
     }),
   },
-
+  {
+    path: `/my/contact`,
+    component: __dynamicImportComponent__(`@/pages/my/contact.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "contact",
+        navigationBarTitleText: `联系我们`,
+      },
+    }),
+  },
   {
     path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
