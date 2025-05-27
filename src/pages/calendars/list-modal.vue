@@ -1,43 +1,60 @@
 <template>
-  <u-popup :show="localShow" @close="localShow = false" mode="bottom">
-    <view class="container bg-primary">
-      <view class="popup-content bg-primary">
-        <view class="modal-content" v-if="meetings.length">
+  <u-popup
+    :show="localShow"
+    @close="localShow = false"
+    mode="bottom"
+    :overlay="false"
+  >
+    <view>
+      <view class="rounded-t-[48rpx] p-[30rpx] bg-white">
+        <view v-if="meetings.length" class="pt-[20rpx]">
           <view
             v-for="meeting in meetings"
             :key="meeting.id"
-            class="meeting-item"
-            :style="{ '--mark-color': meeting.color }"
+            class="relative rounded-[26rpx] py-[20rpx] pl-[120rpx] pr-[20rpx] mb-[16rpx] overflow-hidden"
+            style="border: 2px solid #f0f0f0"
           >
-            <view class="justify-between">
+            <!-- 模拟 ::before 标记色条 -->
+            <view
+              class="absolute top-0 bottom-0 left-0 w-[100rpx]"
+              :style="{ backgroundColor: meeting.color }"
+            ></view>
+
+            <view class="flex justify-between">
               <view>
-                <view class="delete-btn" @click="handleDelete(meeting)">
-                  <text class="delete-icon">-</text>
+                <view class="" @click="handleDelete(meeting)">
+                  <text class="text-[10rpx] text-[#aaa]">取消会议</text>
                 </view>
-                <text class="t-16">{{ meeting.title }} 会议时间：</text>
-                <view class="flex-col t-12 text-gray">
+                <text class="text-[32rpx] font-bold"
+                  >{{ meeting.title }} 会议时间：</text
+                >
+                <view
+                  class="flex flex-col text-[24rpx] text-gray-500 mt-[6rpx]"
+                >
                   <text>{{ formatDateTime(meeting.start) }}</text>
-                  <view>
-                    <text class="label">链接：</text>
+                  <view class="flex mt-[4rpx]">
+                    <text class="mr-[6rpx]">链接：</text>
                     <text
-                      class="value link"
+                      class="text-blue-500 underline"
                       @click="handleLinkClick(meeting)"
-                      >{{ meeting.meeting_link }}</text
                     >
+                      {{ meeting.meeting_link }}
+                    </text>
                   </view>
                 </view>
               </view>
-              <view class="flex-col baseline">
+
+              <view class="flex flex-col items-center justify-start">
                 <image
-                  class="student-avatar"
+                  class="w-[48px] h-[48px] rounded-full"
                   mode="aspectFill"
                   :src="getAvatarUrl(meeting.student.avatar)"
                 />
-                <text class="t-12 text-gray">{{
+                <text class="text-[24rpx] text-gray-500 mt-[4rpx]">{{
                   meeting.student.nickname
                 }}</text>
-              </view></view
-            >
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -48,7 +65,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import dayjs from "dayjs";
-import { go } from "@/utils/common";
+
 import { deleteMeeting } from "@/utils/api";
 
 interface Meeting {
@@ -134,91 +151,30 @@ const handleLinkClick = (meeting: Meeting) => {
 };
 
 const handleDelete = async (meeting: Meeting) => {
-  try {
-    await deleteMeeting(meeting.id);
-    emit("delete", meeting);
-    uni.showToast({
-      title: "删除成功",
-      icon: "success",
-    });
-  } catch (error) {
-    uni.showToast({
-      title: "删除失败",
-      icon: "error",
-    });
-  }
+  uni.showModal({
+    title: "取消会议",
+    content: "确定要取消会议吗？",
+    success: async (res) => {
+      if (res.confirm) {
+        try {
+          await deleteMeeting(meeting.id);
+          emit("delete", meeting);
+          uni.showToast({
+            title: "删除成功",
+            icon: "success",
+          });
+        } catch (error) {
+          uni.showToast({
+            title: "删除失败",
+            icon: "error",
+          });
+        }
+      }
+    },
+  });
 };
 
 const getAvatarUrl = (avatar: Array<{ url: string }>) => {
   return import.meta.env.VITE_BUCKET_ENDPOINT + (avatar[0]?.url || "");
 };
 </script>
-
-<style lang="scss" scoped>
-.container {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.popup-content {
-  border-radius: 0 48px 0 0;
-  padding: 20px;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.modal-content {
-  padding-top: 20px;
-}
-
-.student-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.meeting-item {
-  background-color: #fff;
-  border-radius: 26px;
-  padding: 10px;
-  padding-left: 120rpx;
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 100rpx;
-    background-color: var(--mark-color);
-  }
-}
-
-.delete-btn {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f5f5;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.delete-icon {
-  font-size: 20px;
-  color: #666;
-  line-height: 1;
-}
-
-.meeting-title {
-  font-weight: bold;
-  color: #333;
-  padding-left: 8px;
-}
-</style>

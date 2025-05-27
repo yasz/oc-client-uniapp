@@ -2,11 +2,7 @@
   <view class="" style="height: calc(100vh - 44px)">
     <view>
       <view class="flex flex-center-row">
-        <view
-          v-if="!isTeacher"
-          class="create-btn mt-40"
-          @click="showCreateModal = true"
-        >
+        <view v-if="!isTeacher" class="create-btn mt-40" @click="">
           <text class="create-icon">+</text>
         </view>
       </view>
@@ -32,13 +28,6 @@
       :isTeacher="isTeacher"
       @linkClick="handleMeetingLinkClick"
       @delete="handleMeetingDelete"
-    />
-
-    <!-- 创建会议弹窗 -->
-    <create-modal
-      v-model:show="showCreateModal"
-      :studentId="studentId"
-      @created="fetchCalendarData"
     />
   </view>
 </template>
@@ -92,8 +81,8 @@ const studentNickname = ref<string>("");
 const calendarList = ref<CalendarItem[]>([]);
 const showModal = ref(false);
 const selectedDate = ref<string | null>(null);
-const selectedDateMeetings = ref<CalendarItem[]>([]);
-const showCreateModal = ref(false);
+const selectedDateMeetings = ref<any[]>([]);
+
 const isTeacher = ref(false);
 
 // 处理日期选择
