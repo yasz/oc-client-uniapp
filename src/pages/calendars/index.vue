@@ -3,7 +3,7 @@
     <view>
       <view class="flex flex-center-row">
         <view
-          v-if="isTeacher"
+          v-if="isTeacher && !self"
           class="create-btn mt-40"
           @click="handleCreateClick"
         >
@@ -121,8 +121,6 @@ const fetchCalendarData = async () => {
 
     if (response && response.data) {
       calendarList.value = response.data.map((meeting: Meeting) => ({
-        id: meeting.id,
-        title: meeting.title,
         start: meeting.meeting_time,
         end: new Date(
           new Date(meeting.meeting_time).getTime() + meeting.duration * 60000
@@ -130,8 +128,8 @@ const fetchCalendarData = async () => {
         teacher: meeting.host_user_id.nickname,
         student: meeting.participant_user_id,
         date: dayjs(meeting.meeting_time).format("YYYY/M/D"),
-        meeting_link: meeting.meeting_link,
         color: meeting.mark_color || "#2979ff", // 使用后端返回的颜色，如果没有则使用默认颜色
+        ...meeting,
       }));
       console.log("Processed calendar list:", calendarList.value); // 添加调试日志
     }
@@ -171,11 +169,12 @@ const handleMeetingDelete = (meeting: CalendarItem) => {
     }
   }
 };
-
+const self = ref(false);
 onLoad((options: any) => {
   if (options.studentId) {
     studentId.value = parseInt(options.studentId);
     studentNickname.value = decodeURIComponent(options.nickname);
+    self.value = options.self;
     isTeacher.value = authStore.roles.includes("teacher");
     fetchCalendarData();
   }

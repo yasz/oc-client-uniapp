@@ -119,7 +119,7 @@ const calculateDays = () => {
 // 获取未读消息数量
 const fetchUnreadCount = async () => {
   try {
-    const response = await listMessages(authStore.userId);
+    const response: any = await listMessages(authStore.userId);
     if (response?.data) {
       unreadCount.value = response.data.filter(
         (msg: any) => !msg.status
@@ -150,7 +150,7 @@ watch(
 onLoad(async () => {
   if (authStore.userId) {
     // 如果是教师，检查是否有学生
-    if (authStore.role.includes("teacher")) {
+    if (authStore.roles.includes("teacher")) {
       try {
         const res = (await listStudentsByTeacherId(
           authStore.userId
@@ -186,7 +186,7 @@ const getMenuText = (index: number): string => {
 };
 
 const getVisibleMenuItems = () => {
-  const isTeacher = authStore.role.includes("teacher");
+  const isTeacher = authStore.roles.includes("teacher");
 
   // 基础菜单项（所有用户都可见）
   const baseItems = [1, 2, 3];

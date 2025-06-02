@@ -163,7 +163,7 @@ const handleAvatarClick = () => {
               let updateUrl = "";
               if (
                 Array.isArray(authStore.role)
-                  ? authStore.role.includes("teacher")
+                  ? authStore.roles.includes("teacher")
                   : authStore.role === "teacher"
               ) {
                 updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
@@ -216,7 +216,7 @@ const handleNameClick = () => {
           let updateUrl = "";
           if (
             Array.isArray(authStore.role)
-              ? authStore.role.includes("teacher")
+              ? authStore.roles.includes("teacher")
               : authStore.role === "teacher"
           ) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
@@ -269,7 +269,7 @@ const handlePhoneClick = () => {
           let updateUrl = "";
           if (
             Array.isArray(authStore.role)
-              ? authStore.role.includes("teacher")
+              ? authStore.roles.includes("teacher")
               : authStore.role === "teacher"
           ) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
@@ -312,7 +312,7 @@ const handleEmailClick = () => {
           let updateUrl = "";
           if (
             Array.isArray(authStore.role)
-              ? authStore.role.includes("teacher")
+              ? authStore.roles.includes("teacher")
               : authStore.role === "teacher"
           ) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;

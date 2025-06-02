@@ -20,7 +20,7 @@
               :style="{ backgroundColor: meeting.color }"
             >
               <view
-                v-if="!isTeacher"
+                v-if="isTeacher"
                 class="pl-10"
                 @click="handleDelete(meeting)"
               >
@@ -37,14 +37,19 @@
 
             <view class="flex justify-between">
               <view>
-                <text class="text-[32rpx] font-bold"
-                  >{{ meeting.title }} 会议时间：</text
-                >
-                <view
-                  class="flex flex-col text-[24rpx] text-gray-500 mt-[6rpx]"
-                >
-                  <text>{{ formatDateTime(meeting.start) }}</text>
-                  <view class="flex mt-[4rpx]">
+                <text class="text-[32rpx] font-bold">{{ meeting.title }} </text>
+                <view class="pt-4 flex flex-col text-[32rpx] mt-[6rpx]">
+                  <text
+                    >{{ formatDateTime(meeting.start) }}-{{
+                      dayjs(meeting.start)
+                        .add(meeting.duration, "minute")
+                        .format("HH:mm")
+                    }}</text
+                  >
+                  <view class="pt-4 text-[10px]">{{
+                    meeting.timezone_id.name
+                  }}</view>
+                  <view class="pt-4 flex mt-[4rpx] text-[10px]">
                     <text class="mr-[6rpx]">链接：</text>
                     <text
                       class="text-blue-500 underline"
@@ -80,56 +85,20 @@ import dayjs from "dayjs";
 
 import { deleteMeeting } from "@/utils/api";
 
-interface Meeting {
-  id: number;
-  title: string;
-  start: string;
-  end: string;
-  teacher: string;
-  student: any;
-  date: string;
-  color: string;
-  meeting_link?: string;
-  participant_user_id: {
-    id: number;
-    nickname: string;
-    avatar: Array<{
-      url: string;
-    }>;
-  };
-}
-
 const props = defineProps<{
   show: boolean;
   date: string | null;
-  meetings: Meeting[];
+  meetings: any[];
   isTeacher?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "update:show", value: boolean): void;
-  (e: "linkClick", meeting: Meeting): void;
-  (e: "delete", meeting: Meeting): void;
+  (e: "linkClick", meeting: any): void;
+  (e: "delete", meeting: any): void;
 }>();
 
 const localShow = ref(props.show);
-
-// 从第一个会议中获取学生信息
-const studentInfo = computed(() => {
-  if (props.meetings.length > 0) {
-    const firstMeeting = props.meetings[0];
-    return {
-      nickname: firstMeeting.participant_user_id.nickname,
-      avatarUrl:
-        import.meta.env.VITE_BUCKET_ENDPOINT +
-        (firstMeeting.participant_user_id.avatar[0]?.url || ""),
-    };
-  }
-  return {
-    nickname: "",
-    avatarUrl: "",
-  };
-});
 
 watch(
   () => props.show,
@@ -149,7 +118,7 @@ const formatDateTime = (dateTime: string) => {
   return dayjs(dateTime).format("YYYY-MM-DD HH:mm");
 };
 
-const handleLinkClick = (meeting: Meeting) => {
+const handleLinkClick = (meeting: any) => {
   if (meeting.meeting_link) {
     // #ifdef APP-PLUS
     // @ts-ignore
@@ -162,7 +131,7 @@ const handleLinkClick = (meeting: Meeting) => {
   }
 };
 
-const handleDelete = async (meeting: Meeting) => {
+const handleDelete = async (meeting: any) => {
   uni.showModal({
     title: "取消会议",
     content: "确定要取消会议吗？",

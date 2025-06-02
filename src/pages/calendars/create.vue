@@ -1,5 +1,5 @@
 <template>
-  <view :show="show" mode="bottom" @close="handleClose">
+  <view :show="show">
     <view class="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
       <view
         class="w-full bg-white rounded-t-[48px] p-[20px] max-h-[70vh] overflow-y-auto"
@@ -36,7 +36,7 @@
           </view>
           <view class="mb-[20px]">
             <text class="block mb-[8px] text-[14px] text-[#333]">会议时间</text>
-            <u-datetime-picker
+            <uni-datetime-picker
               v-model="formData.meeting_time"
               type="datetime"
               :min-date="minDate"
@@ -47,24 +47,15 @@
           <view class="mb-[20px]">
             <text class="block mb-[8px] text-[14px] text-[#333]">时区</text>
             <picker
+              class="text-[12px]"
               :range="timezones.map((t) => t.name)"
-              :value="
-                selectedTimezone
-                  ? timezones.findIndex((t) => t.id === selectedTimezone.id)
-                  : 0
-              "
-              @change="
-                (e) => {
-                  const idx = e.detail.value;
-                  selectedTimezone.value = timezones.value[idx];
-                  formData.value.timezone_id = selectedTimezone.value.id;
-                }
-              "
+              :value="selectedIndex"
+              @change="onTimezoneChange"
             >
               <view
                 class="flex justify-between items-center px-[12px] py-[8px] bg-white rounded-[4px] border border-[#dcdfe6] cursor-pointer"
               >
-                <text>{{ selectedTimezone?.name || "选择时区" }}</text>
+                <text>{{ timezones[selectedIndex]?.name || "选择时区" }}</text>
                 <text class="text-[12px] text-[#909399]">▼</text>
               </view>
             </picker>
@@ -79,7 +70,6 @@
             <u-button type="primary" class="flex-1" @click="handleSubmit"
               >创建</u-button
             >
-            <u-button class="flex-1" @click="handleClose">取消</u-button>
           </view>
         </view>
       </view>
@@ -92,6 +82,7 @@ import { ref, computed, onMounted } from "vue";
 import dayjs from "dayjs";
 import { createMeeting, getTimezoneList } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
+import { back } from "@/utils/common";
 
 interface Timezone {
   id: number;
@@ -104,16 +95,16 @@ const props = defineProps<{
   studentId: number;
 }>();
 
-const emit = defineEmits<{
-  (e: "update:show", value: boolean): void;
-  (e: "created"): void;
-}>();
-
 const authStore = useAuthStore();
 const timezones = ref<Timezone[]>([]);
-const selectedTimezone = ref<Timezone | null>(null);
-const showTimezonePicker = ref(false);
-
+const selectedTimezone = ref<any>(null);
+const selectedIndex = computed(() =>
+  timezones.value.findIndex((t) => t.id === formData.value.timezone_id)
+);
+function onTimezoneChange(e: any) {
+  const idx = e.detail.value;
+  formData.value.timezone_id = timezones.value[idx].id;
+}
 const colors = [
   "#F8AE3D", // 橙色
   "#4CAF50", // 绿色
@@ -169,10 +160,6 @@ const handleTimezoneConfirm = (e: any) => {
   }
 };
 
-const handleClose = () => {
-  emit("update:show", false);
-};
-
 const handleSubmit = async () => {
   try {
     await createMeeting(formData.value);
@@ -180,8 +167,8 @@ const handleSubmit = async () => {
       title: "创建成功",
       icon: "success",
     });
-    emit("created");
-    handleClose();
+
+    back();
   } catch (error) {
     uni.showToast({
       title: "创建失败",

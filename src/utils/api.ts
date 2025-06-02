@@ -345,7 +345,7 @@ export const getUserInfoWithSpecialToken = async (userId: number) => {
 export async function getTimezoneList() {
   try {
     const response = await getAPIAxios(
-      `dim_timezone:list?pageSize=20&filter=%7B%7D`,
+      `dim_timezone:list?pageSize=50&filter=%7B%7D`,
       null
     );
     return response;

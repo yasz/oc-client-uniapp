@@ -36,7 +36,7 @@ const students = ref<any[]>([]);
 onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
 
-  if (authStore.role.indexOf("teacher") == -1) {
+  if (authStore.roles.indexOf("teacher") == -1) {
     uni.redirectTo({
       url: "/my/assignment?studentId=" + authStore.userId,
     });

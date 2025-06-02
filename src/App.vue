@@ -40,7 +40,7 @@ onHide(() => {
 </style>
 <style lang="scss">
 /* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
-@import "./static/styles/iphone-frame.css";
+// @import "./static/styles/iphone-frame.css";
 @import "uview-plus/index.scss";
 @font-face {
   font-family: "DIN-Regular";

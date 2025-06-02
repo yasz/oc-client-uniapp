@@ -3,7 +3,7 @@
     <view class="student-list">
       <!-- 教师本人卡片 -->
       <view
-        v-if="authStore.role.includes('teacher')"
+        v-if="authStore.roles.includes('teacher')"
         class="student-item bg-primary"
         @click="handleTeacherClick"
       >
@@ -52,7 +52,7 @@ const authStore = useAuthStore();
 const students = ref<any[]>([]);
 onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
-  if (authStore.role.indexOf("teacher") == -1) {
+  if (authStore.roles.indexOf("teacher") == -1) {
     uni.redirectTo({
       url: "/my/calendars?studentId=" + authStore.userId,
     });
@@ -86,7 +86,7 @@ const handleTeacherClick = () => {
   uni.navigateTo({
     url: `/my/calendars?studentId=${
       authStore.userId
-    }&nickname=${encodeURIComponent(authStore.nickname || "")}&isTeacher=true`,
+    }&nickname=${encodeURIComponent(authStore.nickname || "")}&self=true`,
   });
 };
 
