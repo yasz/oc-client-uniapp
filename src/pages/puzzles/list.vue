@@ -38,8 +38,9 @@ onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
 
   if (authStore.roles.indexOf("teacher") == -1) {
+    //如果是学生;
     uni.redirectTo({
-      url: "/my/puzzles",
+      url: "/my/puzzle-student",
     });
     return;
   }
@@ -68,7 +69,7 @@ const selectedId = ref<number>();
 
 const handleStudentClick = (student: any) => {
   uni.navigateTo({
-    url: `/pages/puzzles/index?studentId=${student.id}`,
+    url: `/my/puzzle-teacher?studentId=${student.id}`,
   });
 };
 </script>

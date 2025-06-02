@@ -201,8 +201,24 @@ const soliRoutes = [
     }),
   },
   {
-    path: `/my/puzzles`,
+    path: `/my/puzzle-teacher`,
     component: __dynamicImportComponent__(`@/pages/puzzles/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        // navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "puzzle",
+        h5: {
+          bounce: "none",
+        },
+      },
+    }),
+  },
+  {
+    path: `/my/puzzle-student`,
+    component: __dynamicImportComponent__(`@/pages/puzzles/student.vue`, {
       pageType: `top`,
       style: {
         navigationStyle: "default",
