@@ -170,13 +170,15 @@ const handleMeetingDelete = (meeting: CalendarItem) => {
   }
 };
 const self = ref(false);
+onShow((options: any) => {
+  fetchCalendarData();
+});
 onLoad((options: any) => {
   if (options.studentId) {
     studentId.value = parseInt(options.studentId);
     studentNickname.value = decodeURIComponent(options.nickname);
     self.value = options.self;
     isTeacher.value = authStore.roles.includes("teacher");
-    fetchCalendarData();
   }
 });
 </script>

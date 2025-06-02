@@ -133,8 +133,8 @@ const handleLinkClick = (meeting: any) => {
 
 const handleDelete = async (meeting: any) => {
   uni.showModal({
-    title: "取消会议",
-    content: "确定要取消会议吗？",
+    title: "取消日程",
+    content: "确定要取消日程吗？",
     success: async (res) => {
       if (res.confirm) {
         try {
