@@ -9,7 +9,7 @@ export const useAuthStore = defineStore("authStore", {
     token: null as string | null, // token
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
-    role: "" as string, // 用户角色
+    roles: [] as string[], // 改为 roles 数组
     avatar: null as string | null, // 用户头像
     createdAt: null as string | null, // 用户创建时间
   }),
@@ -36,9 +36,7 @@ export const useAuthStore = defineStore("authStore", {
           const { id, nickname, roles } = response.data.data;
           this.userId = id;
           this.nickname = nickname;
-          this.role = roles.map((e: any) => {
-            return e.name;
-          });
+          this.roles = roles.map((e: any) => e.name);
         }
         return response.data;
       } catch (error) {

@@ -3,7 +3,7 @@
     <view>
       <view class="flex flex-center-row">
         <view
-          v-if="!isTeacher"
+          v-if="isTeacher"
           class="create-btn mt-40"
           @click="handleCreateClick"
         >
@@ -176,7 +176,7 @@ onLoad((options: any) => {
   if (options.studentId) {
     studentId.value = parseInt(options.studentId);
     studentNickname.value = decodeURIComponent(options.nickname);
-    isTeacher.value = options.isTeacher === "true";
+    isTeacher.value = authStore.roles.includes("teacher");
     fetchCalendarData();
   }
 });
@@ -253,8 +253,8 @@ onLoad((options: any) => {
   position: fixed;
   right: 20px;
   top: 20px;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-color: #f8ae3d;
   border-radius: 50%;
   display: flex;

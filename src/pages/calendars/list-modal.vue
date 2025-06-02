@@ -19,7 +19,11 @@
               class="absolute top-0 bottom-0 left-0 w-[100rpx]"
               :style="{ backgroundColor: meeting.color }"
             >
-              <view class="pl-10" @click="handleDelete(meeting)">
+              <view
+                v-if="!isTeacher"
+                class="pl-10"
+                @click="handleDelete(meeting)"
+              >
                 <view
                   class="absolute top-0 bottom-0 left-0 w-[100rpx]"
                   :style="{ backgroundColor: meeting.color }"
