@@ -1,5 +1,5 @@
 <template>
-  <view :show="show">
+  <view>
     <view class="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
       <view
         class="w-full bg-white rounded-t-[48px] p-[20px] max-h-[70vh] overflow-y-auto"
@@ -91,7 +91,6 @@ interface Timezone {
 }
 
 const props = defineProps<{
-  show: boolean;
   studentId: number;
 }>();
 

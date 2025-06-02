@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad, onShow } from "@dcloudio/uni-app";
 import { getCalendar } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
