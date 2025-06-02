@@ -20,7 +20,14 @@
               :style="{ backgroundColor: meeting.color }"
             >
               <view class="pl-10" @click="handleDelete(meeting)">
-                <text class="text-[20rpx] text-[#fff]">-</text>
+                <view
+                  class="absolute top-0 bottom-0 left-0 w-[100rpx]"
+                  :style="{ backgroundColor: meeting.color }"
+                >
+                  <view class="pl-2 pt-1" @click="handleDelete(meeting)">
+                    <text class="text-[10px] text-[#fff]">×</text>
+                  </view>
+                </view>
               </view>
             </view>
 
