@@ -289,7 +289,7 @@ const router = createRouter({
   },
 });
 router.beforeEach((to, from) => {
-  console.log("【调试】:【", "路由拦截进入", "】");
+  // console.log("【调试】:【", "路由拦截进入", "】");
 
   if (!checkAuth(to.path)) {
     //如果目表页未通过验证，则跳向登录页
@@ -320,7 +320,7 @@ function checkAuth(url: string) {
     console.log("【调试】:【", "token没了", "】");
     return false;
   } else {
-    console.log("【调试】:【", "token还在", "】");
+    // console.log("【调试】:【", "token还在", "】");
   }
 
   return true;

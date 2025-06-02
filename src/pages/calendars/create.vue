@@ -5,6 +5,9 @@
         class="w-full bg-white rounded-t-[48px] p-[20px] max-h-[70vh] overflow-y-auto"
       >
         <view class="pt-[20px]">
+          <view class="f-c-c">
+            <text> 创建{{ props.nickname }}的日程</text>
+          </view>
           <view class="mb-[20px]">
             <text class="block mb-[8px] text-[14px] text-[#333]">标题</text>
             <u-input v-model="formData.title" placeholder="请输入标题" />
@@ -91,7 +94,8 @@ interface Timezone {
 }
 
 const props = defineProps<{
-  studentId: number;
+  studentId: number | string;
+  nickname: string;
 }>();
 
 const authStore = useAuthStore();

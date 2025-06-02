@@ -13,7 +13,7 @@
 
       <view class="pt-20 px-20">
         <view class="calendar-header">
-          <text class="student-name">{{ studentNickname }}的课表</text>
+          <text class="student-name">{{ studentNickname }}的日程</text>
         </view>
         <wn-calendar
           :modelValue="calendarList"

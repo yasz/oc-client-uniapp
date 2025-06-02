@@ -14,7 +14,7 @@
         />
         <text class="student-name text-white">{{ authStore.nickname }}</text>
         <view class="progress-info">
-          <text class="text-white">教学课表查询</text>
+          <text class="text-white">教学日程查询</text>
           <text class="arrow pl-6 text-white"> ＞</text>
         </view>
       </view>
@@ -34,7 +34,7 @@
         />
         <text class="student-name">{{ student.nickname }}</text>
         <view class="progress-info">
-          <text class="">课表添加</text>
+          <text class="">日程添加</text>
           <text class="arrow pl-6"> ＞</text>
         </view>
       </view>

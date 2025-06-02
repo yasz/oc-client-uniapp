@@ -26,7 +26,7 @@ onLaunch(async () => {
 });
 
 onShow(() => {
-  console.log("App Show");
+  // console.log("App Show");
 });
 
 onHide(() => {
