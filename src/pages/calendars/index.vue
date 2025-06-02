@@ -2,14 +2,18 @@
   <view class="" style="height: calc(100vh - 44px)">
     <view>
       <view class="flex flex-center-row">
-        <view v-if="!isTeacher" class="create-btn mt-40" @click="">
+        <view
+          v-if="!isTeacher"
+          class="create-btn mt-40"
+          @click="handleCreateClick"
+        >
           <text class="create-icon">+</text>
         </view>
       </view>
 
       <view class="pt-20 px-20">
         <view class="calendar-header">
-          <text class="student-name">{{ studentNickname }}的日历</text>
+          <text class="student-name">{{ studentNickname }}的课表</text>
         </view>
         <wn-calendar
           :modelValue="calendarList"
@@ -35,12 +39,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getCalendar, createMeeting } from "@/utils/api";
+import { getCalendar } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import dayjs from "dayjs";
 import WnCalendar from "@/uni_modules/wn-calendar/components/wn-calendar/wn-calendar.vue";
 import CalendarModal from "./list-modal.vue";
-import CreateModal from "./create.vue";
 
 interface Meeting {
   id: number;
@@ -84,6 +87,15 @@ const selectedDate = ref<string | null>(null);
 const selectedDateMeetings = ref<any[]>([]);
 
 const isTeacher = ref(false);
+
+// 处理创建按钮点击
+const handleCreateClick = () => {
+  uni.navigateTo({
+    url: `/pages/calendars/create?studentId=${
+      studentId.value
+    }&nickname=${encodeURIComponent(studentNickname.value)}`,
+  });
+};
 
 // 处理日期选择
 const handleDateChoose = (event: any) => {
@@ -143,32 +155,7 @@ const handleMeetingLinkClick = (meeting: CalendarItem) => {
   }
 };
 
-const handleCreate = async () => {
-  try {
-    // 这里需要添加创建会议的参数
-    const meetingData = {
-      timezone_id: 1, // 需要根据实际情况设置
-      duration: 60, // 默认60分钟
-      meeting_time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-      participant_user_id: studentId.value,
-      host_user_id: authStore.userId,
-    };
-
-    await createMeeting(meetingData);
-    uni.showToast({
-      title: "创建成功",
-      icon: "success",
-    });
-    // 刷新日历数据
-    fetchCalendarData();
-  } catch (error) {
-    uni.showToast({
-      title: "创建失败",
-      icon: "error",
-    });
-  }
-};
-
+// 处理会议删除
 const handleMeetingDelete = (meeting: CalendarItem) => {
   // 从日历列表中移除被删除的会议
   calendarList.value = calendarList.value.filter(

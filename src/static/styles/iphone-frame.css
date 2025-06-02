@@ -1,0 +1,21 @@
+/* iPhone 15 Pro Max 尺寸限制 - 仅在 H5 端生效 */
+@media screen and (min-width: 768px) {
+  #app {
+    width: 393px !important; /* iPhone 15 Pro Max 宽度 */
+    height: 852px !important; /* iPhone 15 Pro Max 高度 */
+    margin: 20px auto !important;
+    position: relative !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 40px !important;
+  }
+
+  body {
+    background: #f5f5f5 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+  }
+}

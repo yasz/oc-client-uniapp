@@ -18,13 +18,14 @@
             <view
               class="absolute top-0 bottom-0 left-0 w-[100rpx]"
               :style="{ backgroundColor: meeting.color }"
-            ></view>
+            >
+              <view class="pl-10" @click="handleDelete(meeting)">
+                <text class="text-[20rpx] text-[#fff]">-</text>
+              </view>
+            </view>
 
             <view class="flex justify-between">
               <view>
-                <view class="" @click="handleDelete(meeting)">
-                  <text class="text-[10rpx] text-[#aaa]">取消会议</text>
-                </view>
                 <text class="text-[32rpx] font-bold"
                   >{{ meeting.title }} 会议时间：</text
                 >

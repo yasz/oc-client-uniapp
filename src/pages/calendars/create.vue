@@ -1,5 +1,5 @@
 <template>
-  <u-popup :show="show" mode="bottom" @close="handleClose">
+  <view :show="show" mode="bottom" @close="handleClose">
     <view class="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
       <view
         class="w-full bg-white rounded-t-[48px] p-[20px] max-h-[70vh] overflow-y-auto"
@@ -84,7 +84,7 @@
         </view>
       </view>
     </view>
-  </u-popup>
+  </view>
 </template>
 
 <script setup lang="ts">
