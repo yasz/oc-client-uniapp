@@ -102,7 +102,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6;
+type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 const hasStudents = ref(false);
 const day = ref<number | null>(null);
 const authStore = useAuthStore();
@@ -170,6 +170,9 @@ const menuTexts: Record<MenuIndex, string> = {
   4: "教学日程",
   5: "学生作业",
   6: "学生拼图账户",
+  7: "我的日程",
+  8: "我的作业",
+  9: "我的拼图账户",
 };
 
 const menuRoutes: Record<MenuIndex, string> = {
@@ -179,6 +182,9 @@ const menuRoutes: Record<MenuIndex, string> = {
   4: "/my/calendar-list",
   5: "/my/assignment-list",
   6: "/my/puzzle-list",
+  7: `/my/calendar-list`,
+  8: "/my/assignment-list",
+  9: "/my/puzzle-list",
 };
 
 const getMenuText = (index: number): string => {
@@ -194,6 +200,8 @@ const getVisibleMenuItems = () => {
   // 如果是教师且有学生，添加教师专属菜单
   if (isTeacher && hasStudents.value) {
     return [...baseItems, 4, 5, 6];
+  } else if (!isTeacher) {
+    return [...baseItems, 7, 8, 9];
   }
 
   return baseItems;

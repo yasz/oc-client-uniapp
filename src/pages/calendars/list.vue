@@ -54,7 +54,7 @@ onShow(async () => {
   // 如果是学生，直接跳转到拼图页面
   if (authStore.roles.indexOf("teacher") == -1) {
     uni.redirectTo({
-      url: "/my/calendars?studentId=" + authStore.userId,
+      url: `/my/calendars?studentId=${authStore.userId}&nickname=${authStore.nickname}`,
     });
     return;
   }

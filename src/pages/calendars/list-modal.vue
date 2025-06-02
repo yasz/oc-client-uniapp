@@ -37,7 +37,18 @@
 
             <view class="flex justify-between">
               <view>
-                <text class="text-[32rpx] font-bold">{{ meeting.title }} </text>
+                <view class="flex">
+                  <text class="text-[32rpx] font-bold"
+                    >{{ meeting.title }}
+                  </text>
+                  <view
+                    class="pl-[12px] baseline text-[16px] text-blue-500"
+                    @click="handleLinkClick(meeting)"
+                  >
+                    <uni-icons size="20" color="blue" type="link"></uni-icons>
+                  </view>
+                </view>
+
                 <view class="pt-4 flex flex-col text-[32rpx] mt-[6rpx]">
                   <text
                     >{{ formatDateTime(meeting.start) }}-{{
@@ -46,18 +57,9 @@
                         .format("HH:mm")
                     }}</text
                   >
-                  <view class="pt-4 text-[10px]">{{
+                  <view class="pt-4 text-[10px] max-w-[40ch]">{{
                     meeting.timezone_id.name
                   }}</view>
-                  <view class="pt-4 flex mt-[4rpx] text-[10px]">
-                    <text class="mr-[6rpx]">链接：</text>
-                    <text
-                      class="text-blue-500 underline"
-                      @click="handleLinkClick(meeting)"
-                    >
-                      {{ meeting.meeting_link }}
-                    </text>
-                  </view>
                 </view>
               </view>
 
@@ -65,10 +67,18 @@
                 <image
                   class="w-[48px] h-[48px] rounded-full"
                   mode="aspectFill"
-                  :src="getAvatarUrl(meeting.student.avatar)"
+                  :src="
+                    getAvatarUrl(
+                      isTeacher
+                        ? meeting.student.avatar
+                        : meeting.host_user_id.avatar
+                    )
+                  "
                 />
                 <text class="text-[24rpx] text-gray-500 mt-[4rpx]">{{
-                  meeting.student.nickname
+                  isTeacher
+                    ? meeting.student.nickname
+                    : meeting.host_user_id.nickname
                 }}</text>
               </view>
             </view>

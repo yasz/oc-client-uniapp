@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import dayjs from "dayjs";
-import { createMeeting, getTimezoneList } from "@/utils/api";
+import { createMeeting, getTimezoneList, createMessage } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 import { back } from "@/utils/common";
 
@@ -166,11 +166,29 @@ const handleTimezoneConfirm = (e: any) => {
 const handleSubmit = async () => {
   try {
     await createMeeting(formData.value);
+    // 发送消息给老师和学生
+    const meetingTime = formData.value.meeting_time;
+    const meetingTitle = formData.value.title;
+    const teacherName = authStore.nickname || "老师";
+    const messageContent = `${teacherName} 创建了 ${meetingTime} 的 ${meetingTitle} 日程`;
+    // 给学生
+    await createMessage({
+      sender_id: formData.value.host_user_id,
+      receiver_id: formData.value.participant_user_id,
+      content: messageContent,
+      title: "日程创建",
+    });
+    // 给老师自己
+    await createMessage({
+      sender_id: formData.value.host_user_id,
+      receiver_id: formData.value.host_user_id,
+      content: messageContent,
+      title: "日程创建",
+    });
     uni.showToast({
       title: "创建成功",
       icon: "success",
     });
-
     back();
   } catch (error) {
     uni.showToast({

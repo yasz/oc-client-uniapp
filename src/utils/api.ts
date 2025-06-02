@@ -273,16 +273,7 @@ export const completeStudentCalendar = async (
   }
 };
 
-export const createMeeting = async (data: {
-  timezone_id: number;
-  duration: number;
-  meeting_time: string;
-  participant_user_id: number;
-  host_user_id: number;
-  title: string;
-  meeting_link: string;
-  mark_color: string;
-}) => {
+export const createMeeting = async (data: any) => {
   const url = `meetings:create`;
   try {
     const response = await postAPIAxios(url, {
@@ -317,7 +308,7 @@ export const deleteMeeting = async (meetingId: number) => {
 
 export const getCalendar = async (studentId: number) => {
   return getAPIAxios(
-    `meetings:list?appends[]=host_user_id&appends[]=participant_user_id.avatar&appends[]=participant_user_id&appends[]=participant_user_id.avatar&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,
+    `meetings:list?appends[]=host_user_id&appends[]=host_user_id.avatar&appends[]=participant_user_id.avatar&appends[]=participant_user_id&appends[]=participant_user_id.avatar&appends[]=timezone_id&page=1&filter={"$or":[{"participant_user_id":{"id":{"$eq":${studentId}}}},{"host_user_id":{"id":{"$eq":${studentId}}}}]}`,
     null
   );
 };
@@ -394,8 +385,8 @@ export const listMessages = async (receiverId?: number) => {
 };
 
 export const createMessage = async (data: {
-  sender_id: number;
-  receiver_id: number;
+  sender_id: string | number;
+  receiver_id: string | number;
   content: string;
   title?: string;
 }) => {
