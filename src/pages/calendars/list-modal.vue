@@ -93,7 +93,7 @@
 import { ref, computed, watch } from "vue";
 import dayjs from "dayjs";
 
-import { deleteMeeting } from "@/utils/api";
+import { createMessage, deleteMeeting } from "@/utils/api";
 
 const props = defineProps<{
   show: boolean;
@@ -140,7 +140,8 @@ const handleLinkClick = (meeting: any) => {
     // #endif
   }
 };
-
+import { useAuthStore } from "@/stores/authStore";
+const authStore = useAuthStore();
 const handleDelete = async (meeting: any) => {
   uni.showModal({
     title: "取消日程",
@@ -150,6 +151,25 @@ const handleDelete = async (meeting: any) => {
         try {
           await deleteMeeting(meeting.id);
           emit("delete", meeting);
+          const teacherName = authStore.nickname || "老师";
+          const meetingTime = meeting.meeting_time;
+          const meetingTitle = meeting.title;
+          const messageContent = `${teacherName} 删除了 与 ${meeting.participant_user_id.nickname} ${meetingTime} 的 ${meetingTitle} 日程`;
+
+          // 给学生
+          await createMessage({
+            sender_id: meeting.host_user_id,
+            receiver_id: meeting.participant_user_id,
+            content: messageContent,
+            title: "日程取消",
+          });
+          // 给老师自己
+          await createMessage({
+            sender_id: meeting.host_user_id,
+            receiver_id: meeting.host_user_id,
+            content: messageContent,
+            title: "日程取消",
+          });
           uni.showToast({
             title: "删除成功",
             icon: "success",

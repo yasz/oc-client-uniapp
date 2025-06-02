@@ -125,6 +125,7 @@ const formData = ref({
   duration: 60,
   timezone_id: 1, // 默认时区
   participant_user_id: props.studentId,
+  student_nickname: props.nickname,
   host_user_id: Number(authStore.userId),
 });
 
@@ -170,7 +171,7 @@ const handleSubmit = async () => {
     const meetingTime = formData.value.meeting_time;
     const meetingTitle = formData.value.title;
     const teacherName = authStore.nickname || "老师";
-    const messageContent = `${teacherName} 创建了 ${meetingTime} 的 ${meetingTitle} 日程`;
+    const messageContent = `${teacherName} 创建了 与${formData.value.student_nickname} 在${meetingTime} 的 ${meetingTitle} 日程`;
     // 给学生
     await createMessage({
       sender_id: formData.value.host_user_id,
