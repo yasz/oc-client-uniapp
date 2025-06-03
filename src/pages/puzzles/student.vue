@@ -1,6 +1,6 @@
 <template>
   <view v-if="puzzleLeft">
-    <view :class="`fixed top-[30%] left-[${puzzleLeft / 2}px]`">
+    <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
       <!-- 缩放容器，拼图原始坐标按 100% 保持，缩放容器负责等比缩放 -->
 
       <view :class="`scale-[0.2]`">
