@@ -1,9 +1,9 @@
 <template>
-  <view v-if="info">
-    <view class="fixed top-[30%]">
+  <view v-if="puzzleLeft">
+    <view :class="`fixed top-[30%] left-[${puzzleLeft / 2}px]`">
       <!-- 缩放容器，拼图原始坐标按 100% 保持，缩放容器负责等比缩放 -->
 
-      <view class="scale-[0.2]">
+      <view :class="`scale-[0.2]`">
         <!-- 动态渲染每块拼图底图 -->
         <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
           <img
@@ -30,6 +30,5 @@ import {
 } from "@/components/puzzle-data";
 import { ref } from "vue";
 const info = uni.getSystemInfoSync();
-const width = ref(info.screenWidth);
-const height = ref(info.screenHeight);
+const puzzleLeft = ref(info.screenWidth - (1791 - 275 * 2) / 5);
 </script>
