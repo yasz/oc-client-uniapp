@@ -1,5 +1,19 @@
-import { getAPI, getAPIAxios, postAPI, postAPIAxios } from "./common";
+import {
+  getAPI,
+  getAPIAxios,
+  postAPI,
+  postAPIAxios,
+  postPulicAPIAxios,
+} from "./common";
 import axios from "axios";
+
+export const listAssignments = async (params: any = {}) => {
+  return await getAPIAxios("assignment:list", {
+    pageSize: 20,
+    "appends[]": ["course_id", "course_id.parent(recursively=true)"],
+    filter: params.filter || {},
+  });
+};
 
 export const listCourseSessions = async () => {
   const url =
@@ -346,28 +360,24 @@ export async function getTimezoneList() {
 }
 
 // 教师注册
-export async function postTeacherSignUp(data: any) {
-  const SPECIAL_TOKEN = import.meta.env.VITE_SPECIAL_TOKEN;
-  const url = `${import.meta.env.VITE_API_ENDPOINT}/teachers:create`;
+export async function signUpTeacher(data: any) {
+  const url = `teachers:create`;
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        accept: "application/json, text/plain, */*",
-        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-        authorization: `Bearer ${SPECIAL_TOKEN}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-      credentials: "include",
-      mode: "cors",
-    });
+    const res = await postPulicAPIAxios(url, data);
     return res;
   } catch (err) {
     throw err;
   }
 }
-
+export async function signUpStudent(data: any) {
+  const url = `students:create`;
+  try {
+    const res = await postPulicAPIAxios(url, data);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+}
 export const listMessages = async (receiverId?: number) => {
   const filter = receiverId
     ? `{"$and":[{"receiver_id":{"id":{"$eq":${receiverId}}}}]}`

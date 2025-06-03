@@ -256,6 +256,32 @@ export async function getAPIAxios(url: string, data: any) {
     return await Promise.reject(error);
   }
 }
+export async function postPulicAPIAxios(url: string, data: any) {
+  const token = import.meta.env.VITE_SPECIAL_TOKEN;
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
+      data, // POST 请求的参数应放在请求体中
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        timeout: 5000,
+      }
+    );
+    const res = response.data;
+    if (res.code === 401) {
+      uni.redirectTo({ url: "/pages/sign-in" });
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    return await Promise.reject(error);
+  }
+}
+
 export async function postAPIAxios(url: string, data: any) {
   const token = uni.getStorageSync("authToken");
   try {

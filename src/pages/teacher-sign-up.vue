@@ -23,6 +23,13 @@
         />
         <input
           class="input-item"
+          v-model="formModel.nickname"
+          placeholder="昵称(必填)"
+          required
+          placeholder-style="color: #d1d5db;"
+        />
+        <input
+          class="input-item"
           v-model="formModel.email"
           placeholder="邮箱(必填)"
           required
@@ -59,6 +66,7 @@
           required
           placeholder-style="color: #d1d5db;"
         />
+
         <input
           class="input-item"
           v-model="formModel.contact"
@@ -152,29 +160,45 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { postTeacherSignUp } from "@/utils/api";
+import { signUpTeacher } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 
 const modal = useModal().modal;
 const loading = ref(false);
 
+// const formModel = ref({
+//   username: "test1",
+//   email: "test@a.com",
+//   phone: "",
+//   password: "123123",
+//   confirmPassword: "123123",
+//   realname: "",
+//   contact: "",
+//   gender: "女",
+//   birth: "1991-01-01",
+//   english_level: "",
+//   religion: "",
+//   experience: "",
+//   chinese_level: "",
+//   remark: "",
+// });
 const formModel = ref({
-  username: "test1",
-  email: "test@a.com",
+  username: "",
+  email: "",
   phone: "",
-  password: "123123",
-  confirmPassword: "123123",
+  password: "",
+  confirmPassword: "",
   realname: "",
+  nickname: "",
   contact: "",
-  gender: "女",
-  birth: "1991-01-01",
+  gender: "",
+  birth: "",
   english_level: "",
   religion: "",
   experience: "",
   chinese_level: "",
   remark: "",
 });
-
 const genderOptions = ["男", "女"];
 const religionOptions = ["无", "佛教", "基督教", "伊斯兰教", "其他"];
 const englishLevelOptions = ["CET4以下", "CET4", "CET6", "CET6以上"];
@@ -228,28 +252,18 @@ const submitForm = async () => {
     return;
   }
   try {
-    const res = await postTeacherSignUp({
-      username: formModel.value.username,
-      email: formModel.value.email,
-      password: formModel.value.password,
+    const res = await signUpTeacher({
       name: formModel.value.realname,
-      contact: formModel.value.contact,
-      gender: formModel.value.gender,
-      phone: formModel.value.phone,
-      birth: formModel.value.birth,
-      english_level: formModel.value.english_level,
-      religion: formModel.value.religion,
-      experience: formModel.value.experience,
-      chinese_level: formModel.value.chinese_level,
-      remark: formModel.value.remark,
+
+      ...formModel.value,
     });
-    if (res.ok) {
+    if (res.data) {
       await modal("提交成功！");
     } else {
       await modal("提交失败！");
     }
-  } catch (err) {
-    await modal("提交异常！");
+  } catch (err: any) {
+    await modal(`提交异常！${err.response.data.errors[0].message}`);
   } finally {
     loading.value = false;
   }

@@ -23,6 +23,13 @@
         />
         <input
           class="input-item"
+          v-model="formModel.nickname"
+          placeholder="昵称(必填)"
+          required
+          placeholder-style="color: #d1d5db;"
+        />
+        <input
+          class="input-item"
           v-model="formModel.email"
           placeholder="邮箱(必填)"
           required
@@ -52,48 +59,7 @@
           required
           placeholder-style="color: #d1d5db;"
         />
-        <input
-          class="input-item"
-          v-model="formModel.desired_courses"
-          placeholder="期望课程(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.chinese_level"
-          placeholder="中文水平(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.teacher_requirements"
-          placeholder="教师要求(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.nationality"
-          placeholder="国籍(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.realname"
-          placeholder="请输入您的名字(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.contact"
-          placeholder="请输入您联系方式(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
+
         <picker
           mode="selector"
           :range="genderOptions"
@@ -104,7 +70,7 @@
             class="input-item"
             readonly
             :value="formModel.gender"
-            placeholder="性 别(必填)"
+            placeholder="性 别"
             placeholder-style="color: #d1d5db;"
           />
         </picker>
@@ -117,45 +83,46 @@
             placeholder-style="color: #d1d5db;"
           />
         </picker>
-        <picker
-          mode="selector"
-          :range="englishLevelOptions"
-          :value="englishLevelIndex"
-          @change="onEnglishLevelChange"
-        >
-          <input
-            class="input-item"
-            readonly
-            :value="formModel.english_level"
-            placeholder="英语水平(必填)"
-            placeholder-style="color: #d1d5db;"
-          />
-        </picker>
-        <picker
-          mode="selector"
-          :range="religionOptions"
-          :value="religionIndex"
-          @change="onReligionChange"
-        >
-          <input
-            class="input-item"
-            readonly
-            :value="formModel.religion"
-            placeholder="宗教信仰(必填)"
-            placeholder-style="color: #d1d5db;"
-          />
-        </picker>
         <input
           class="input-item"
-          v-model="formModel.experience"
-          placeholder="语文/国际中文相关教学工作经历(必填) "
+          v-model="formModel.nationality"
+          placeholder="国籍"
           required
           placeholder-style="color: #d1d5db;"
         />
         <input
           class="input-item"
-          v-model="formModel.remark"
-          placeholder="备注"
+          v-model="formModel.residence"
+          placeholder="常居地"
+          required
+          placeholder-style="color: #d1d5db;"
+        />
+        <input
+          class="input-item"
+          v-model="formModel.chinese_level"
+          placeholder="现在中文水平"
+          required
+          placeholder-style="color: #d1d5db;"
+        />
+        <picker
+          class="input-item"
+          mode="selector"
+          :range="courseOptions"
+          @change="handleCourseChange"
+          :value="courseIndex"
+        >
+          <input
+            readonly
+            :value="formModel.desired_courses"
+            placeholder="想要学的课程(必填)"
+            placeholder-style="color: #d1d5db;"
+          />
+        </picker>
+        <input
+          class="input-item"
+          v-model="formModel.teacher_requirements"
+          placeholder="对授课老师的要求"
+          required
           placeholder-style="color: #d1d5db;"
         />
         <button
@@ -165,7 +132,7 @@
           style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
           :disabled="loading"
         >
-          申请成为平台老师
+          申请直播课
         </button>
       </form>
     </view>
@@ -174,54 +141,49 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { postTeacherSignUp } from "@/utils/api";
+import { signUpStudent, signUpTeacher } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 
 const modal = useModal().modal;
 const loading = ref(false);
 
 const formModel = ref({
-  username: "test1",
-  email: "test@a.com",
+  username: "",
+  nickname: "",
+  email: "",
   phone: "",
-  password: "123123",
-  confirmPassword: "123123",
-  desired_courses: "",
-  chinese_level: "",
-  teacher_requirements: "",
+  password: "",
+  confirmPassword: "",
+  gender: "",
+  birth: "",
   nationality: "",
-  realname: "",
-  contact: "",
-  gender: "女",
-  birth: "1991-01-01",
-  english_level: "",
-  religion: "",
-  experience: "",
-  remark: "",
+  residence: "",
+  chinese_level: "",
+  desired_courses: "",
+  teacher_requirements: "",
 });
 
 const genderOptions = ["男", "女"];
-const religionOptions = ["无", "佛教", "基督教", "伊斯兰教", "其他"];
-const englishLevelOptions = ["CET4以下", "CET4", "CET6", "CET6以上"];
+// const religionOptions = ["无", "佛教", "基督教", "伊斯兰教", "其他"];
+// const englishLevelOptions = ["CET4以下", "CET4", "CET6", "CET6以上"];
 
 const genderIndex = ref(-1);
-const religionIndex = ref(-1);
-const englishLevelIndex = ref(-1);
+const desiredCoursesIndex = ref(-1);
+const courseOptions = ["部编版小学语文", "YCT", "HCK"];
+const courseIndex = ref(0);
 
 const onGenderChange = (e: any) => {
   genderIndex.value = e.detail.value;
   formModel.value.gender = genderOptions[genderIndex.value];
 };
-const onReligionChange = (e: any) => {
-  religionIndex.value = e.detail.value;
-  formModel.value.religion = religionOptions[religionIndex.value];
-};
-const onEnglishLevelChange = (e: any) => {
-  englishLevelIndex.value = e.detail.value;
-  formModel.value.english_level = englishLevelOptions[englishLevelIndex.value];
-};
+
 const onBirthChange = (e: any) => {
   formModel.value.birth = e.detail.value;
+};
+
+const handleCourseChange = (e: any) => {
+  desiredCoursesIndex.value = e.detail.value;
+  formModel.value.desired_courses = courseOptions[desiredCoursesIndex.value];
 };
 
 function validateEmail(email: string) {
@@ -253,31 +215,16 @@ const submitForm = async () => {
     return;
   }
   try {
-    const res = await postTeacherSignUp({
-      username: formModel.value.username,
-      email: formModel.value.email,
-      password: formModel.value.password,
-      name: formModel.value.realname,
-      contact: formModel.value.contact,
-      gender: formModel.value.gender,
-      phone: formModel.value.phone,
-      birth: formModel.value.birth,
-      english_level: formModel.value.english_level,
-      religion: formModel.value.religion,
-      experience: formModel.value.experience,
-      chinese_level: formModel.value.chinese_level,
-      remark: formModel.value.remark,
-      desired_courses: formModel.value.desired_courses,
-      teacher_requirements: formModel.value.teacher_requirements,
-      nationality: formModel.value.nationality,
+    const res = await signUpStudent({
+      ...formModel.value,
     });
-    if (res.ok) {
+    if (res.data) {
       await modal("提交成功！");
     } else {
       await modal("提交失败！");
     }
-  } catch (err) {
-    await modal("提交异常！");
+  } catch (err: any) {
+    await modal(`提交异常！${err.response.data.errors[0].message}`);
   } finally {
     loading.value = false;
   }

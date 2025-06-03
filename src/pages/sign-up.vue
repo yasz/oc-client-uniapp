@@ -17,6 +17,7 @@
         </button>
         <button
           type="button"
+          @click="go('/student-sign-up')"
           class="w-[40vw] h-16 rounded-full shadow-lg bg-gradient-to-b from-white to-[#f7f3ed] flex items-center justify-center text-xl font-bold text-[#7a4d13] tracking-widest"
         >
           我是学生
