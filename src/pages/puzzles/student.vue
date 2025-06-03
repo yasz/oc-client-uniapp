@@ -1,30 +1,36 @@
 <template>
-  <view v-if="puzzleLeft">
-    <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
-      <!-- 缩放容器，拼图原始坐标按 100% 保持，缩放容器负责等比缩放 -->
-
-      <view :class="`scale-[0.2]`">
-        <!-- 动态渲染每块拼图底图 -->
-        <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
-          <img
-            :src="piece.src"
-            class="absolute"
-            :style="{
-              left: piece.x - 276 + 'px',
-              top: piece.y - 1094 + 'px',
-            }"
-          />
-        </template>
+  <view>
+    <view class="z-1" v-if="puzzleLeft">
+      <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
+        <view :class="`scale-[0.2]`">
+          <template
+            v-for="(piece, index) in puzzleBackgroundPieces"
+            :key="index"
+          >
+            <img
+              :src="piece.src"
+              class="absolute"
+              :style="{
+                left: piece.x - 276 + 'px',
+                top: piece.y - 1094 + 'px',
+              }"
+            />
+          </template>
+        </view>
       </view>
     </view>
-    <view class="absolute bottom-0 left-0 w-full h-[200px]">
-      <template v-for="(got, index) in gottenPieces" :key="`completed-${index}`"
-        ><view class="scale-[0.2]">
+
+    <view class="z-2">
+      <template
+        v-for="(got, index) in gottenPieces"
+        :key="`completed-${index}`"
+      >
+        <view class="scale-[0.2]">
           <img
             v-if="got"
             :src="`/static/puzzles/completed/${index + 1}.png`"
-            class="absolute"
             :style="{
+              position: 'absolute',
               left: completedPositions[index]?.x + 'px',
               top: completedPositions[index]?.y + 'px',
             }"
@@ -80,15 +86,14 @@ const fetchStudentData = async (studentId: any) => {
 
 const completedPositions = ref<{ x: number; y: number }[]>([]);
 
-// 一进入页面或 gottenPieces 更新后，生成对应的随机位置
 const generateCompletedPositions = () => {
   const positions: { x: number; y: number }[] = [];
 
   for (let i = 0; i < 9; i++) {
     if (gottenPieces.value?.[i]) {
       positions[i] = {
-        x: Math.random() * (info.screenWidth - 50), // 保证不会超出屏幕
-        y: Math.random() * 100 + 50, // 距离底部 50-150 px 之间
+        x: Math.random() * info.screenWidth, // 保证不会超出屏幕
+        y: Math.random() * info.screenHeight, // 距离底部 50-150 px 之间
       };
     } else {
       positions[i] = { x: -9999, y: -9999 }; // 未获得就移出视野
