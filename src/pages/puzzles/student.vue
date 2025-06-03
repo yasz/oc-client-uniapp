@@ -1,8 +1,7 @@
 <template>
   <view>
-    <div class="fixed inset-0 bg-primary z-0"></div>
-    <view class="z-1" v-if="puzzleLeft">
-      <view class="pt-40">
+    <view class="fixed inset-0 bg-primary z-0 ">
+      <view class="pt-80">
         <view class="flex flex-center-row">
           <image src="/static/puzzles/title1.png" style="width: 50vw" mode="widthFix" />
         </view>
@@ -13,6 +12,17 @@
           : '/static/puzzles/title2.png'
           " :style="{ width: false ? '40vw' : '30vw' }" mode="widthFix" />
       </view>
+      <view class="mt-[120%]">
+        <view class="relative">
+          <button form-type="submit"
+            class="w-[60%] t-26 py-20 my-20 rounded-full text-white font-bold bg-orange text-base">
+            我的宝盒
+          </button>
+        </view>
+      </view>
+    </view>
+    <view class="z-1" v-if="puzzleLeft">
+
       <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
         <view :class="`scale-[0.2]`">
           <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
