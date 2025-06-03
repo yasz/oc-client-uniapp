@@ -5,10 +5,12 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const urls = ["index", "courses", "my"] as const;
-type TabUrl = typeof urls[number];
+type TabUrl = (typeof urls)[number];
 
 // 通过 urls 数组动态生成 routeIndexMap
-const routeIndexMap = Object.fromEntries(urls.map((name, i) => [`/${name}`, i]));
+const routeIndexMap = Object.fromEntries(
+  urls.map((name, i) => [`/${name}`, i])
+);
 
 // 设置初始值
 const index = ref(routeIndexMap[route.path] ?? 0);
@@ -16,17 +18,17 @@ const index = ref(routeIndexMap[route.path] ?? 0);
 // 图标映射
 const icons: Record<TabUrl, { active: string; inactive: string }> = {
   index: {
-    active: './src/static/tabbar/index_active.png',
-    inactive: './src/static/tabbar/index.png'
+    active: "/static/tabbar/index_active.png",
+    inactive: "/static/tabbar/index.png",
   },
   courses: {
-    active: './src/static/tabbar/courses_active.png',
-    inactive: './src/static/tabbar/courses.png'
+    active: "/static/tabbar/courses_active.png",
+    inactive: "/static/tabbar/courses.png",
   },
   my: {
-    active: './src/static/tabbar/my_active.png',
-    inactive: './src/static/tabbar/my.png'
-  }
+    active: "/static/tabbar/my_active.png",
+    inactive: "/static/tabbar/my.png",
+  },
 };
 
 // 路由变化时更新 index
@@ -50,9 +52,18 @@ const change = (e: number) => {
   <view>
     <view class="mytab">
       <view class="tab-bar">
-        <view v-for="(url, idx) in urls" :key="url" class="tab-item" :class="{ active: index === idx }"
-          @click="change(idx)">
-          <image :src="index === idx ? icons[url].active : icons[url].inactive" mode="aspectFit" class="tab-icon" />
+        <view
+          v-for="(url, idx) in urls"
+          :key="url"
+          class="tab-item"
+          :class="{ active: index === idx }"
+          @click="change(idx)"
+        >
+          <image
+            :src="index === idx ? icons[url].active : icons[url].inactive"
+            mode="aspectFit"
+            class="tab-icon"
+          />
           <text>{{ $t(url) }}</text>
         </view>
       </view>
@@ -85,7 +96,7 @@ const change = (e: number) => {
     color: #999;
 
     &.active {
-      color: #F8AE3D;
+      color: #f8ae3d;
     }
 
     .tab-icon {

@@ -7,7 +7,7 @@
           class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500 mr-3"
         >
           <img
-            src="/src/static/my/contact/redbook.png"
+            src="/static/my/contact/redbook.png"
             class="w-7 h-7 object-contain"
           />
         </div>
@@ -29,10 +29,7 @@
       <div
         class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3"
       >
-        <img
-          src="/src/static/my/contact/mail.png"
-          class="w-6 h-6 object-contain"
-        />
+        <img src="/static/my/contact/mail.png" class="w-6 h-6 object-contain" />
       </div>
       <div class="flex-1">
         <div class="text-base text-gray-900 font-medium">
@@ -51,10 +48,7 @@
       <div
         class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3"
       >
-        <img
-          src="/src/static/my/contact/mail.png"
-          class="w-6 h-6 object-contain"
-        />
+        <img src="/static/my/contact/mail.png" class="w-6 h-6 object-contain" />
       </div>
       <div class="flex-1">
         <div class="text-base text-gray-900 font-medium">may4@tcd.ie</div>
