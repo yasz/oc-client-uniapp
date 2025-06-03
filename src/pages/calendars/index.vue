@@ -91,7 +91,7 @@ const isTeacher = ref(false);
 // 处理创建按钮点击
 const handleCreateClick = () => {
   uni.navigateTo({
-    url: `/pages/calendars/create?studentId=${
+    url: `/my/calendars/create?studentId=${
       studentId.value
     }&nickname=${encodeURIComponent(studentNickname.value)}`,
   });
