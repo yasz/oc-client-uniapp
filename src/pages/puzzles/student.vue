@@ -1,40 +1,38 @@
 <template>
   <view>
+    <div class="fixed inset-0 bg-primary z-0"></div>
     <view class="z-1" v-if="puzzleLeft">
+      <view class="pt-40">
+        <view class="flex flex-center-row">
+          <image src="/static/puzzles/title1.png" style="width: 50vw" mode="widthFix" />
+        </view>
+      </view>
+      <view class="flex flex-center-row pt-20">
+        <image :src="false
+          ? '/static/puzzles/title3.png'
+          : '/static/puzzles/title2.png'
+          " :style="{ width: false ? '40vw' : '30vw' }" mode="widthFix" />
+      </view>
       <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
         <view :class="`scale-[0.2]`">
-          <template
-            v-for="(piece, index) in puzzleBackgroundPieces"
-            :key="index"
-          >
-            <img
-              :src="piece.src"
-              class="absolute"
-              :style="{
-                left: piece.x - 276 + 'px',
-                top: piece.y - 1094 + 'px',
-              }"
-            />
+          <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
+            <img :src="piece.src" class="absolute" :style="{
+              left: piece.x - 276 + 'px',
+              top: piece.y - 1094 + 'px',
+            }" />
           </template>
         </view>
       </view>
     </view>
 
     <view class="z-2">
-      <template
-        v-for="(got, index) in gottenPieces"
-        :key="`completed-${index}`"
-      >
+      <template v-for="(got, index) in gottenPieces" :key="`completed-${index}`">
         <view class="scale-[0.2]">
-          <img
-            v-if="got"
-            :src="`/static/puzzles/completed/${index + 1}.png`"
-            :style="{
-              position: 'absolute',
-              left: completedPositions[index]?.x + 'px',
-              top: completedPositions[index]?.y + 'px',
-            }"
-          />
+          <img v-if="got" :src="`/static/puzzles/completed/${index + 1}.png`" :style="{
+            position: 'absolute',
+            left: completedPositions[index]?.x + 'px',
+            top: completedPositions[index]?.y + 'px',
+          }" />
         </view>
       </template>
     </view>
@@ -93,7 +91,7 @@ const generateCompletedPositions = () => {
     if (gottenPieces.value?.[i]) {
       positions[i] = {
         x: Math.random() * info.screenWidth, // 保证不会超出屏幕
-        y: Math.random() * info.screenHeight, // 距离底部 50-150 px 之间
+        y: Math.random() * info.screenHeight + 1700, // 距离底部 50-150 px 之间
       };
     } else {
       positions[i] = { x: -9999, y: -9999 }; // 未获得就移出视野
