@@ -1,48 +1,82 @@
 <template>
   <view>
-    <view class="fixed inset-0 bg-primary z-0 ">
+    <view class="fixed inset-0 bg-primary z-0">
       <view class="pt-80">
         <view class="flex flex-center-row">
-          <image src="/static/puzzles/title1.png" style="width: 50vw" mode="widthFix" />
+          <image
+            src="/static/puzzles/title1.png"
+            style="width: 50vw"
+            mode="widthFix"
+          />
         </view>
       </view>
       <view class="flex flex-center-row pt-20">
-        <image :src="false
-          ? '/static/puzzles/title3.png'
-          : '/static/puzzles/title2.png'
-          " :style="{ width: false ? '40vw' : '30vw' }" mode="widthFix" />
+        <image
+          :src="
+            false ? '/static/puzzles/title3.png' : '/static/puzzles/title2.png'
+          "
+          :style="{ width: false ? '40vw' : '30vw' }"
+          mode="widthFix"
+        />
       </view>
       <view class="mt-[120%]">
-        <view class="relative">
-          <button form-type="submit"
-            class="w-[60%] t-26 py-20 my-20 rounded-full text-white font-bold bg-orange text-base">
+        <view
+          class="relative"
+          @click="
+            go(`/my/puzzle-treasure?count=${student.brick_completed_count}`)
+          "
+        >
+          <button
+            form-type="submit"
+            class="w-[60%] t-26 py-20 my-20 rounded-full text-white font-bold bg-orange text-base"
+          >
             我的宝盒
           </button>
         </view>
       </view>
     </view>
     <view class="z-1" v-if="puzzleLeft">
-
       <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
         <view :class="`scale-[0.2]`">
-          <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
-            <img :src="piece.src" class="absolute" :style="{
-              left: piece.x - 276 + 'px',
-              top: piece.y - 1094 + 'px',
-            }" />
+          <template
+            v-for="(piece, index) in puzzleBackgroundPieces"
+            :key="index"
+          >
+            <img
+              :src="piece.src"
+              class="absolute"
+              :style="{
+                left: piece.x - 276 + 'px',
+                top: piece.y - 1094 + 'px',
+              }"
+            />
           </template>
         </view>
       </view>
     </view>
 
     <view class="z-2">
-      <template v-for="(got, index) in gottenPieces" :key="`completed-${index}`">
-        <view class="scale-[0.2]">
-          <img v-if="got" :src="`/static/puzzles/completed/${index + 1}.png`" :style="{
-            position: 'absolute',
-            left: completedPositions[index]?.x + 'px',
-            top: completedPositions[index]?.y + 'px',
-          }" />
+      <template
+        v-for="(got, index) in gottenPieces"
+        :key="`completed-${index}`"
+      >
+        <view
+          v-if="got"
+          class="fixed"
+          :style="{
+            transform: 'scale(0.2)',
+            transformOrigin: '0 0',
+            left: piecePositions[index]?.x + 'px',
+            top: piecePositions[index]?.y + 'px',
+            zIndex: activePiece === index ? 100 : 1,
+          }"
+        >
+          <img
+            :src="`/static/puzzles/completed/${index + 1}.png`"
+            @touchstart="handleTouchStart($event, index)"
+            @touchmove="handleTouchMove($event, index)"
+            @touchend="handleTouchEnd($event, index)"
+          />
         </view>
       </template>
     </view>
@@ -58,6 +92,7 @@ import {
   type PuzzlePiece,
 } from "@/components/puzzle-data";
 import { useAuthStore } from "@/stores/authStore";
+import { go } from "@/utils/common";
 import { getAPIAxios } from "@/utils/common";
 import { onShow } from "@dcloudio/uni-app";
 import { ref, watch } from "vue";
@@ -65,7 +100,12 @@ const info = uni.getSystemInfoSync();
 const puzzleLeft = ref(info.screenWidth - (1791 - 275 * 2) / 5);
 const student = ref<any>(null);
 
+// 拖拽相关状态
 const gottenPieces = ref<any>(null);
+const piecePositions = ref<{ x: number; y: number }[]>([]);
+const activePiece = ref<number | null>(null);
+const touchOffset = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
 onShow((options: any) => {
   const studentId = useAuthStore().userId;
   fetchStudentData(studentId);
@@ -79,9 +119,9 @@ const fetchStudentData = async (studentId: any) => {
     );
     if (response && response.data) {
       student.value = response.data;
-      // 初始化拼图状态
       gottenPieces.value =
         student.value.brick_current_progress || Array(9).fill(false);
+      initializePiecePositions();
     }
   } catch (error) {
     console.error("Error fetching student data:", error);
@@ -92,26 +132,67 @@ const fetchStudentData = async (studentId: any) => {
   }
 };
 
-const completedPositions = ref<{ x: number; y: number }[]>([]);
-
-const generateCompletedPositions = () => {
+const initializePiecePositions = () => {
   const positions: { x: number; y: number }[] = [];
-
   for (let i = 0; i < 9; i++) {
     if (gottenPieces.value?.[i]) {
       positions[i] = {
-        x: Math.random() * info.screenWidth, // 保证不会超出屏幕
-        y: Math.random() * info.screenHeight + 1700, // 距离底部 50-150 px 之间
+        x: Math.random() * (info.screenWidth - 100), // 留出边距
+        y: Math.random() * (info.screenHeight - 200) + 100, // 留出上下边距
       };
     } else {
-      positions[i] = { x: -9999, y: -9999 }; // 未获得就移出视野
+      positions[i] = { x: -9999, y: -9999 };
     }
   }
+  piecePositions.value = positions;
+};
 
-  completedPositions.value = positions;
+const handleTouchStart = (event: any, index: number) => {
+  const touch = event.touches[0];
+  const piece = piecePositions.value[index];
+
+  activePiece.value = index;
+  touchOffset.value = {
+    x: touch.clientX - piece.x,
+    y: touch.clientY - piece.y,
+  };
+};
+
+const handleTouchMove = (event: any, index: number) => {
+  if (activePiece.value !== index) return;
+
+  const touch = event.touches[0];
+  piecePositions.value[index] = {
+    x: touch.clientX - touchOffset.value.x,
+    y: touch.clientY - touchOffset.value.y,
+  };
+};
+
+const handleTouchEnd = (event: any, index: number) => {
+  if (activePiece.value !== index) return;
+
+  // 检查是否接近目标位置
+  const piece = piecePositions.value[index];
+  const targetPiece = puzzleBackgroundPieces[index];
+  const targetX = targetPiece.x - 276;
+  const targetY = targetPiece.y - 1094;
+
+  const distance = Math.sqrt(
+    Math.pow(piece.x - targetX, 2) + Math.pow(piece.y - targetY, 2)
+  );
+
+  // 如果距离小于50像素，自动吸附到目标位置
+  if (distance < 50) {
+    piecePositions.value[index] = {
+      x: targetX,
+      y: targetY,
+    };
+  }
+
+  activePiece.value = null;
 };
 
 watch(gottenPieces, () => {
-  generateCompletedPositions();
+  initializePiecePositions();
 });
 </script>

@@ -230,6 +230,19 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/my/puzzle-treasure`,
+    component: __dynamicImportComponent__(`@/pages/puzzles/treasure.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        // navigationBarTitleText: `Puzzle Game`,
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "treasure",
+      },
+    }),
+  },
+  {
     path: `/my/calendar-list`,
     component: __dynamicImportComponent__(`@/pages/calendars/list.vue`, {
       pageType: `top`,
