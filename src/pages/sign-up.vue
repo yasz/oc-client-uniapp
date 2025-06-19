@@ -23,16 +23,16 @@
     </view>
 
     <!-- 注册表单页面 -->
-    <view v-if="showForm" class=" min-h-screen flex flex-col items-center relative">
-      <view class="absolute flex  z-10 pt-[8%] w-full ">
+    <view v-if="showForm" class="min-h-screen flex flex-col items-center relative">
+      <view class="absolute flex z-10 pt-[8%] w-full justify-center">
         <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
-        <view class="flex-col pt-[10%]">
-          <img class="w-[70%]" src="@/static/index/signup/tip1.png" alt="tip1" />
-          <img class="w-[60%]" src="@/static/index/signup/tip2.png" alt="tip2" />
+        <view class="w-[50%] flex-col pt-[10%]">
+          <img class="w-[100%]" src="@/static/index/signup/tip1.png" alt="tip1" />
+          <img class="w-[80%]" src="@/static/index/signup/tip2.png" alt="tip2" />
         </view>
       </view>
 
-      <view class="w-[85%] flex flex-col gap-4 pt-[40%]">
+      <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
         <view class="bg-white rounded-3xl shadow-lg p-6">
           <form @submit="submitForm">
             <input class="input-item" v-model="formModel.username" placeholder="账号(必填)" required
