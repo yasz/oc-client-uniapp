@@ -70,6 +70,7 @@ import { ref } from "vue";
 
 import { signUpStudent, signUpTeacher } from "@/utils/api";
 import useModal from "@/hooks/useModal";
+import { go } from "@/utils/common";
 
 const modal = useModal().modal;
 const loading = ref(false);
@@ -81,10 +82,12 @@ const formModel = ref({
   email: "",
   password: "",
   confirmPassword: "",
+  role: "",
 });
 
 const selectUserType = (type: string) => {
   userType.value = type;
+  formModel.value.role = type;
   showForm.value = true;
 };
 
@@ -96,6 +99,7 @@ const goBack = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
   };
 };
 
@@ -132,17 +136,20 @@ const submitForm = async () => {
   }
 
   try {
+    const { confirmPassword, ...submitData } = formModel.value;
     const res = userType.value === 'teacher'
       ? await signUpTeacher({
-        ...formModel.value,
+        ...submitData,
+        roles: ['teacher', 'student'],
       })
       : await signUpStudent({
-        ...formModel.value,
+        ...submitData,
+        roles: 'student',
       });
 
     if (res.data) {
       await modal("注册成功！");
-      goBack();
+      go('/pages/sign-in');
     } else {
       await modal("注册失败！");
     }
