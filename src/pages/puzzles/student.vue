@@ -73,9 +73,14 @@
         >
           <img
             :src="`/static/puzzles/completed/${index + 1}.png`"
-            @touchstart="handleTouchStart($event, index)"
-            @touchmove="handleTouchMove($event, index)"
-            @touchend="handleTouchEnd($event, index)"
+            @touchstart.prevent="handleTouchStart($event, index)"
+            @touchmove.prevent="handleTouchMove($event, index)"
+            @touchend.prevent="handleTouchEnd($event, index)"
+            style="
+              touch-action: none;
+              -webkit-user-select: none;
+              user-select: none;
+            "
           />
         </view>
       </template>
@@ -148,28 +153,31 @@ const initializePiecePositions = () => {
 };
 
 const handleTouchStart = (event: any, index: number) => {
+  event.preventDefault();
   const touch = event.touches[0];
   const piece = piecePositions.value[index];
 
   activePiece.value = index;
   touchOffset.value = {
-    x: touch.clientX - piece.x,
-    y: touch.clientY - piece.y,
+    x: touch.pageX - piece.x,
+    y: touch.pageY - piece.y,
   };
 };
 
 const handleTouchMove = (event: any, index: number) => {
   if (activePiece.value !== index) return;
+  event.preventDefault();
 
   const touch = event.touches[0];
   piecePositions.value[index] = {
-    x: touch.clientX - touchOffset.value.x,
-    y: touch.clientY - touchOffset.value.y,
+    x: touch.pageX - touchOffset.value.x,
+    y: touch.pageY - touchOffset.value.y,
   };
 };
 
 const handleTouchEnd = (event: any, index: number) => {
   if (activePiece.value !== index) return;
+  event.preventDefault();
 
   // 检查是否接近目标位置
   const piece = piecePositions.value[index];
