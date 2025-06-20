@@ -43,37 +43,53 @@
             </div>
         </div>
 
-        <view class="pd-14 bg-gray2">
-            <!-- 遍历课程数据，生成卡片列表 -->
-            <!-- {{ courses }} -->
-
-            <view v-for="(course, index) in filteredCourses" :key="index" class="relative mb-[20rpx]">
-
-                <!-- 卡片内容 -->
-                <view
-                    class="flex flex-row rounded-[16rpx] overflow-hidden bg-white shadow-[0_4rpx_8rpx_rgba(0,0,0,0.1)]"
+        <view class="p-4 bg-gray-100">
+            <view class="bg-white rounded-2xl shadow-md">
+                <!-- 遍历课程数据，生成卡片列表 -->
+                <view v-for="(course, index) in filteredCourses" :key="index"
+                    class="flex items-start p-3 bg-white rounded-xl shadow-md mb-4"
                     @click="go(`/courses/details?id=${course.id}`)">
+
                     <!-- 左侧课程封面 -->
-
-                    <view class="w-[580rpx] h-[200rpx] overflow-hidden flex justify-center items-center">
-                        <u-image height="120" :src="course.cover" mode="aspectFit" />
+                    <view
+                        class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden flex justify-center items-center bg-gray-50">
+                        <u-image width="100%" height="100%" :src="course.cover" mode="aspectFit" />
                     </view>
-                    <!-- 右侧课程信息 -->
-                    <view class="p-[16rpx] w-[60vw] flex flex-col justify-center">
-                        <!-- 课程名称 -->
-                        <view class="text-bold t-14">{{ course.name }}</view>
-                        <view class="pt-4 t-12 text-gray">{{ course.teacher }}</view>
-                        <!-- <view class="pt-4 t-12 text-gray">{{ course.subject }}</view> -->
-                        <!-- <view v-if="course.price && course.price != 0" class="pt-6 text-12 text-primary">¥ {{
-                            course.price
-                            }}.00</view>
-                        <view v-else class="pt-6 text-12  text-green">{{ $t('free') }}</view> -->
 
+                    <!-- 右侧课程信息 -->
+                    <view class="flex-1 ml-3 flex flex-col justify-between self-stretch">
+                        <!-- Top part of right side -->
+                        <view>
+                            <!-- Title Row -->
+                            <view class="flex justify-between items-start">
+                                <text class="text-base font-bold text-gray-800 leading-tight">{{ course.name }}</text>
+                                <view class="flex items-center flex-shrink-0 ml-2">
+                                    <view class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">FREE
+                                    </view>
+                                    <u-icon name="arrow-right" color="#cccccc" class="ml-1"></u-icon>
+                                </view>
+                            </view>
+
+                            <!-- English Name Tag -->
+                            <view class="mt-1">
+                                <text
+                                    class="border border-orange-500 text-orange-500 text-xs font-semibold px-2 py-0.5 rounded-md uppercase">{{
+                                        course.name_en }}</text>
+                            </view>
+                        </view>
+
+                        <!-- Bottom part of right side -->
+                        <view class="flex justify-end items-center">
+                            <view class="flex items-center text-yellow-500">
+                                <u-icon name="star-fill" color="rgb(245 158 11)" size="20"></u-icon>
+                                <text class="text-sm text-gray-500 ml-1">收藏</text>
+                            </view>
+                        </view>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="bg-gray2" style="height:300rpx;" />
+        <view class="bg-gray-100" style="height:300rpx;" />
         <Layout />
     </view>
 </template>
@@ -108,10 +124,12 @@ const filteredCourses = computed(() => {
     const keyword = searchKeyword.value.toLowerCase().trim();
     return courses.filter(course => {
         const name = (course.name || '').toLowerCase();
+        const name_en = (course.name_en || '').toLowerCase();
         const teacher = (course.teacher || '').toLowerCase();
         const subject = (course.subject || '').toLowerCase();
 
         return name.includes(keyword) ||
+            name_en.includes(keyword) ||
             teacher.includes(keyword) ||
             subject.includes(keyword);
     });
@@ -136,6 +154,7 @@ interface Course {
     subject: string;
     cover: string;
     price: number;
+    name_en: string;
 }
 const courses = reactive<Course[]>([]);
 const swiperData = reactive<{ image: string; title: string, id: number }[]>([]);
