@@ -1,7 +1,15 @@
 <template>
     <view>
-        <!-- <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper> -->
+        <!-- 搜索栏 -->
+        <view class="search-container">
+            <view class="search-box">
+                <u-icon name="search" size="16" color="#999"></u-icon>
+                <input class="search-input" v-model="searchKeyword" :placeholder="$t('searchCourses') || '搜索课程...'" />
+                <u-icon v-if="searchKeyword" name="close" size="16" color="#999" @click="clearSearch"></u-icon>
+            </view>
+        </view>
 
+        <!-- <DotSwiper :imgUrls="swiperData" :eclick="(item) => go(`/courses/details?id=${item.id}`)"></DotSwiper> -->
 
         <div class="justify-evenly baseline">
             <div v-for="(item, index) in menuItems" :key="item.id" @click="toggleSelection(item.id)"
@@ -15,7 +23,7 @@
             <!-- 遍历课程数据，生成卡片列表 -->
             <!-- {{ courses }} -->
 
-            <view v-for="(course, index) in courses" :key="index" class="card-wrapper">
+            <view v-for="(course, index) in filteredCourses" :key="index" class="card-wrapper">
 
                 <!-- 卡片内容 -->
                 <view class="course-card" @click="go(`/courses/details?id=${course.id}`)">
@@ -48,7 +56,7 @@
 import DotSwiper from '@/components/dotSwiper.vue';
 import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses } from '@/utils/api';
 import { go } from '@/utils/common';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, computed } from 'vue';
 import Layout from '../layout.vue';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -57,6 +65,31 @@ interface MenuItem {
     line1: string;
     line2: string;
 }
+
+// 搜索相关
+const searchKeyword = ref('');
+
+const clearSearch = () => {
+    searchKeyword.value = '';
+};
+
+// 根据搜索关键词过滤课程 - 实时响应
+const filteredCourses = computed(() => {
+    if (!searchKeyword.value.trim()) {
+        return courses;
+    }
+
+    const keyword = searchKeyword.value.toLowerCase().trim();
+    return courses.filter(course => {
+        const name = (course.name || '').toLowerCase();
+        const teacher = (course.teacher || '').toLowerCase();
+        const subject = (course.subject || '').toLowerCase();
+
+        return name.includes(keyword) ||
+            teacher.includes(keyword) ||
+            subject.includes(keyword);
+    });
+});
 
 const toggleSelection = async (id: number) => {
     selectedItem.value = selectedItem.value === id ? undefined : id;
@@ -135,6 +168,35 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+// 搜索栏样式
+.search-container {
+    padding: 20rpx 30rpx;
+    background-color: #fff;
+    border-bottom: 1rpx solid #f0f0f0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 25rpx;
+    padding: 15rpx 20rpx;
+    gap: 15rpx;
+}
+
+.search-input {
+    flex: 1;
+    font-size: 28rpx;
+    color: #333;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
 .selected {
     background-color: #f9c74f;
     border-radius: 20px 2px 20px 2px;

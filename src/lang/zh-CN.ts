@@ -8,6 +8,7 @@ const zhCN: Record<string, any> = {
   Hi: "您好",
   introduction: "课程介绍",
   syllabus: "目录",
+  searchCourses: "搜索课程...",
 
   assignments: "作业",
   discussions: "讨论区",
