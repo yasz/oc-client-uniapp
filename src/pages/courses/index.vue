@@ -1,11 +1,34 @@
 <template>
     <view>
-        <!-- 搜索栏 -->
-        <view class="search-container">
-            <view class="search-box">
-                <u-icon name="search" size="16" color="#999"></u-icon>
-                <input class="search-input" v-model="searchKeyword" :placeholder="$t('searchCourses') || '搜索课程...'" />
-                <u-icon v-if="searchKeyword" name="close" size="16" color="#999" @click="clearSearch"></u-icon>
+        <view style="background: linear-gradient(180deg, #FCCF29 0%, #ff9d00 100%)">
+            <!-- 搜索栏容器 -->
+            <view class="bg-primary px-4 pt-2 pb-3 rounded-bl-3xl rounded-br-3xl">
+                <view class="flex w-[80%] mx-auto items-center bg-white rounded-full py-2 px-4 gap-3 shadow-sm">
+                    <u-icon name="search" size="22" color="#999"></u-icon>
+                    <input class="flex-1 text-sm text-gray-800 bg-transparent outline-none border-none"
+                        v-model="searchKeyword" :placeholder="$t('searchCourses') || '搜索课程...'" />
+                    <u-icon v-if="searchKeyword" name="close" size="22" color="#999" @click="clearSearch"></u-icon>
+                </view>
+            </view>
+            <!-- 宣传内容容器 -->
+            <view class="p-4">
+                <view class="flex justify-between items-center text-white">
+                    <view class="flex-1">
+                        <view class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
+                            style="-webkit-text-stroke: 0.1px #523201">
+                            成为本平台教师</view>
+
+                        <view class="text-xl font-bold text-[#9b6310]" style="-webkit-text-stroke: 0.2px #523201">
+                            中国语文海外学
+                        </view>
+                        <view style="-webkit-text-stroke: 0.1px #523201"
+                            class="block text-[14px] font-black text-[#9b6310] leading-tight tracking-[2rpx] pr-6">
+                            MERRY MANDARIN:<br />HAPPY AS A HIPPO</view>
+                    </view>
+                    <view class="w-32">
+                        <image src="/static/courses/hippo_hi.png" mode="widthFix" class="w-full" />
+                    </view>
+                </view>
             </view>
         </view>
 
@@ -13,7 +36,8 @@
 
         <div class="justify-evenly baseline">
             <div v-for="(item, index) in menuItems" :key="item.id" @click="toggleSelection(item.id)"
-                class="flex-col menu-item" :class="{ selected: selectedItem === item.id }">
+                class="flex-1 text-center flex flex-col justify-center items-center h-[80px]"
+                :class="{ 'bg-[#f9c74f] rounded-[20px_2px_20px_2px] h-[40%]': selectedItem === item.id }">
                 <div>{{ item.line1 }}</div>
                 <div>{{ item.line2 }}</div>
             </div>
@@ -23,17 +47,19 @@
             <!-- 遍历课程数据，生成卡片列表 -->
             <!-- {{ courses }} -->
 
-            <view v-for="(course, index) in filteredCourses" :key="index" class="card-wrapper">
+            <view v-for="(course, index) in filteredCourses" :key="index" class="relative mb-[20rpx]">
 
                 <!-- 卡片内容 -->
-                <view class="course-card" @click="go(`/courses/details?id=${course.id}`)">
+                <view
+                    class="flex flex-row rounded-[16rpx] overflow-hidden bg-white shadow-[0_4rpx_8rpx_rgba(0,0,0,0.1)]"
+                    @click="go(`/courses/details?id=${course.id}`)">
                     <!-- 左侧课程封面 -->
 
-                    <view class="course-cover ">
+                    <view class="w-[580rpx] h-[200rpx] overflow-hidden flex justify-center items-center">
                         <u-image height="120" :src="course.cover" mode="aspectFit" />
                     </view>
                     <!-- 右侧课程信息 -->
-                    <view class="course-info">
+                    <view class="p-[16rpx] w-[60vw] flex flex-col justify-center">
                         <!-- 课程名称 -->
                         <view class="text-bold t-14">{{ course.name }}</view>
                         <view class="pt-4 t-12 text-gray">{{ course.teacher }}</view>
@@ -167,111 +193,4 @@ onMounted(async () => {
 
 </script>
 
-<style lang="scss" scoped>
-// 搜索栏样式
-.search-container {
-    padding: 20rpx 30rpx;
-    background-color: #fff;
-    border-bottom: 1rpx solid #f0f0f0;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    background-color: #f5f5f5;
-    border-radius: 25rpx;
-    padding: 15rpx 20rpx;
-    gap: 15rpx;
-}
-
-.search-input {
-    flex: 1;
-    font-size: 28rpx;
-    color: #333;
-    background: transparent;
-    border: none;
-    outline: none;
-}
-
-.search-input::placeholder {
-    color: #999;
-}
-
-.selected {
-    background-color: #f9c74f;
-    border-radius: 20px 2px 20px 2px;
-
-    /* 确保背景色宽度为100% */
-    height: 40%;
-    /* 确保背景色占据整个高度 */
-    // padding: 5px;
-    /* 可以调整内边距以确保空间 */
-}
-
-/* 外部容器样式 */
-.menu-container {
-    background-color: #f9c74f;
-    /* 可替换为您需要的颜色 */
-    padding: 20px;
-    /* 填充以增加空间 */
-    border-radius: 20px;
-    /* 圆角 */
-    position: relative;
-    /* 为了定位 */
-}
-
-
-
-/* 单个课程卡片容器（包含卡片本身和左上角教师标签） */
-.card-wrapper {
-    position: relative;
-    margin-bottom: 20rpx;
-}
-
-
-
-/* 单个课程卡片样式 */
-.course-card {
-    display: flex;
-    flex-direction: row;
-    border-radius: 16rpx;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-/* 左侧课程封面 */
-.course-cover {
-    width: 580rpx;
-    height: 200rpx;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 右侧课程信息 */
-.course-info {
-    padding: 16rpx;
-    width: 60vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.menu-item {
-    flex: 1;
-    /* Ensures each item takes up an equal amount of width */
-    text-align: center;
-    /* Centers the text inside each item */
-    display: flex;
-    /* 使用 Flexbox 布局 */
-    flex-direction: column;
-    justify-content: center;
-    /* 垂直居中 */
-    align-items: center;
-    /* 水平居中 */
-    height: 80px;
-    /* 或其他固定高度 */
-}
-</style>
+<style lang="scss" scoped></style>
