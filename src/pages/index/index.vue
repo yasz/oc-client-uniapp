@@ -74,13 +74,33 @@
           <image src="/static/index/wechat.png" style="width: 480rpx; height: 360rpx" />
           <image src="/static/index/alipay.png" style="width: 480rpx; height: 360rpx" />
         </view>
-        <view class="flex-col flex-center-column">
-          <view class="t-10 text-gray">验证提示：马*乐</view>
 
-          <view class="t-12 pt-20 f-c-b"> 感谢您的赠予！ </view>
-          <text class="t-12">投我以木桃，报之以琼瑶。</text>
-          <text class="t-12"> 我们将以热忱的工作和教学回馈您的 </text>
-          <text class="t-12">信任和支持。</text>
+        <view class="my-[30rpx] text-center">
+          <view class="text-center text-gray-600 text-sm mb-2">海外银行捐赠 / Overseas Bank Donation</view>
+          <view class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700 text-left">
+            <view class="flex justify-between items-center">
+              <view class="truncate">
+                <text class="font-semibold">IBAN: </text>
+                <text>IE08AIBK93113695034032</text>
+              </view>
+              <button @click="copyText('IE08AIBK93113695034032')"
+                class="text-xs bg-gray-200 px-2 py-1 rounded ml-2 whitespace-nowrap">
+                复制
+              </button>
+            </view>
+            <view class="mt-1">
+              <text class="font-semibold">Name: </text>
+              <text>Ma Yile</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="flex flex-col items-center">
+          <view class="text-xs text-gray-500">验证提示：马*乐</view>
+          <view class="text-sm pt-5 font-semibold">感谢您的赠予！</view>
+          <text class="text-sm">投我以木桃，报之以琼瑶。</text>
+          <text class="text-sm">我们将以热忱的工作和教学回馈您的</text>
+          <text class="text-sm">信任和支持。</text>
         </view>
       </view>
     </uni-popup>
@@ -209,6 +229,18 @@ const showDetail = async (type: "course" | "moment", index: number) => {
 const showDonatePopup = () => {
   donatePopup.value?.open();
   console.log(donatePopup.value);
+};
+
+const copyText = (text: string) => {
+  uni.setClipboardData({
+    data: text,
+    success: () => {
+      uni.showToast({
+        title: "已复制",
+        icon: "success",
+      });
+    },
+  });
 };
 </script>
 
