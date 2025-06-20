@@ -89,7 +89,7 @@ const submitForm = async () => {
 
         if (resetRes.data) {
             await modal("若账号邮箱验证通过，密码将重置为您输入的密码！");
-            go("/pages/sign-in");
+            go("/sign-in");
         } else {
             await modal("密码重置失败，请检查账号和邮箱是否正确");
         }
@@ -103,7 +103,7 @@ const submitForm = async () => {
 };
 
 const goBack = () => {
-    go("/pages/sign-in");
+    go("/sign-in");
 };
 </script>
 

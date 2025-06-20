@@ -1,12 +1,8 @@
 <template>
   <view class="flex-col bg-primary">
     <view class="py-10 f-c-c" @click="handleAvatarClick">
-      <u-avatar
-        :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
-        size="120rpx"
-        shape="circle"
-        mode="aspectFill"
-      />
+      <u-avatar :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'" size="120rpx" shape="circle"
+        mode="aspectFill" />
     </view>
     <view>
       <view class="px-10">
@@ -17,53 +13,31 @@
 
   <view class="">
     <view class="menu-section">
-      <MenuItem
-        :label="t('nickname')"
-        :value="userInfo.nickname"
-        @click="handleNameClick"
-        :height="60"
-      />
+      <MenuItem :label="t('nickname')" :value="userInfo.nickname" @click="handleNameClick" :height="60" />
       <!-- <MenuItem
         :label="t('gender')"
         :value="userInfo.gender === 'male' ? '男' : '女'"
         @click="handleGenderClick"
         :height="60"
       /> -->
-      <MenuItem
-        :label="t('phone')"
-        :value="userInfo.phone"
-        @click="handlePhoneClick"
-        :height="60"
-      />
+      <MenuItem :label="t('phone')" :value="userInfo.phone" @click="handlePhoneClick" :height="60" />
       <!-- <MenuItem
         label="微信"
         value="已绑定"
         :valueColor="'#52c41a'"
         :arrow="false"
       /> -->
-      <MenuItem
-        :label="t('email')"
-        :value="userInfo.email || '未设置'"
-        :arrow="false"
-        :valueColor="'#52c41a'"
-        :height="60"
-        @click="handleEmailClick"
-      />
+      <MenuItem :label="t('email')" :value="userInfo.email || '未设置'" :arrow="false" :valueColor="'#52c41a'" :height="60"
+        @click="handleEmailClick" />
     </view>
 
-    <view
-      class="menu-section"
-      style="
+    <view class="menu-section" style="
         height: 60rpx;
         align-items: center;
         border-bottom: 2rpx solid #f5f5f5;
         display: flex;
-      "
-    >
-      <view
-        class="flex px-20 justify-between"
-        style="width: 100%; align-items: center"
-      >
+      ">
+      <view class="flex px-20 justify-between" style="width: 100%; align-items: center">
         <view class="">
           <u-image src="/static/translate.png" width="36rpx" height="36rpx" />
         </view>
@@ -73,13 +47,7 @@
       </view>
     </view>
 
-    <MenuItem
-      :label="t('logout')"
-      :arrow="false"
-      valueColor="#ff4d4f"
-      @click="handleLogout"
-      :height="60"
-    />
+    <MenuItem :label="t('logout')" :arrow="false" valueColor="#ff4d4f" @click="handleLogout" :height="60" />
   </view>
 </template>
 
@@ -336,23 +304,6 @@ const handleEmailClick = () => {
   });
 };
 
-const handleNotificationClick = () => {
-  uni.navigateTo({
-    url: "/pages/settings/notification",
-  });
-};
-
-const handlePrivacyClick = () => {
-  uni.navigateTo({
-    url: "/pages/settings/privacy",
-  });
-};
-
-const handleAboutClick = () => {
-  uni.navigateTo({
-    url: "/pages/settings/about",
-  });
-};
 
 const handleLogout = () => {
   uni.showModal({
@@ -383,10 +334,12 @@ const handleLogout = () => {
   margin-top: 48rpx;
   margin-bottom: 32rpx;
 }
+
 .avatar-list {
   display: flex;
   margin-top: 16rpx;
 }
+
 .avatar-empty {
   color: #bbb;
   font-size: 24rpx;

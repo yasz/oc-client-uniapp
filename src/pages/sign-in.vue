@@ -33,7 +33,7 @@
             placeholder="请输入密码" type="password" />
         </view>
         <!-- 忘记密码 -->
-        <view class="flex justify-end mb-4" @click="go('/pages/reset-password')">
+        <view class="flex justify-end mb-4" @click="go('/reset-password')">
           <text class="text-[#f9b33b] text-sm">
             忘记密码？
           </text>

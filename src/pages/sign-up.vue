@@ -149,7 +149,7 @@ const submitForm = async () => {
 
     if (res.data) {
       await modal("注册成功！");
-      go('/pages/sign-in');
+      go('/sign-in');
     } else {
       await modal("注册失败！");
     }

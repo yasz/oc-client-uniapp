@@ -73,7 +73,7 @@ function copyEmail(email: string): void {
 
 const goToWebView = (url: string) => {
   if (url) {
-    go(`/pages/webview/index?url=${encodeURIComponent(url)}`);
+    go(`/webview/index?url=${encodeURIComponent(url)}`);
   }
 };
 </script>
