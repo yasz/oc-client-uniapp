@@ -423,3 +423,17 @@ export const updateMessage = async (messageId: number) => {
     throw error;
   }
 };
+
+export async function resetPassword(data: {
+  username: string;
+  email: string;
+  password: string;
+}) {
+  const url = `log_reset_password:create`;
+  try {
+    const res = await postPulicAPIAxios(url, data);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+}

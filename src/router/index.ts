@@ -113,6 +113,18 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/reset-password`,
+    component: __dynamicImportComponent__(`@/pages/reset-password.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `reset-password`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "reset-password",
+      },
+    }),
+  },
+  {
     path: `/student-sign-up`,
     component: __dynamicImportComponent__(`@/pages/student-sign-up.vue`, {
       pageType: `top`,
@@ -333,6 +345,7 @@ function checkAuth(url: string) {
       "/sign-up",
       "/teacher-sign-up",
       "/student-sign-up",
+      "/reset-password",
     ].includes(url)
   ) {
     // 白名单页面，不需要校验token

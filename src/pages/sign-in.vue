@@ -4,24 +4,14 @@
     <view class="fixed inset-0 bg-gradient-yellow z--3"></view>
     <!-- 第二层 图片 -->
     <view class="flex-col items-center z--2">
-      <img
-        class="w-32 mt-[10vh]"
-        src="@/static/index/signin/hippo.png"
-        alt="hippo"
-      />
+      <img class="w-32 mt-[10vh]" src="@/static/index/signin/hippo.png" alt="hippo" />
       <div class="h-[60vh]"></div>
       <img class="w-40" src="@/static/index/signin/logo.png" alt="logo" />
     </view>
     <!-- 第三层 登录框 -->
-    <view
-      class="absolute inset-0 flex flex-col items-center justify-center z-1"
-    >
-      <view
-        class="relative w-[80%] h-[40vh] bg-white rounded-2xl flex items-center justify-center"
-      >
-        <text
-          class="bottom-[30rpx] t-14 absolute text-base text-gray-400 text-center"
-        >
+    <view class="absolute inset-0 flex flex-col items-center justify-center z-1">
+      <view class="relative w-[80%] h-[40vh] bg-white rounded-2xl flex items-center justify-center">
+        <text class="bottom-[30rpx] t-14 absolute text-base text-gray-400 text-center">
           还没有登录账号？
           <text class="text-primary" @click="go('/sign-up')">立即注册</text>
         </text>
@@ -29,53 +19,29 @@
     </view>
     <!-- 第四层 -->
     <view class="relative inset-0 flex-col items-center justify-center z-3">
-      <view
-        class="w-[90%] h-[40vh] mt-[-103vh] bg-white rounded-2xl shadow-lg px-6 py-8 flex flex-col items-stretch"
-      >
+      <view class="w-[90%] h-[40vh] mt-[-103vh] bg-white rounded-2xl shadow-lg px-6 py-8 flex flex-col items-stretch">
         <!-- 手机号输入框 -->
-        <view
-          class="flex w-[80%] mx-auto mt-20 items-center bg-gray-100 rounded-full py-10 px-10"
-        >
-          <u-icon
-            name="account"
-            color="#F9B33B"
-            size="22"
-            class="ml-1"
-          ></u-icon>
-          <input
-            class="flex-1 t-16 bg-transparent border-none outline-none ml-3 text-gray-700 text-20"
-            v-model="username"
-            placeholder-style="color: #bbb"
-            placeholder="请输入账号"
-            type="text"
-          />
+        <view class="flex w-[80%] mx-auto mt-20 items-center bg-gray-100 rounded-full py-10 px-10">
+          <u-icon name="account" color="#F9B33B" size="22" class="ml-1"></u-icon>
+          <input class="flex-1 t-16 bg-transparent border-none outline-none ml-3 text-gray-700 text-20"
+            v-model="username" placeholder-style="color: #bbb" placeholder="请输入账号" type="text" />
         </view>
         <!-- 密码输入框 -->
-        <view
-          class="flex w-[80%] my-20 mx-auto items-center bg-gray-100 rounded-full py-10 px-10"
-        >
+        <view class="flex w-[80%] my-20 mx-auto items-center bg-gray-100 rounded-full py-10 px-10">
           <u-icon name="lock" color="#F9B33B" size="22" class="ml-1"></u-icon>
-          <input
-            class="flex-1 ml-3 t-16 text-gray-700 text-base"
-            placeholder-style="color: #bbb"
-            v-model="password"
-            placeholder="请输入密码"
-            type="password"
-          />
+          <input class="flex-1 ml-3 t-16 text-gray-700 text-base" placeholder-style="color: #bbb" v-model="password"
+            placeholder="请输入密码" type="password" />
         </view>
         <!-- 忘记密码 -->
-        <view class="flex justify-end mb-4">
-          <span class="text-gray-400 text-sm cursor-pointer mr-12"
-            >忘记密码</span
-          >
+        <view class="flex justify-end mb-4" @click="go('/pages/reset-password')">
+          <text class="text-[#f9b33b] text-sm">
+            忘记密码？
+          </text>
         </view>
         <!-- 登录按钮 -->
         <view class="pt-20">
-          <button
-            class="w-[90%] py-3 rounded-full text-white font-bold text-lg"
-            style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
-            @click="handleSignIn"
-          >
+          <button class="w-[90%] py-3 rounded-full text-white font-bold text-lg"
+            style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" @click="handleSignIn">
             登录 SIGN IN
           </button>
         </view>

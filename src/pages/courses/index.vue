@@ -50,6 +50,8 @@ import { listRecommendedCourseSessions, listCourseById, listCourseSessions, list
 import { go } from '@/utils/common';
 import { onMounted, reactive, ref } from 'vue';
 import Layout from '../layout.vue';
+import { useAuthStore } from '@/stores/authStore';
+
 interface MenuItem {
     id: number;
     line1: string;
@@ -90,7 +92,14 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
     }
 
     if (response.data) {
-        const temp = response.data.filter((e: any) => e.children).flatMap((e: any) => {
+        const authStore = useAuthStore();
+        let courseData = response.data;
+        if (!authStore.roles.includes('teacher')) {
+            // Filter out teacher courses (category id 14)
+            courseData = courseData.filter((e: any) => e.id !== 14);
+        }
+
+        const temp = courseData.filter((e: any) => e.children).flatMap((e: any) => {
             return e.children.map((child: any) => {
                 return {
                     subject: e.name, ...child,
@@ -104,7 +113,10 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
     }
 };
 onMounted(async () => {
-
+    const authStore = useAuthStore();
+    if (!authStore.roles.includes('teacher')) {
+        menuItems.value = menuItems.value.filter(item => item.id !== 14);
+    }
 
     const recommandSessionsResponse: any = await listRecommendedCourseSessions()
     if (recommandSessionsResponse.data) {
