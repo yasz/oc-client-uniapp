@@ -1,82 +1,78 @@
 <template>
-  <view class="container">
-    <!-- <view class="search-bar">
+  <view class="min-h-screen bg-white pb-[100rpx]">
+    <!-- <view class="bg-[#f8ae3d] p-[20rpx]">
       <u-search v-model="searchKeyword" placeholder="SEARCH" />
     </view> -->
 
-    <view class="welcome-section">
+    <view class="relative flex items-center gap-[10rpx] h-[280rpx]"
+      style="background: linear-gradient(180deg, #ffb800 0%, #ff9d00 100%)">
       <view class="pl-30" style="position: relative; z-index: 1">
-        <image
-          src="/static/index/logo.png"
-          mode="aspectFit"
-          class="welcome-logo"
-        />
+        <image src="/static/index/logo.png" mode="aspectFit" class="w-[280rpx] h-[280rpx] flex-shrink-0" />
       </view>
-      <view
-        class="welcome-text pt-60"
-        style="margin-left: -100rpx; position: relative; z-index: 2"
-      >
-        <text class="welcome-title pr-6">WELCOME</text>
-        <text class="welcome-subtitle">欢迎来到Lifefunner"乐凡中文"！</text>
+      <view class="flex-1 text-right pt-60" style="margin-left: -100rpx; position: relative; z-index: 2">
+        <text class="block text-[56rpx] font-black text-[#9b6310] leading-tight tracking-[2rpx] pr-6"
+          style="-webkit-text-stroke: 0.3px #523201">WELCOME</text>
+        <text class="block text-[28rpx] font-medium text-[#8b4513] leading-snug tracking-[1rpx] mt-[8rpx]"
+          style="-webkit-text-stroke: 0.7px #523201">欢迎来到Lifefunner"乐凡中文"！</text>
       </view>
-      <view style="z-index: 3" class="donate-btn" @click="showDonatePopup">
+      <view style="
+          z-index: 3;
+          text-shadow: 0 0 10rpx rgba(255, 184, 0, 0.3);
+          box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+        "
+        class="absolute top-[40rpx] right-[40rpx] bg-white py-[16rpx] px-[32rpx] rounded-[40rpx] text-[28rpx] flex items-center gap-[10rpx] text-[#523201] font-black"
+        @click="showDonatePopup">
         <text>支持/DONATE</text>
       </view>
     </view>
 
-    <view class="course-grid">
-      <view
-        v-for="(course, index) in courses"
-        :key="index"
-        class="course-card"
-        @click="showDetail('course', index)"
-      >
-        <image :src="course.image" mode="aspectFit" class="course-icon" />
-        <view class="course-text">
-          <text class="course-name">{{ course.line1 }}</text>
-          <text class="course-desc">{{ course.line2 }}</text>
+    <view class="flex justify-between p-[30rpx]">
+      <view v-for="(course, index) in courses" :key="index"
+        class="flex-1 mx-[10rpx] bg-white rounded-[20rpx] p-[15rpx] flex flex-col items-center shadow-sm first:ml-0 last:mr-0"
+        @click="showDetail('course', index)">
+        <image :src="course.image" mode="aspectFit" class="w-[90rpx] h-[90rpx] mb-[12rpx]" />
+        <view class="flex flex-col items-center">
+          <text class="text-[24rpx] font-bold text-gray-800 leading-tight text-center">{{
+            course.line1
+          }}</text>
+          <text class="text-[20rpx] text-gray-500 mt-[4rpx] leading-tight text-center">{{ course.line2 }}</text>
         </view>
       </view>
     </view>
 
     <!-- 课程详情弹窗 -->
     <uni-popup ref="popup" :is-mask-click="true" type="center">
-      <view class="popup-content">
-        <image :src="currentDetail?.icon" mode="aspectFit" class="popup-icon" />
-        <view class="popup-title">{{ currentDetail?.title }}</view>
-        <view class="popup-divider"></view>
-        <view class="popup-desc" v-html="currentDetail?.description"></view>
+      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx]">
+        <image :src="currentDetail?.icon" mode="aspectFit" class="block w-[120rpx] h-[120rpx] mx-auto mb-[20rpx]" />
+        <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">{{
+          currentDetail?.title
+        }}</view>
+        <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
+        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify whitespace-pre-wrap"
+          v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>
 
-    <view class="moments-section">
-      <text class="section-title">精彩时刻</text>
-      <view class="moments-grid pt-20">
-        <view
-          v-for="(moment, index) in moments"
-          :key="index"
-          class="moment-card"
-        >
-          <image :src="moment.image" mode="aspectFill" class="moment-image" />
-          <text class="moment-desc">{{ moment.description }}</text>
+    <view class="p-[30rpx]">
+      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻</text>
+      <view class="grid grid-cols-2 gap-[20rpx] pt-20">
+        <view v-for="(moment, index) in moments" :key="index" class="bg-white rounded-[10rpx] overflow-hidden">
+          <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
+          <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
+            moment.description
+          }}</text>
         </view>
       </view>
     </view>
 
     <!-- 捐赠弹窗 -->
     <uni-popup ref="donatePopup" :is-mask-click="true" type="center">
-      <view class="popup-content bg-white">
-        <view class="popup-title">支持/Donate</view>
-        <view class="popup-divider"></view>
-        <view class="donate-qr-container">
-          <image
-            src="/static/index/wechat.png"
-            style="width: 480rpx; height: 360rpx"
-          />
-          <image
-            src="/static/index/alipay.png"
-            style="width: 480rpx; height: 360rpx"
-          />
+      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx]">
+        <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">支持/Donate</view>
+        <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
+        <view class="flex justify-center gap-[10px] my-[30rpx]">
+          <image src="/static/index/wechat.png" style="width: 480rpx; height: 360rpx" />
+          <image src="/static/index/alipay.png" style="width: 480rpx; height: 360rpx" />
         </view>
         <view class="flex-col flex-center-column">
           <view class="t-10 text-gray">验证提示：马*乐</view>
@@ -187,9 +183,8 @@ const showDetail = async (type: "course" | "moment", index: number) => {
         const courseDetail = cmsData.value[index];
         currentDetail.value = {
           icon: courseDetail.cover?.[0]
-            ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${
-                courseDetail.cover[0]?.url
-              }`
+            ? `${import.meta.env.VITE_BUCKET_ENDPOINT}${courseDetail.cover[0]?.url
+            }`
             : "",
           title: courseDetail.title + courseDetail.sub_title,
           description: courseDetail.content,
@@ -218,241 +213,5 @@ const showDonatePopup = () => {
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  background-color: #fff;
-  padding-bottom: 100rpx;
-}
-
-.search-bar {
-  background-color: #f8ae3d;
-  padding: 20rpx;
-}
-
-.welcome-section {
-  background: linear-gradient(180deg, #ffb800 0%, #ff9d00 100%);
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10rpx;
-  height: 280rpx;
-}
-
-.welcome-logo {
-  width: 280rpx;
-  height: 280rpx;
-  flex-shrink: 0;
-}
-
-.welcome-text {
-  flex: 1;
-  text-align: right;
-}
-
-.welcome-title {
-  font-size: 56rpx;
-  font-weight: 900;
-  color: #9b6310;
-  display: block;
-  line-height: 1.2;
-  letter-spacing: 2rpx;
-  -webkit-text-stroke: 0.3px #523201;
-}
-
-.welcome-subtitle {
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #8b4513;
-  line-height: 1.4;
-  letter-spacing: 1rpx;
-  display: block;
-  margin-top: 8rpx;
-  -webkit-text-stroke: 0.7px #523201;
-}
-
-.donate-btn {
-  background-color: #fff;
-  padding: 16rpx 32rpx;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-  position: absolute;
-  right: 40rpx;
-  top: 40rpx;
-  display: flex;
-  align-items: center;
-  gap: 10rpx;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-  color: #523201;
-  text-shadow: 0 0 10rpx rgba(255, 184, 0, 0.3);
-  font-weight: 900;
-}
-
-.course-grid {
-  display: flex;
-  justify-content: space-between;
-  padding: 30rpx;
-}
-
-.course-card {
-  flex: 1;
-  margin: 0 10rpx;
-  background-color: #fff;
-  border-radius: 20rpx;
-  padding: 15rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.course-icon {
-  width: 90rpx;
-  height: 90rpx;
-  margin-bottom: 12rpx;
-}
-
-.course-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.course-name {
-  font-size: 24rpx;
-  font-weight: bold;
-  color: #333;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.course-desc {
-  font-size: 20rpx;
-  color: #666;
-  margin-top: 4rpx;
-  line-height: 1.2;
-  text-align: center;
-}
-
-.moments-section {
-  padding: 30rpx;
-}
-
-.section-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 30rpx;
-  color: #333;
-}
-
-.moments-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20rpx;
-}
-
-.moment-card {
-  background-color: #fff;
-  border-radius: 10rpx;
-  overflow: hidden;
-}
-
-.moment-image {
-  width: 100%;
-  height: 200rpx;
-  object-fit: cover;
-}
-
-.moment-desc {
-  font-size: 24rpx;
-  color: #666;
-  padding: 10rpx;
-  display: block;
-  text-align: center;
-}
-
-.tab-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100rpx;
-  background-color: #fff;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-top: 1rpx solid #eee;
-}
-
-.tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.tab-item.active {
-  color: #f8ae3d;
-}
-
-.tab-icon {
-  width: 48rpx;
-  height: 48rpx;
-  margin-bottom: 6rpx;
-}
-
-/* 添加弹窗样式 */
-.popup-content {
-  width: 600rpx;
-  padding: 40rpx;
-  background: #fff;
-  border-radius: 20rpx;
-}
-
-.popup-icon {
-  width: 120rpx;
-  height: 120rpx;
-  margin: 0 auto 20rpx;
-  display: block;
-}
-
-.popup-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin-bottom: 20rpx;
-}
-
-.popup-divider {
-  height: 4rpx;
-  background: #ffb800;
-  width: 60rpx;
-  margin: 0 auto 30rpx;
-}
-
-.popup-desc {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.8;
-  text-align: justify;
-  white-space: pre-wrap;
-}
-
-.donate-qr-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  /* 设置二维码之间的间距为10px */
-  margin: 30rpx 0;
-}
+/* All old CSS is removed. */
 </style>

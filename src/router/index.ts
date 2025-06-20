@@ -314,6 +314,16 @@ const soliRoutes = [
       },
     }),
   },
+  {
+    path: `/webview`,
+    component: __dynamicImportComponent__(`@/pages/webview/index.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarTitleText: "",
+      },
+    }),
+  },
 ];
 
 const router = createRouter({

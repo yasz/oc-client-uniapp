@@ -2,14 +2,13 @@
   <div class="px-20 py-20">
     <div class="text-gray-400 text-sm mb-2">官方账号</div>
     <div class="space-y-3">
-      <div class="flex items-center bg-white rounded-xl shadow p-4">
-        <div
-          class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500 mr-3"
-        >
-          <img
-            src="/static/my/contact/redbook.png"
-            class="w-7 h-7 object-contain"
-          />
+      <div class="flex items-center bg-white rounded-xl shadow p-4" @click="
+        goToWebView(
+          'https://www.xiaohongshu.com/user/profile/593b7c9e33594a286da325ec'
+        )
+        ">
+        <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500 mr-3">
+          <img src="/static/my/contact/redbook.png" class="w-7 h-7 object-contain" />
         </div>
         <div class="flex-1">
           <div class="text-base text-gray-900 font-medium">乐凡中文</div>
@@ -22,13 +21,9 @@
     <div class="text-gray-400 text-sm mt-6 mb-2 pt-20">邮箱</div>
 
     <!-- 邮箱1 -->
-    <div
-      class="flex items-center bg-white rounded-xl shadow p-4 cursor-pointer"
-      @click="copyEmail('yangjiahao@outlook.com')"
-    >
-      <div
-        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3"
-      >
+    <div class="flex items-center bg-white rounded-xl shadow p-4 cursor-pointer"
+      @click="copyEmail('yangjiahao@outlook.com')">
+      <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3">
         <img src="/static/my/contact/mail.png" class="w-6 h-6 object-contain" />
       </div>
       <div class="flex-1">
@@ -41,13 +36,8 @@
     </div>
 
     <!-- 邮箱2 -->
-    <div
-      class="flex items-center bg-white rounded-xl shadow p-4 cursor-pointer"
-      @click="copyEmail('may4@tcd.ie')"
-    >
-      <div
-        class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3"
-      >
+    <div class="flex items-center bg-white rounded-xl shadow p-4 cursor-pointer" @click="copyEmail('may4@tcd.ie')">
+      <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-500 mr-3">
         <img src="/static/my/contact/mail.png" class="w-6 h-6 object-contain" />
       </div>
       <div class="flex-1">
@@ -60,6 +50,8 @@
 </template>
 
 <script lang="ts" setup>
+import { go } from "@/utils/common";
+
 function copyEmail(email: string): void {
   uni.setClipboardData({
     data: email,
@@ -78,4 +70,10 @@ function copyEmail(email: string): void {
     },
   });
 }
+
+const goToWebView = (url: string) => {
+  if (url) {
+    go(`/pages/webview/index?url=${encodeURIComponent(url)}`);
+  }
+};
 </script>
