@@ -44,46 +44,45 @@
         </div>
 
         <view class="p-4 bg-gray-100">
-            <view class="bg-white rounded-2xl shadow-md">
-                <!-- 遍历课程数据，生成卡片列表 -->
-                <view v-for="(course, index) in filteredCourses" :key="index"
-                    class="flex items-start p-3 bg-white rounded-xl shadow-md mb-4"
-                    @click="go(`/courses/details?id=${course.id}`)">
+            <!-- 遍历课程数据，生成卡片列表 -->
+            <view v-for="(course, index) in filteredCourses" :key="index"
+                class="flex items-start p-3 bg-white rounded-xl shadow-md mb-4"
+                @click="go(`/courses/details?id=${course.id}`)">
 
-                    <!-- 左侧课程封面 -->
-                    <view
-                        class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden flex justify-center items-center bg-gray-50">
-                        <u-image width="100%" height="100%" :src="course.cover" mode="aspectFit" />
-                    </view>
+                <!-- 左侧课程封面 -->
+                <view
+                    class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden flex justify-center items-center bg-gray-50">
+                    <u-image height="120" :src="course.cover" mode="aspectFit" />
+                </view>
 
-                    <!-- 右侧课程信息 -->
-                    <view class="flex-1 ml-3 flex flex-col justify-between self-stretch">
-                        <!-- Top part of right side -->
-                        <view>
-                            <!-- Title Row -->
-                            <view class="flex justify-between items-start">
-                                <text class="text-base font-bold text-gray-800 leading-tight">{{ course.name }}</text>
-                                <view class="flex items-center flex-shrink-0 ml-2">
-                                    <view class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">FREE
-                                    </view>
-                                    <u-icon name="arrow-right" color="#cccccc" class="ml-1"></u-icon>
+                <!-- 右侧课程信息 -->
+                <view class="flex-1 ml-3 flex flex-col justify-between self-stretch">
+                    <!-- Top part of right side -->
+                    <view>
+                        <!-- Title Row -->
+                        <view class="flex justify-between items-start">
+                            <text class="text-base font-bold text-gray-800 leading-tight">{{ course.name }}</text>
+                            <view class="flex items-center flex-shrink-0 ml-2">
+                                <view class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">FREE
                                 </view>
-                            </view>
-
-                            <!-- English Name Tag -->
-                            <view class="mt-1">
-                                <text
-                                    class="border border-orange-500 text-orange-500 text-xs font-semibold px-2 py-0.5 rounded-md uppercase">{{
-                                        course.name_en }}</text>
+                                <u-icon name="arrow-right" color="#cccccc" class="ml-1"></u-icon>
                             </view>
                         </view>
 
-                        <!-- Bottom part of right side -->
-                        <view class="flex justify-end items-center">
-                            <view class="flex items-center text-yellow-500">
-                                <u-icon name="star-fill" color="rgb(245 158 11)" size="20"></u-icon>
-                                <text class="text-sm text-gray-500 ml-1">收藏</text>
-                            </view>
+                        <!-- English Name Tag -->
+                        <view class="mt-1">
+                            <text class="uppercase"
+                                style="display: inline-block; border: 1px solid #f97316; color: #f97316; font-size: 0.75rem; font-weight: 600; padding: 1px 6px; border-radius: 6px;">
+                                {{ course.name_en }}
+                            </text>
+                        </view>
+                    </view>
+
+                    <!-- Bottom part of right side -->
+                    <view class="flex justify-end items-center">
+                        <view class="flex items-center text-yellow-500">
+                            <u-icon name="star-fill" color="rgb(245 158 11)" size="20"></u-icon>
+                            <text class="text-sm text-gray-500 ml-1">收藏</text>
                         </view>
                     </view>
                 </view>
