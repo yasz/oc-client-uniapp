@@ -2,38 +2,7 @@
   <view class="bg-white p-3 rounded-lg shadow">
     <template v-if="tree.length > 0">
       <uni-collapse>
-        <view v-for="item in tree" :key="item.path">
-          <uni-collapse-item v-if="item.children" :title="item.name" :open="true">
-            <view v-for="child in item.children" :key="child.path">
-              <uni-collapse-item v-if="child.children" :title="child.name" :open="true">
-                <view v-for="grandChild in child.children" :key="grandChild.path">
-                  <uni-collapse-item v-if="grandChild.children" :title="grandChild.name" :open="true">
-                    <view v-for="file in grandChild.children" :key="file.path" class="flex items-center pl-5">
-                      <text class="children-item py-2 pl-2 flex-1">{{ file.name }}</text>
-                      <up-icon :name="getIconByType(file.path)" size="22" color="#9298a5" class="ml-auto pr-3"
-                        @click="openAttachment(file.path)" />
-                    </view>
-                  </uni-collapse-item>
-                  <view v-else class="flex items-center pl-5">
-                    <text class="children-item py-2 pl-2 flex-1">{{ grandChild.name }}</text>
-                    <up-icon :name="getIconByType(grandChild.path)" size="22" color="#9298a5" class="ml-auto pr-3"
-                      @click="openAttachment(grandChild.path)" />
-                  </view>
-                </view>
-              </uni-collapse-item>
-              <view v-else class="flex items-center pl-5">
-                <text class="children-item py-2 pl-2 flex-1">{{ child.name }}</text>
-                <up-icon :name="getIconByType(child.path)" size="22" color="#9298a5" class="ml-auto pr-3"
-                  @click="openAttachment(child.path)" />
-              </view>
-            </view>
-          </uni-collapse-item>
-          <view v-else class="flex items-center pl-5">
-            <text class="children-item py-2 pl-2 flex-1">{{ item.name }}</text>
-            <up-icon :name="getIconByType(item.path)" size="22" color="#9298a5" class="ml-auto pr-3"
-              @click="openAttachment(item.path)" />
-          </view>
-        </view>
+        <TreeNode v-for="item in tree" :key="item.path" :node="item" @open-attachment="openAttachment" />
       </uni-collapse>
     </template>
     <view v-else class="text-center py-4 text-gray-500">
@@ -43,77 +12,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { XMLParser } from "fast-xml-parser";
-
-// --- TypeScript 接口定义 ---
-interface CosContent {
-  Key: string;
-  Size: string;
-}
-
-interface TreeNode {
-  name: string;
-  path: string;
-  children?: TreeNode[];
-}
+import { computed } from 'vue';
+import TreeNode from '@/components/TreeNode.vue';
+import { parseContentToTree, type TreeNode as TreeNodeType } from '@/utils/xmlTreeParser';
 
 // --- Props ---
 const props = defineProps<{
   content: string;
 }>();
 
-// --- XML 解析和树构建逻辑 ---
-const parser = new XMLParser();
-const tree = computed((): TreeNode[] => {
-  console.log('Syllabus content:', props.content); // 调试信息
-  if (!props.content) return [];
-  try {
-    const parsedXml = parser.parse(props.content);
-    console.log('Parsed XML:', parsedXml); // 调试信息
-    const contentsInput = parsedXml?.ListBucketResult?.Contents;
-    if (!contentsInput) return [];
-
-    const contents: CosContent[] = Array.isArray(contentsInput) ? contentsInput : [contentsInput];
-    console.log('Contents:', contents); // 调试信息
-
-    // 直接构建树，不创建根目录
-    const result: TreeNode[] = [];
-
-    contents.forEach(item => {
-      if (!item.Key || item.Key.includes('.DS_Store') || (item.Size === '0' && item.Key.endsWith('/'))) {
-        return;
-      }
-
-      const pathParts = item.Key.split('/').filter(p => p);
-      if (pathParts.length === 0) return;
-
-      // 从第一层开始构建
-      let currentLevel = result;
-
-      pathParts.forEach((part, index) => {
-        let childNode = currentLevel.find(child => child.name === part);
-        if (!childNode) {
-          const isFolder = index < pathParts.length - 1;
-          childNode = {
-            name: part,
-            path: pathParts.slice(0, index + 1).join('/'),
-            children: isFolder ? [] : undefined,
-          };
-          currentLevel.push(childNode);
-        }
-        if (childNode.children) {
-          currentLevel = childNode.children;
-        }
-      });
-    });
-
-    console.log('Final tree:', result); // 调试信息
-    return result;
-  } catch (e) {
-    console.error("XML parsing failed:", e);
-    return [];
-  }
+// --- 计算属性：使用独立的解析工具 ---
+const tree = computed((): TreeNodeType[] => {
+  return parseContentToTree(props.content);
 });
 
 // --- 文件处理逻辑 ---
