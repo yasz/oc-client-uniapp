@@ -46,50 +46,9 @@
         </div>
 
         <view class="p-4 bg-gray-100">
-            <!-- 遍历课程数据，生成卡片列表 -->
-            <view v-for="(course, index) in filteredCourses" :key="index"
-                class="flex items-start p-3 bg-white rounded-xl shadow-md mb-4"
-                @click="go(`/courses/details?id=${course.id}`)">
-
-                <!-- 左侧课程封面 -->
-                <view
-                    class="w-28 h-28 flex-shrink-0 rounded-lg overflow-hidden flex justify-center items-center bg-gray-50">
-                    <u-image height="120" :src="course.cover" mode="aspectFit" />
-                </view>
-
-                <!-- 右侧课程信息 -->
-                <view class="flex-1 ml-3 flex flex-col justify-between self-stretch">
-                    <!-- Top part of right side -->
-                    <view>
-                        <!-- Title Row -->
-                        <view class="flex justify-between items-start">
-                            <text class="text-base font-bold text-gray-800 leading-tight">{{ course.name }}</text>
-                            <view class="flex items-center flex-shrink-0 ml-2">
-                                <view class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">FREE
-                                </view>
-                                <u-icon name="arrow-right" color="#cccccc" class="ml-1"></u-icon>
-                            </view>
-                        </view>
-
-                        <!-- English Name Tag -->
-                        <view class="mt-1">
-                            <text class="uppercase"
-                                style="display: inline-block; border: 1px solid #f97316; color: #f97316; font-size: 0.75rem; font-weight: 600; padding: 1px 6px; border-radius: 6px;">
-                                {{ course.name_en }}
-                            </text>
-                        </view>
-                    </view>
-
-                    <!-- Bottom part of right side -->
-                    <view class="flex justify-end items-center">
-                        <view class="flex items-center text-yellow-500" @click="toggleFavorite(course.id, $event)">
-                            <u-icon :name="isCourseFavorited(course.id) ? 'star-fill' : 'star'" color="rgb(245 158 11)"
-                                size="20"></u-icon>
-                            <text class="text-sm text-gray-500 ml-1">收藏</text>
-                        </view>
-                    </view>
-                </view>
-            </view>
+            <!-- 使用课程卡片组件 -->
+            <CourseCard v-for="(course, index) in filteredCourses" :key="index" :course="course"
+                :is-favorited="isCourseFavorited(course.id)" :show-subject="false" />
         </view>
         <view class="bg-gray-100" style="height:300rpx;" />
         <Layout />
@@ -97,17 +56,27 @@
 </template>
 
 <script lang="ts" setup>
-import DotSwiper from '@/components/dotSwiper.vue';
+
+import CourseCard from '@/components/CourseCard.vue';
 import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses, listCourseFavorites, createCourseFavorite, deleteCourseFavorite } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive, ref, computed } from 'vue';
 import Layout from '../layout.vue';
 import { useAuthStore } from '@/stores/authStore';
-
 interface MenuItem {
     id: number;
     line1: string;
     line2: string;
+}
+
+interface Course {
+    id: number;
+    name: string;
+    teacher: string;
+    subject: string;
+    cover: string;
+    price: number;
+    name_en: string;
 }
 
 // 搜索相关
@@ -135,10 +104,13 @@ const loadUserFavorites = async () => {
     }
 };
 
+// 处理课程点击
+const handleCourseClick = (course: Course) => {
+    go(`/courses/details?id=${course.id}`);
+};
+
 // 切换收藏状态
 const toggleFavorite = async (courseId: number, event: Event) => {
-    event.stopPropagation(); // 阻止事件冒泡，避免触发课程点击
-
     if (!authStore.userId) {
         uni.showToast({ title: '请先登录', icon: 'none' });
         return;
@@ -206,15 +178,7 @@ const menuItems = ref<MenuItem[]>([
     { id: 14, line1: '教师', line2: '课程' }
 ]);
 
-interface Course {
-    id: number;
-    name: string;
-    teacher: string;
-    subject: string;
-    cover: string;
-    price: number;
-    name_en: string;
-}
+
 const courses = reactive<Course[]>([]);
 const swiperData = reactive<{ image: string; title: string, id: number }[]>([]);
 
@@ -239,8 +203,11 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
         const temp = courseData.filter((e: any) => e.children).flatMap((e: any) => {
             return e.children.map((child: any) => {
                 return {
-                    subject: e.name, ...child,
-                    cover: import.meta.env.VITE_BUCKET_ENDPOINT + child.cover?.[0]?.url
+                    subject: e.name,
+                    ...child,
+                    cover: child.cover?.[0]?.url ?
+                        `${import.meta.env.VITE_BUCKET_ENDPOINT}${child.cover[0].url}` :
+                        '/static/images/default-cover.jpg'
                 };
             });
         }).flat();

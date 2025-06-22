@@ -458,7 +458,7 @@ export async function resetPassword(data: {
 // 课程收藏相关API
 export const listCourseFavorites = async (userId: number) => {
   const filter = `{"$and":[{"user_id":{"id":{"$eq":${userId}}}}]}`;
-  const url = `course_favorite:list?appends[]=user_id&appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&page=1&filter=${filter}`;
+  const url = `course_favorite:list?appends[]=user_id&appends[]=course_id.cover&appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&page=1&filter=${filter}`;
   try {
     const response = await getAPI(url, null);
     console.log("Response:", response);

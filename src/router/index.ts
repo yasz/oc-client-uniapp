@@ -200,6 +200,19 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/my/favorites`,
+    component: __dynamicImportComponent__(`@/pages/my/favorites.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "favorites",
+        navigationBarTitleText: `我的收藏`,
+      },
+    }),
+  },
+  {
     path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
       pageType: `top`,
