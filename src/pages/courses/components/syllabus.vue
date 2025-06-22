@@ -77,17 +77,8 @@ const tree = computed((): TreeNode[] => {
     const contents: CosContent[] = Array.isArray(contentsInput) ? contentsInput : [contentsInput];
     console.log('Contents:', contents); // 调试信息
 
-    // 找到根目录名称（第一个路径的第一部分）
-    let rootName = '';
-    if (contents.length > 0 && contents[0].Key) {
-      const firstPath = contents[0].Key;
-      const pathParts = firstPath.split('/').filter(p => p);
-      if (pathParts.length > 0) {
-        rootName = pathParts[0];
-      }
-    }
-
-    const root: TreeNode = { name: rootName, path: rootName, children: [] };
+    // 直接构建树，不创建根目录
+    const result: TreeNode[] = [];
 
     contents.forEach(item => {
       if (!item.Key || item.Key.includes('.DS_Store') || (item.Size === '0' && item.Key.endsWith('/'))) {
@@ -95,10 +86,13 @@ const tree = computed((): TreeNode[] => {
       }
 
       const pathParts = item.Key.split('/').filter(p => p);
-      let currentNode = root;
+      if (pathParts.length === 0) return;
+
+      // 从第一层开始构建
+      let currentLevel = result;
 
       pathParts.forEach((part, index) => {
-        let childNode = currentNode.children?.find(child => child.name === part);
+        let childNode = currentLevel.find(child => child.name === part);
         if (!childNode) {
           const isFolder = index < pathParts.length - 1;
           childNode = {
@@ -106,14 +100,16 @@ const tree = computed((): TreeNode[] => {
             path: pathParts.slice(0, index + 1).join('/'),
             children: isFolder ? [] : undefined,
           };
-          if (!currentNode.children) currentNode.children = [];
-          currentNode.children.push(childNode);
+          currentLevel.push(childNode);
         }
-        currentNode = childNode;
+        if (childNode.children) {
+          currentLevel = childNode.children;
+        }
       });
     });
-    console.log('Final tree:', root.children); // 调试信息
-    return root.children || [];
+
+    console.log('Final tree:', result); // 调试信息
+    return result;
   } catch (e) {
     console.error("XML parsing failed:", e);
     return [];
