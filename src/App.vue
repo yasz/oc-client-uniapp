@@ -26,6 +26,7 @@ onLaunch(async () => {
       }
       // 存储二次注册状态
       if (res?.data?.re_registered !== undefined) {
+        authStore.nickname = res.data.nickname;
         authStore.re_registered = res.data.re_registered;
       }
     } catch (error) {
