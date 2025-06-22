@@ -114,12 +114,27 @@ export const buildTreeFromXMLContents = (
     const pathParts = item.Key.split("/").filter((p: string) => p);
     if (pathParts.length === 0) return;
 
-    // 构建路径层级
+    // 跳过第一层根目录，从第二层开始
+    if (pathParts.length === 1) {
+      // 如果只有一层，且是目录（Size为0），则跳过
+      if (item.Size === 0 || item.Size === "0") {
+        return;
+      }
+    }
+
+    // 构建路径层级，从第二层开始
     let currentPath = "";
     let parentNode: TreeNode | null = null;
+    let startIndex = 0;
+
+    // 如果有多层，从第二层开始处理
+    if (pathParts.length > 1) {
+      startIndex = 1;
+      currentPath = pathParts[0];
+    }
 
     // 处理每一级路径
-    for (let i = 0; i < pathParts.length; i++) {
+    for (let i = startIndex; i < pathParts.length; i++) {
       const part = pathParts[i];
       currentPath = currentPath ? `${currentPath}/${part}` : part;
 
@@ -154,7 +169,7 @@ export const buildTreeFromXMLContents = (
     }
   });
 
-  console.log("=== 最终XML树结构 ===");
+  console.log("=== 最终XML树结构（跳过根目录） ===");
   //   console.log(result);
   return result;
 };
