@@ -37,7 +37,7 @@ export const parseXMLToTree = (xmlContent: string): TreeNode[] => {
   if (!xmlContent) return [];
 
   try {
-    console.log("=== 开始解析XML数据 ===");
+    //console.log("=== 开始解析XML数据 ===");
 
     // 使用DOMParser解析XML
     const parser = new DOMParser();
@@ -72,7 +72,7 @@ export const parseXMLToTree = (xmlContent: string): TreeNode[] => {
       }
     }
 
-    console.log("=== 解析后的Contents数据 ===");
+    //console.log("=== 解析后的Contents数据 ===");
 
     return buildTreeFromXMLContents(contents);
   } catch (error) {
@@ -106,7 +106,10 @@ export const buildTreeFromXMLContents = (
   // 首先按路径排序，确保父目录在子目录之前处理
   contents.sort((a, b) => a.Key.localeCompare(b.Key));
 
-  contents.forEach((item) => {
+  //console.log("=== 开始处理Contents数据 ===");
+  //console.log("总数据条数:", contents.length);
+
+  contents.forEach((item, index) => {
     if (!item.Key || item.Key.includes(".DS_Store")) {
       return;
     }
@@ -118,6 +121,7 @@ export const buildTreeFromXMLContents = (
     if (pathParts.length === 1) {
       // 如果只有一层，且是目录（Size为0），则跳过
       if (item.Size === 0 || item.Size === "0") {
+        //console.log("跳过根目录:", item.Key);
         return;
       }
     }
@@ -157,11 +161,15 @@ export const buildTreeFromXMLContents = (
 
         nodeMap.set(currentPath, node);
 
+        //console.log("创建节点:", part, "isFile:", isFile, "path:", currentPath);
+
         // 添加到父级或根级
         if (parentNode && parentNode.children) {
           parentNode.children.push(node);
+          //console.log("添加到父节点:", parentNode.name);
         } else {
           result.push(node);
+          //console.log("添加到根级:", part);
         }
       }
 
@@ -169,8 +177,9 @@ export const buildTreeFromXMLContents = (
     }
   });
 
-  console.log("=== 最终XML树结构（跳过根目录） ===");
-  //   console.log(result);
+  //console.log("=== 最终XML树结构（跳过根目录） ===");
+  //console.log("根级节点数量:", result.length);
+
   return result;
 };
 
