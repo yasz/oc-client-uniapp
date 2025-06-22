@@ -52,7 +52,6 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-4030620241128001",
     "@dcloudio/uni-ui": "^1.5.7",
     "axios": "^1.10.0",
-    "cos-nodejs-sdk-v5": "^2.16.0-beta.3",
     "fast-xml-parser": "^5.2.5",
     "install": "^0.13.0",
     "pinia": "^2.3.1",
