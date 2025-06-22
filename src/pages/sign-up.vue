@@ -35,8 +35,8 @@
       <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
         <view class="bg-white rounded-3xl shadow-lg p-6">
           <form @submit="submitForm">
-            <input class="input-item" v-model="formModel.username" placeholder="账号(必填)" required
-              placeholder-style="color: #d1d5db;" />
+            <input class="input-item" v-model="formModel.username" placeholder="手机号(必填)" required
+              placeholder-style="color: #d1d5db;" type="number" />
             <input class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required type="email"
               placeholder-style="color: #d1d5db;" />
             <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入密码(必填)" required
@@ -47,7 +47,7 @@
             <button form-type="submit" @click="submitForm"
               class="w-full py-6 mt-8 rounded-full text-white font-bold text-base"
               style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-              {{ userType === 'teacher' ? '注册成为老师' : '注册成为学生' }}
+              {{ userType === 'teacher' ? '注册' : '注册' }}
             </button>
 
             <button type="button" @click="goBack"
@@ -118,10 +118,12 @@ const submitForm = async () => {
     !formModel.value.password ||
     !formModel.value.confirmPassword
   ) {
-    await modal("账号、邮箱、密码、确认密码为必填项");
+    await modal("手机号、邮箱、密码、确认密码为必填项");
     loading.value = false;
     return;
   }
+
+
 
   if (!validateEmail(formModel.value.email)) {
     await modal("邮箱格式不正确");

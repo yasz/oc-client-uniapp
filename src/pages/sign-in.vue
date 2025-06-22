@@ -24,7 +24,7 @@
         <view class="flex w-[80%] mx-auto mt-20 items-center bg-gray-100 rounded-full py-10 px-10">
           <u-icon name="account" color="#F9B33B" size="22" class="ml-1"></u-icon>
           <input class="flex-1 t-16 bg-transparent border-none outline-none ml-3 text-gray-700 text-20"
-            v-model="username" placeholder-style="color: #bbb" placeholder="请输入账号" type="text" />
+            v-model="username" placeholder-style="color: #bbb" placeholder="请输入手机号/邮箱" type="text" />
         </view>
         <!-- 密码输入框 -->
         <view class="flex w-[80%] my-20 mx-auto items-center bg-gray-100 rounded-full py-10 px-10">
@@ -102,7 +102,11 @@ const handleSignIn = async () => {
     }
     go("/index");
   } catch (err: any) {
-    useModal().modal(err.message);
+    if (err.response?.status === 401) {
+      useModal().modal("密码错误，请检查手机号/邮箱与密码是否匹配！");
+    } else {
+      useModal().modal(err.message || "登录失败，请稍后重试");
+    }
   } finally {
     loading.value = false;
   }

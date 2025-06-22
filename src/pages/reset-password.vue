@@ -11,7 +11,7 @@
                 </view>
 
                 <form @submit="submitForm">
-                    <input class="input-item" v-model="formModel.username" placeholder="请输入账号" required
+                    <input class="input-item" v-model="formModel.username" placeholder="请输入手机号" required
                         placeholder-style="color: #d1d5db;" />
                     <input class="input-item" v-model="formModel.email" placeholder="请输入邮箱" required type="email"
                         placeholder-style="color: #d1d5db;" />
