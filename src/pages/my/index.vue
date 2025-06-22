@@ -3,28 +3,18 @@
     <!-- 头部区域 -->
     <view class="bg-primary px-5 pt-5 rounded-b-[40rpx]">
       <view class="flex justify-end">
-        <image
-          src=" /static/my/setting.png"
-          mode="aspectFit"
-          class="pl-8 pt-2 w-[70rpx] h-[70rpx]"
-          @click="go('/my/profile')"
-        />
+        <image src=" /static/my/setting.png" mode="aspectFit" class="pl-8 pt-2 w-[70rpx] h-[70rpx]"
+          @click="go('/my/profile')" />
       </view>
       <view class="flex justify-between items-start mb-8">
         <view class="flex items-center gap-5">
-          <u-avatar
-            :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'"
-            size="140rpx"
-            shape="circle"
-            mode="aspectFill"
-          ></u-avatar>
+          <u-avatar :src="useAuthStore().avatar || 'avatars/wechat/defaultAvatar.png'" size="140rpx" shape="circle"
+            mode="aspectFill"></u-avatar>
           <view class="text-white">
             <view class="text-[36rpx] font-bold mb-2">{{
-              useAuthStore().token ? useAuthStore().nickname : "MARY"
+              useAuthStore().token ? useAuthStore().nickname || "新用户" : "新用户"
             }}</view>
-            <view class="text-[24rpx] opacity-90" v-if="day !== null"
-              >加入Lifefunner的第{{ day }}天</view
-            >
+            <view class="text-[24rpx] opacity-90" v-if="day !== null">加入Lifefunner的第{{ day }}天</view>
           </view>
         </view>
         <view></view>
@@ -34,36 +24,20 @@
 
     <!-- 菜单按钮区域 -->
     <view class="m-[20rpx] bg-white rounded-[24rpx] shadow">
-      <view
-        v-for="(i, idx) in getVisibleMenuItems()"
-        :key="i"
-        class="flex items-center py-[20rpx] px-[24rpx]"
-        :style="
-          idx !== getVisibleMenuItems().length - 1
-            ? 'border-bottom: 1px solid #f0f0f0;'
-            : ''
-        "
-        @click="handleMenuClick(i)"
-      >
-        <view
-          class="w-[64rpx] h-[64rpx] rounded-full flex justify-center items-center mr-[16rpx]"
-          :style="'border: 3rpx solid #fce157;'"
-        >
-          <image
-            :src="`/static/my/i${i}.png`"
-            mode="aspectFit"
-            class="w-[36rpx] h-[36rpx]"
-          />
+      <view v-for="(i, idx) in getVisibleMenuItems()" :key="i" class="flex items-center py-[20rpx] px-[24rpx]" :style="idx !== getVisibleMenuItems().length - 1
+        ? 'border-bottom: 1px solid #f0f0f0;'
+        : ''
+        " @click="handleMenuClick(i)">
+        <view class="w-[64rpx] h-[64rpx] rounded-full flex justify-center items-center mr-[16rpx]"
+          :style="'border: 3rpx solid #fce157;'">
+          <image :src="`/static/my/i${i}.png`" mode="aspectFit" class="w-[36rpx] h-[36rpx]" />
         </view>
         <text class="flex-1 text-[28rpx] text-[#333]">{{
           getMenuText(i)
         }}</text>
         <view class="flex items-center gap-[8rpx] text-[#bbbbbb] text-[22rpx]">
           <template v-if="i === 2">
-            <view
-              v-if="unreadCount > 0"
-              class="w-[16rpx] h-[16rpx] bg-red-500 rounded-full"
-            ></view>
+            <view v-if="unreadCount > 0" class="w-[16rpx] h-[16rpx] bg-red-500 rounded-full"></view>
             <text>新消息查看</text>
           </template>
           <template v-else>
