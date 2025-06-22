@@ -395,6 +395,29 @@ export async function signUpStudent(data: any) {
     throw err;
   }
 }
+
+// 更新教师信息
+export async function updateTeacher(teacherId: number, data: any) {
+  const url = `teachers:update?filterByTk=${teacherId}`;
+  try {
+    const res = await postAPIAxios(url, data);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+}
+
+// 更新学生信息
+export async function updateStudent(studentId: number, data: any) {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    const res = await postAPIAxios(url, data);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export const listMessages = async (receiverId?: number) => {
   const filter = receiverId
     ? `{"$and":[{"receiver_id":{"id":{"$eq":${receiverId}}}}]}`

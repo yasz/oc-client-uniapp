@@ -16,7 +16,8 @@
                     <view class="flex-1">
                         <view v-if="!authStore.re_registered"
                             class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
-                            style="-webkit-text-stroke: 0.1px #523201">
+                            style="-webkit-text-stroke: 0.1px #523201" @click="handleReregisterClick">
+
                             {{ authStore.roles.includes('teacher') ? '成为本平台教师' : '我需要直播课' }}
                         </view>
 
@@ -239,6 +240,15 @@ onMounted(async () => {
     await fetchCoursesByMenuId(0);
 });
 
+const handleReregisterClick = () => {
+    if (authStore.roles.includes('teacher')) {
+        // 跳转到教师注册页面，传递参数表示这是重新注册
+        go('/teacher-sign-up?from=reregister');
+    } else {
+        // 跳转到学生注册页面，传递参数表示这是重新注册
+        go('/student-sign-up?from=reregister');
+    }
+};
 
 </script>
 

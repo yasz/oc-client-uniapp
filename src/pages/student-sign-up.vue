@@ -1,9 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col items-center bg-gradient-to-t">
     <div class="text-center pt-40">
-      <div
-        class="text-[1.05rem] text-gray-500 tracking-wider leading-tight leading-loose"
-      >
+      <div class="text-[1.05rem] text-gray-500 tracking-wider leading-tight leading-loose">
         欢迎来到Lifefunner"乐凡中文"！<br />
         Lifefunner使中文学习更有效、更轻松。
       </div>
@@ -14,125 +12,44 @@
     </div>
     <view class="w-[80%] flex flex-col gap-4">
       <form @submit="submitForm">
-        <input
-          class="input-item"
-          v-model="formModel.username"
-          placeholder="账号(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.nickname"
-          placeholder="昵称(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.email"
-          placeholder="邮箱(必填)"
-          required
-          type="email"
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.phone"
-          placeholder="手机号码(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.password"
-          type="password"
-          placeholder="请输入密码(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.confirmPassword"
-          type="password"
-          placeholder="请再次输入密码(必填)"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.username" placeholder="账号(必填)" required
+          placeholder-style="color: #d1d5db;" />
+        <input class="input-item" v-model="formModel.nickname" placeholder="昵称(必填)" required
+          placeholder-style="color: #d1d5db;" />
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required
+          type="email" placeholder-style="color: #d1d5db;" />
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.phone" placeholder="手机号码(必填)" required
+          placeholder-style="color: #d1d5db;" />
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.password" type="password"
+          placeholder="请输入密码(必填)" required placeholder-style="color: #d1d5db;" />
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.confirmPassword" type="password"
+          placeholder="请再次输入密码(必填)" required placeholder-style="color: #d1d5db;" />
 
-        <picker
-          mode="selector"
-          :range="genderOptions"
-          :value="genderIndex"
-          @change="onGenderChange"
-        >
-          <input
-            class="input-item"
-            readonly
-            :value="formModel.gender"
-            placeholder="性 别"
-            placeholder-style="color: #d1d5db;"
-          />
+        <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
+          <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
+            placeholder-style="color: #d1d5db;" />
         </picker>
         <picker mode="date" :value="formModel.birth" @change="onBirthChange">
-          <input
-            class="input-item"
-            readonly
-            :value="formModel.birth"
-            placeholder="请选择出生年月(必填)"
-            placeholder-style="color: #d1d5db;"
-          />
+          <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月(必填)"
+            placeholder-style="color: #d1d5db;" />
         </picker>
-        <input
-          class="input-item"
-          v-model="formModel.nationality"
-          placeholder="国籍"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.residence"
-          placeholder="常居地"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <input
-          class="input-item"
-          v-model="formModel.chinese_level"
-          placeholder="现在中文水平"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <picker
-          class="input-item"
-          mode="selector"
-          :range="courseOptions"
-          @change="handleCourseChange"
-          :value="courseIndex"
-        >
-          <input
-            readonly
-            :value="formModel.desired_courses"
-            placeholder="想要学的课程(必填)"
-            placeholder-style="color: #d1d5db;"
-          />
+        <input class="input-item" v-model="formModel.nationality" placeholder="国籍" required
+          placeholder-style="color: #d1d5db;" />
+        <input class="input-item" v-model="formModel.residence" placeholder="常居地" required
+          placeholder-style="color: #d1d5db;" />
+        <input class="input-item" v-model="formModel.chinese_level" placeholder="现在中文水平" required
+          placeholder-style="color: #d1d5db;" />
+        <picker class="input-item" mode="selector" :range="courseOptions" @change="handleCourseChange"
+          :value="courseIndex">
+          <input readonly :value="formModel.desired_courses" placeholder="想要学的课程(必填)"
+            placeholder-style="color: #d1d5db;" />
         </picker>
-        <input
-          class="input-item"
-          v-model="formModel.teacher_requirements"
-          placeholder="对授课老师的要求"
-          required
-          placeholder-style="color: #d1d5db;"
-        />
-        <button
-          form-type="submit"
-          @click="submitForm"
+        <input class="input-item" v-model="formModel.teacher_requirements" placeholder="对授课老师的要求" required
+          placeholder-style="color: #d1d5db;" />
+        <button form-type="submit" @click="submitForm"
           class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
-          style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
-          :disabled="loading"
-        >
-          申请直播课
+          style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
+          {{ isReregisterMode ? '完善信息' : '申请直播课' }}
         </button>
       </form>
     </view>
@@ -140,12 +57,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { signUpStudent, signUpTeacher } from "@/utils/api";
+import { ref, onMounted } from "vue";
+import { signUpStudent, updateStudent } from "@/utils/api";
 import useModal from "@/hooks/useModal";
+import { useAuthStore } from "@/stores/authStore";
 
 const modal = useModal().modal;
 const loading = ref(false);
+const authStore = useAuthStore();
+
+// 判断是否为重新注册模式
+const isReregisterMode = ref(false);
+
+onMounted(() => {
+  // 获取URL参数
+  const pages = getCurrentPages();
+  const currentPage = pages[pages.length - 1];
+  const options = (currentPage as any).options || {};
+
+  isReregisterMode.value = options.from === 'reregister';
+
+  // 如果是重新注册模式，预填充用户信息
+  if (isReregisterMode.value) {
+    formModel.value.nickname = authStore.nickname || '';
+    // 其他字段保持空白，让用户填写
+  }
+});
 
 const formModel = ref({
   username: "",
@@ -193,7 +130,38 @@ function validateEmail(email: string) {
 const submitForm = async () => {
   if (loading.value) return;
   loading.value = true;
-  // 只校验账号、邮箱、密码、确认密码为必填
+
+  // 重新注册模式下的验证逻辑
+  if (isReregisterMode.value) {
+    if (!formModel.value.nickname) {
+      await modal("昵称为必填项");
+      loading.value = false;
+      return;
+    }
+
+    try {
+      const res = await updateStudent(Number(authStore.userId), {
+        ...formModel.value,
+        re_registered: true,
+      });
+      if (res.data) {
+        await modal("信息更新成功！");
+        // 更新authStore中的re_registered状态
+        authStore.re_registered = true;
+        // 返回上一页
+        uni.navigateBack();
+      } else {
+        await modal("更新失败！");
+      }
+    } catch (err: any) {
+      await modal(`更新异常！${err.response?.data?.errors?.[0]?.message || err.message}`);
+    } finally {
+      loading.value = false;
+    }
+    return;
+  }
+
+  // 原始注册模式的验证逻辑
   if (
     !formModel.value.username ||
     !formModel.value.email ||
@@ -224,7 +192,7 @@ const submitForm = async () => {
       await modal("提交失败！");
     }
   } catch (err: any) {
-    await modal(`提交异常！${err.response.data.errors[0].message}`);
+    await modal(`提交异常！${err.response?.data?.errors?.[0]?.message || err.message}`);
   } finally {
     loading.value = false;
   }
