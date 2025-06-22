@@ -43,9 +43,9 @@ const openAttachment = (path: string) => {
 
   const fullUrl = `${import.meta.env.VITE_CDN_URL}/${encodedPath}`;
 
-  console.log('原始路径:', path);
-  console.log('编码后路径:', encodedPath);
-  console.log('完整URL:', fullUrl);
+  // console.log('原始路径:', path);
+  // console.log('编码后路径:', encodedPath);
+  // console.log('完整URL:', fullUrl);
 
   uni.showLoading({ title: '正在准备...' });
   uni.downloadFile({

@@ -1,10 +1,10 @@
 <template>
-    <view v-if="isDataLoaded" class="h-screen flex flex-col">
+    <view v-if="isDataLoaded" class="flex flex-col w-[100vw]">
         <u-image mode="aspectFit" width="100%" :src="coverURL" />
 
-        <view class="container flex-1 flex flex-col pt-4 px-4 bg-gray-100">
+        <view class=" flex-1 flex flex-col pt-4 px-4 py-8 bg-gray-100">
 
-            <view class="bg-white mt-4 p-3 rounded-lg shadow">
+            <view class="bg-white mt-4 p-3 rounded-lg shadow ">
                 <view class="flex flex-col">
                     <text class="text-gray-600 text-sm">{{ courseData.name }}</text>
                     <text class="text-gray-800 text-lg font-bold mt-1">{{ courseData.name_en }}</text>
