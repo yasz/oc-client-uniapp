@@ -1,9 +1,10 @@
 <template>
-    <view v-if="isDataLoaded">
+    <view v-if="isDataLoaded" class="h-screen flex flex-col">
         <u-image mode="aspectFit" width="100%" :src="coverURL" />
-        <view class="container p-4">
 
-            <view class="bg-white p-3 rounded-lg shadow">
+        <view class="container flex-1 flex flex-col pt-4 px-4 bg-gray-100">
+
+            <view class="bg-white mt-4 p-3 rounded-lg shadow">
                 <view class="flex flex-col">
                     <text class="text-gray-600 text-sm">{{ courseData.name }}</text>
                     <text class="text-gray-800 text-lg font-bold mt-1">{{ courseData.name_en }}</text>
@@ -16,11 +17,13 @@
                     <up-tabs :list="tabItems" @change="handleTabChange" :scrollable="false" lineWidth="30"></up-tabs>
                 </up-sticky>
             </view>
-            <view class="mt-4">
-                <SyllabusComponent :content="courseData.path" v-if="currentTabIndex === 0 && courseData.path" />
-                <view v-if="currentTabIndex === 1" class="prose bg-white p-4 rounded-lg shadow">
-                    <div v-if="courseData.content" v-html="courseData.content"></div>
-                    <text v-else>暂无内容</text>
+            <view class="mt-4 flex justify-center flex-1 overflow-y-auto">
+                <view class="w-[90%]">
+                    <SyllabusComponent :content="courseData.path" v-if="currentTabIndex === 0 && courseData.path" />
+                    <view v-if="currentTabIndex === 1" class="prose bg-white p-4 rounded-lg shadow">
+                        <div v-if="courseData.content" v-html="courseData.content"></div>
+                        <text v-else>暂无内容</text>
+                    </view>
                 </view>
             </view>
         </view>
@@ -73,7 +76,5 @@ onLoad(async (e: any) => {
 </script>
 
 <style scoped>
-.container {
-    background-color: #f5f5f5;
-}
+/* 使用Tailwind类替代自定义CSS */
 </style>
