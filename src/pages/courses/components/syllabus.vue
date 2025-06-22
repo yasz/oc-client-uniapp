@@ -28,15 +28,50 @@ const tree = computed((): TreeNodeType[] => {
 
 // --- 文件处理逻辑 ---
 const openAttachment = (path: string) => {
-  const fullUrl = `${import.meta.env.VITE_CDN_URL}/${path}`;
+  // 对路径进行正确的编码处理
+  let encodedPath = path;
+
+  // 如果路径已经被编码过，先解码再重新编码
+  try {
+    const decodedPath = decodeURIComponent(path);
+    // 对路径的每个部分分别编码，保留路径分隔符
+    encodedPath = decodedPath.split('/').map(part => encodeURIComponent(part)).join('/');
+  } catch (e) {
+    // 如果解码失败，说明原路径可能没有编码，直接编码
+    encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
+  }
+
+  const fullUrl = `${import.meta.env.VITE_CDN_URL}/${encodedPath}`;
+
+  console.log('原始路径:', path);
+  console.log('编码后路径:', encodedPath);
+  console.log('完整URL:', fullUrl);
+
   uni.showLoading({ title: '正在准备...' });
   uni.downloadFile({
     url: fullUrl,
     success: res => {
-      if (res.statusCode === 200) uni.openDocument({ filePath: res.tempFilePath, showMenu: true });
-      else uni.showToast({ title: '文件获取失败', icon: 'none' });
+      if (res.statusCode === 200) {
+        uni.openDocument({
+          filePath: res.tempFilePath,
+          showMenu: true,
+          success: () => {
+            console.log('文档打开成功');
+          },
+          fail: (err) => {
+            console.error('文档打开失败:', err);
+            uni.showToast({ title: '文件打开失败', icon: 'none' });
+          }
+        });
+      } else {
+        console.error('文件下载失败，状态码:', res.statusCode);
+        uni.showToast({ title: `文件获取失败 (${res.statusCode})`, icon: 'none' });
+      }
     },
-    fail: () => uni.showToast({ title: '下载失败', icon: 'none' }),
+    fail: (err) => {
+      console.error('下载失败:', err);
+      uni.showToast({ title: '下载失败', icon: 'none' });
+    },
     complete: () => uni.hideLoading(),
   });
 };
