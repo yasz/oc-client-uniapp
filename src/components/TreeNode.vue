@@ -1,7 +1,7 @@
 <template>
     <view>
-        <uni-collapse-item v-if="node.children && node.children.length > 0" :title="node.name" :open="true">
-            <TreeNode v-for="child in node.children" :key="child.path" :node="child"
+        <uni-collapse-item v-if="node.children && node.children.length > 0" :title="node.name" :open="level <= 2">
+            <TreeNode v-for="child in node.children" :key="child.path" :node="child" :level="level + 1"
                 @open-attachment="$emit('open-attachment', $event)" />
         </uni-collapse-item>
         <view v-else-if="node.isFile" class="flex items-center pl-5">
@@ -16,11 +16,15 @@
 </template>
 
 <script setup lang="ts">
+import { withDefaults } from 'vue';
 import type { TreeNode } from '@/utils/xmlTreeParser';
 
-defineProps<{
+withDefaults(defineProps<{
     node: TreeNode;
-}>();
+    level?: number;
+}>(), {
+    level: 1
+});
 
 defineEmits<{
     'open-attachment': [path: string];

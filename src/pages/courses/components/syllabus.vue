@@ -51,6 +51,10 @@ const getIconByType = (url: string): string => {
 </script>
 
 <style>
+::v-deep .is-open+.uni-collapse-item__wrap {
+  height: auto !important;
+}
+
 .children-item {
   color: #9298a5;
   font-size: 14px;
