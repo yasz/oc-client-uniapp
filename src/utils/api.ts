@@ -63,6 +63,23 @@ export const listAssignmentsByCourseId = async (id: any) => {
     throw error;
   }
 };
+export const getCourseById = async (id: any) => {
+  if (!id) {
+    console.error("Error: Missing required parameter 'id'");
+    return Promise.reject("Missing required parameter 'id'");
+  }
+
+  const url = `courses:get?filterByTk=${id}&appends[]=cover&appends[]=file_id`;
+
+  try {
+    const response = await getAPIAxios(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
 export const getCourseSessionsById = async (id: any) => {
   if (!id) {
     console.error("Error: Missing required parameter 'id'");

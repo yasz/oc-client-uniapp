@@ -22,10 +22,37 @@
     </template>
 </template>
 <script lang="ts" setup>
+import { ref, computed } from "vue";
+import { XMLParser } from "fast-xml-parser";
 import { useAuthStore } from "@/stores/authStore";
 import { createCourseProgress } from "@/utils/api";
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+
+// --- TypeScript 接口定义 ---
+interface CosContent {
+    Key: string;
+    Size: number;
+    // ... 其他字段
+}
+
+interface TreeNode {
+    name: string;
+    path: string;
+    children?: TreeNode[];
+    progress_percentage?: number;
+    // ... 其他元数据
+}
+
+// --- Props ---
+const props = defineProps<{
+    items: string; // 接收原始的 XML 字符串
+}>();
+
+// --- XML 解析和树构建 (占位) ---
+const tree = computed(() => {
+    // 稍后将在这里实现完整的解析和构建逻辑
+    return [];
+});
 
 // Props
 interface TreeDataItem {
@@ -36,9 +63,6 @@ interface TreeDataItem {
     progress_percentage?: number;
 }
 
-const props = defineProps<{
-    items: TreeDataItem[];
-}>();
 const localItems = ref<TreeDataItem[]>(JSON.parse(JSON.stringify(props.items)));
 // 静态文件类型数组
 const audioExtensions = ["mp3", "wav", "aac"];
