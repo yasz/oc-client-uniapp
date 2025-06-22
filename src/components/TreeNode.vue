@@ -31,10 +31,10 @@ defineEmits<{
     'open-attachment': [path: string];
 }>();
 
-// 计算缩进样式，每个层级增加2个字符的缩进
+// 计算缩进样式，每个层级增加微妙的视觉差异
 const indentStyle = computed(() => {
-    const baseIndent = 20; // 基础缩进 (px)
-    const levelIndent = (props.level - 1) * 32; // 每级增加32px (约2个字符)
+    const baseIndent = 12; // 基础缩进 (px)
+    const levelIndent = (props.level - 1) * 16; // 每级增加16px (约1个字符)
     return `${baseIndent + levelIndent}px`;
 });
 

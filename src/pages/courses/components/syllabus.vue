@@ -1,5 +1,5 @@
 <template>
-  <view class="bg-white p-3 rounded-lg shadow">
+  <view class="bg-white p-1 rounded-lg shadow">
     <template v-if="tree.length > 0">
       <uni-collapse>
         <TreeNode v-for="item in tree" :key="item.path" :node="item" @open-attachment="openAttachment" />
