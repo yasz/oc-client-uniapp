@@ -80,8 +80,9 @@
 
                     <!-- Bottom part of right side -->
                     <view class="flex justify-end items-center">
-                        <view class="flex items-center text-yellow-500">
-                            <u-icon name="star-fill" color="rgb(245 158 11)" size="20"></u-icon>
+                        <view class="flex items-center text-yellow-500" @click="toggleFavorite(course.id, $event)">
+                            <u-icon :name="isCourseFavorited(course.id) ? 'star-fill' : 'star'" color="rgb(245 158 11)"
+                                size="20"></u-icon>
                             <text class="text-sm text-gray-500 ml-1">收藏</text>
                         </view>
                     </view>
@@ -95,7 +96,7 @@
 
 <script lang="ts" setup>
 import DotSwiper from '@/components/dotSwiper.vue';
-import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses } from '@/utils/api';
+import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses, listCourseFavorites, createCourseFavorite, deleteCourseFavorite } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive, ref, computed } from 'vue';
 import Layout from '../layout.vue';
@@ -114,8 +115,65 @@ const clearSearch = () => {
     searchKeyword.value = '';
 };
 
+// 收藏相关
+const userFavorites = ref<number[]>([]); // 存储用户收藏的课程ID
+const authStore = useAuthStore();
+
+// 加载用户收藏列表
+const loadUserFavorites = async () => {
+    if (!authStore.userId) return;
+
+    try {
+        const response: any = await listCourseFavorites(Number(authStore.userId));
+        if (response.data) {
+            userFavorites.value = response.data.map((item: any) => Number(item.course_id.id));
+        }
+    } catch (error) {
+        console.error('加载收藏列表失败:', error);
+    }
+};
+
+// 切换收藏状态
+const toggleFavorite = async (courseId: number, event: Event) => {
+    event.stopPropagation(); // 阻止事件冒泡，避免触发课程点击
+
+    if (!authStore.userId) {
+        uni.showToast({ title: '请先登录', icon: 'none' });
+        return;
+    }
+
+    try {
+        const isFavorited = userFavorites.value.includes(courseId);
+
+        if (isFavorited) {
+            // 取消收藏
+            await deleteCourseFavorite(Number(authStore.userId), courseId);
+            userFavorites.value = userFavorites.value.filter(id => id !== courseId);
+            uni.showToast({ title: '已取消收藏', icon: 'success' });
+        } else {
+            // 添加收藏
+            await createCourseFavorite(Number(authStore.userId), courseId);
+            userFavorites.value.push(courseId);
+            uni.showToast({ title: '收藏成功', icon: 'success' });
+        }
+    } catch (error) {
+        console.error('收藏操作失败:', error);
+        uni.showToast({ title: '操作失败，请重试', icon: 'none' });
+    }
+};
+
+// 检查课程是否已收藏
+const isCourseFavorited = (courseId: number) => {
+    return userFavorites.value.includes(courseId);
+};
+
 // 根据搜索关键词过滤课程 - 实时响应
 const filteredCourses = computed(() => {
+    // 如果没有选中任何tab，返回空数组
+    if (selectedItem.value === undefined) {
+        return [];
+    }
+
     if (!searchKeyword.value.trim()) {
         return courses;
     }
@@ -205,6 +263,10 @@ onMounted(async () => {
             }))
         );
     }
+
+    // 加载用户收藏列表
+    await loadUserFavorites();
+
     await fetchCoursesByMenuId(0);
 });
 

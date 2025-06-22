@@ -454,3 +454,51 @@ export async function resetPassword(data: {
     throw err;
   }
 }
+
+// 课程收藏相关API
+export const listCourseFavorites = async (userId: number) => {
+  const filter = `{"$and":[{"user_id":{"id":{"$eq":${userId}}}}]}`;
+  const url = `course_favorite:list?appends[]=user_id&appends[]=course_id&appends[]=course_id.parent(recursively%3Dtrue)&page=1&filter=${filter}`;
+  try {
+    const response = await getAPI(url, null);
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const createCourseFavorite = async (
+  userId: number,
+  courseId: number
+) => {
+  const url = `course_favorite:create`;
+  try {
+    const response = await postAPIAxios(url, {
+      user_id: { id: userId },
+      course_id: { id: courseId },
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const deleteCourseFavorite = async (
+  userId: number,
+  courseId: number
+) => {
+  const filter = `{"$and":[{"user_id":{"id":{"$eq":${userId}}}},{"course_id":{"id":{"$eq":${courseId}}}}]}`;
+  const url = `course_favorite:destroy?filter=${filter}`;
+  try {
+    const response = await postAPIAxios(url, {});
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
