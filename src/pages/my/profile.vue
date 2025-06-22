@@ -129,11 +129,7 @@ const handleAvatarClick = () => {
               userData.avatar = uploadData.data;
               // 4. 判断角色，更新 teachers 或 students
               let updateUrl = "";
-              if (
-                Array.isArray(authStore.role)
-                  ? authStore.roles.includes("teacher")
-                  : authStore.role === "teacher"
-              ) {
+              if (authStore.roles.includes("teacher")) {
                 updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
               } else {
                 updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
@@ -182,11 +178,7 @@ const handleNameClick = () => {
           userData.nickname = res.content;
           // 判断角色
           let updateUrl = "";
-          if (
-            Array.isArray(authStore.role)
-              ? authStore.roles.includes("teacher")
-              : authStore.role === "teacher"
-          ) {
+          if (authStore.roles.includes("teacher")) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
           } else {
             updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
@@ -199,6 +191,10 @@ const handleNameClick = () => {
             },
             body: JSON.stringify(userData),
           });
+
+          // 更新 authStore 中的 nickname
+          authStore.nickname = res.content;
+
           uni.showToast({ title: "昵称修改成功", icon: "success" });
         } catch (error) {
           uni.showToast({ title: "昵称修改失败", icon: "error" });
@@ -235,11 +231,7 @@ const handlePhoneClick = () => {
           userData.phone = res.content;
           // 判断角色
           let updateUrl = "";
-          if (
-            Array.isArray(authStore.role)
-              ? authStore.roles.includes("teacher")
-              : authStore.role === "teacher"
-          ) {
+          if (authStore.roles.includes("teacher")) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
           } else {
             updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;
@@ -278,11 +270,7 @@ const handleEmailClick = () => {
           userData.email = res.content;
           // 判断角色
           let updateUrl = "";
-          if (
-            Array.isArray(authStore.role)
-              ? authStore.roles.includes("teacher")
-              : authStore.role === "teacher"
-          ) {
+          if (authStore.roles.includes("teacher")) {
             updateUrl = `${API_ENDPOINT}/teachers:update?filterByTk=${authStore.userId}`;
           } else {
             updateUrl = `${API_ENDPOINT}/students:update?filterByTk=${authStore.userId}`;

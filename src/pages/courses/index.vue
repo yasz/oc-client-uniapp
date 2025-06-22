@@ -14,9 +14,11 @@
             <view class="p-4">
                 <view class="flex justify-between items-center text-white">
                     <view class="flex-1">
-                        <view class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
+                        <view v-if="!authStore.re_registered"
+                            class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
                             style="-webkit-text-stroke: 0.1px #523201">
-                            成为本平台教师</view>
+                            {{ authStore.roles.includes('teacher') ? '成为本平台教师' : '我需要直播课' }}
+                        </view>
 
                         <view class="text-xl font-bold text-[#9b6310]" style="-webkit-text-stroke: 0.2px #523201">
                             中国语文海外学

@@ -12,6 +12,7 @@ export const useAuthStore = defineStore("authStore", {
     roles: [] as string[], // 改为 roles 数组
     avatar: null as string | null, // 用户头像
     createdAt: null as string | null, // 用户创建时间
+    re_registered: false as boolean, // 二次注册状态
   }),
 
   getters: {
@@ -33,10 +34,11 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
-          const { id, nickname, roles } = response.data.data;
+          const { id, nickname, roles, re_registered } = response.data.data;
           this.userId = id;
           this.nickname = nickname;
           this.roles = roles.map((e: any) => e.name);
+          this.re_registered = re_registered || false;
         }
         return response.data;
       } catch (error) {
@@ -52,9 +54,10 @@ export const useAuthStore = defineStore("authStore", {
       this.token = "";
       this.userId = null;
       this.nickname = null;
-      this.role = ""; // 清空状态
+      this.roles = []; // 清空状态
       this.avatar = null; // 清空头像
       this.createdAt = null; // 清空创建时间
+      this.re_registered = false; // 清空二次注册状态
     },
 
     // 从存储中加载 token 并验证

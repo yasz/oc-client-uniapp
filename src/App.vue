@@ -5,6 +5,11 @@ import { getUserInfoWithSpecialToken } from "./utils/api";
 
 onLaunch(async () => {
   const authStore = useAuthStore();
+
+  // 先加载并验证token
+  await authStore.loadTokenFromStorage();
+
+  // 如果有有效的userId，再获取额外的用户信息
   if (authStore.userId) {
     try {
       const response = await getUserInfoWithSpecialToken(
@@ -18,6 +23,10 @@ onLaunch(async () => {
       // 存储用户创建时间
       if (res?.data?.createdAt) {
         authStore.createdAt = res.data.createdAt;
+      }
+      // 存储二次注册状态
+      if (res?.data?.re_registered !== undefined) {
+        authStore.re_registered = res.data.re_registered;
       }
     } catch (error) {
       console.error("获取用户信息失败:", error);
@@ -42,6 +51,7 @@ onHide(() => {
 /* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 // @import "./static/styles/iphone-frame.css";
 @import "uview-plus/index.scss";
+
 @font-face {
   font-family: "DIN-Regular";
   src: local("DIN-Regular"), local("DIN"),
