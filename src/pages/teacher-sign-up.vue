@@ -162,9 +162,11 @@ const submitForm = async () => {
     }
 
     try {
+      // 在二次注册模式下，只提交必要的字段，排除username、email、password、confirmPassword、phone
+      const { username, email, password, confirmPassword, phone, ...updateData } = formModel.value;
       const res = await updateTeacher(Number(authStore.userId), {
-        name: formModel.value.realname,
-        ...formModel.value,
+        name: updateData.realname,
+        ...updateData,
         re_registered: true,
       });
       if (res.data) {
