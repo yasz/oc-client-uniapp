@@ -529,44 +529,39 @@ export const deleteCourseFavorite = async (
 // 同步网盘内容到课程
 export async function syncCourseFromCDN(courseId: number, coursePath: string) {
   try {
-    // 1. 从CDN根节点获取完整的XML内容
-    const cdnRootUrl = import.meta.env.VITE_CDN_URL;
-    console.log("Fetching complete XML from CDN root:", cdnRootUrl);
+    // 1. 通过后端API获取指定路径的COS数据
+    const apiUrl = `https://praise.site/api/oa-cos?path=${encodeURIComponent(
+      coursePath
+    )}`;
+    console.log("Fetching COS data from API:", apiUrl);
 
-    const xmlResponse = await fetch(cdnRootUrl);
-    if (!xmlResponse.ok) {
-      throw new Error(`CDN请求失败: ${xmlResponse.status}`);
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`API请求失败: ${response.status} ${response.statusText}`);
     }
 
-    const completeXmlContent = await xmlResponse.text();
-    console.log("Complete XML content fetched successfully");
+    const apiResult = await response.json();
+    console.log("API response received successfully");
 
-    // 2. 解析XML并提取指定目录的内容
-    const { XMLParser, XMLBuilder } = await import("fast-xml-parser");
+    // 2. 检查API响应格式
+    if (!apiResult.success || !apiResult.data) {
+      throw new Error("API返回数据格式错误");
+    }
 
-    const parser = new XMLParser({
-      ignoreAttributes: false,
-      attributeNamePrefix: "@_",
-      textNodeName: "#text",
-      parseAttributeValue: false,
-      trimValues: true,
-    });
+    const cosData = apiResult.data;
+    const contents = cosData.Contents || [];
 
-    const result = parser.parse(completeXmlContent);
-    const contents = result.ListBucketResult.Contents || [];
+    console.log(`Found ${contents.length} items for path: ${coursePath}`);
 
-    // 3. 筛选出属于指定路径的内容
-    const pathContents = contents.filter((content: any) => {
-      const key = content.Key;
-      if (!key || typeof key !== "string") return false;
+    // 3. 生成XML结构
+    const { XMLBuilder } = await import("fast-xml-parser");
 
-      // 匹配指定路径及其子目录
-      return key === coursePath || key.startsWith(coursePath + "/");
-    });
-
-    console.log(`Found ${pathContents.length} items for path: ${coursePath}`);
-
-    // 4. 生成新的XML结构，只包含指定目录的内容
     const builder = new XMLBuilder({
       ignoreAttributes: false,
       attributeNamePrefix: "@_",
@@ -576,29 +571,28 @@ export async function syncCourseFromCDN(courseId: number, coursePath: string) {
       suppressEmptyNode: true,
     });
 
-    const filteredXmlStructure = {
+    const xmlStructure = {
       ListBucketResult: {
-        Name: result.ListBucketResult.Name,
-        Prefix: coursePath,
-        Marker: result.ListBucketResult.Marker || "",
-        MaxKeys: result.ListBucketResult.MaxKeys,
-        IsTruncated: "false",
-        NextMarker: "",
-        Contents: pathContents,
+        Name: cosData.Name,
+        Prefix: cosData.Prefix,
+        Marker: cosData.Marker || "",
+        MaxKeys: cosData.MaxKeys,
+        IsTruncated: cosData.IsTruncated || "false",
+        NextMarker: cosData.NextMarker || "",
+        Contents: contents,
       },
     };
 
-    const filteredXmlContent =
-      '<?xml version="1.0" encoding="UTF-8"?>\n' +
-      builder.build(filteredXmlStructure);
+    const xmlContent =
+      '<?xml version="1.0" encoding="UTF-8"?>\n' + builder.build(xmlStructure);
 
-    // 5. 更新数据库中的cos_xml字段
+    // 4. 更新数据库中的cos_xml字段
     const updateUrl = `courses:update?filterByTk=${courseId}`;
-    const response = await postAPIAxios(updateUrl, {
-      cos_xml: filteredXmlContent,
+    const updateResponse = await postAPIAxios(updateUrl, {
+      cos_xml: xmlContent,
     });
 
-    return response;
+    return updateResponse;
   } catch (error) {
     console.error("同步网盘失败:", error);
     throw error;
