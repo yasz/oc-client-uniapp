@@ -525,3 +525,82 @@ export const deleteCourseFavorite = async (
     throw error;
   }
 };
+
+// 同步网盘内容到课程
+export async function syncCourseFromCDN(courseId: number, coursePath: string) {
+  try {
+    // 1. 从CDN根节点获取完整的XML内容
+    const cdnRootUrl = import.meta.env.VITE_CDN_URL;
+    console.log("Fetching complete XML from CDN root:", cdnRootUrl);
+
+    const xmlResponse = await fetch(cdnRootUrl);
+    if (!xmlResponse.ok) {
+      throw new Error(`CDN请求失败: ${xmlResponse.status}`);
+    }
+
+    const completeXmlContent = await xmlResponse.text();
+    console.log("Complete XML content fetched successfully");
+
+    // 2. 解析XML并提取指定目录的内容
+    const { XMLParser, XMLBuilder } = await import("fast-xml-parser");
+
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: "@_",
+      textNodeName: "#text",
+      parseAttributeValue: false,
+      trimValues: true,
+    });
+
+    const result = parser.parse(completeXmlContent);
+    const contents = result.ListBucketResult.Contents || [];
+
+    // 3. 筛选出属于指定路径的内容
+    const pathContents = contents.filter((content: any) => {
+      const key = content.Key;
+      if (!key || typeof key !== "string") return false;
+
+      // 匹配指定路径及其子目录
+      return key === coursePath || key.startsWith(coursePath + "/");
+    });
+
+    console.log(`Found ${pathContents.length} items for path: ${coursePath}`);
+
+    // 4. 生成新的XML结构，只包含指定目录的内容
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      attributeNamePrefix: "@_",
+      textNodeName: "#text",
+      format: true,
+      indentBy: "  ",
+      suppressEmptyNode: true,
+    });
+
+    const filteredXmlStructure = {
+      ListBucketResult: {
+        Name: result.ListBucketResult.Name,
+        Prefix: coursePath,
+        Marker: result.ListBucketResult.Marker || "",
+        MaxKeys: result.ListBucketResult.MaxKeys,
+        IsTruncated: "false",
+        NextMarker: "",
+        Contents: pathContents,
+      },
+    };
+
+    const filteredXmlContent =
+      '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      builder.build(filteredXmlStructure);
+
+    // 5. 更新数据库中的cos_xml字段
+    const updateUrl = `courses:update?filterByTk=${courseId}`;
+    const response = await postAPIAxios(updateUrl, {
+      cos_xml: filteredXmlContent,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("同步网盘失败:", error);
+    throw error;
+  }
+}
