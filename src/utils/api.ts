@@ -559,37 +559,14 @@ export async function syncCourseFromCDN(courseId: number, coursePath: string) {
 
     console.log(`Found ${contents.length} items for path: ${coursePath}`);
 
-    // 3. 生成XML结构
-    const { XMLBuilder } = await import("fast-xml-parser");
+    // 3. 直接将JSON数据转换为字符串存储
+    // 不再转换为XML，直接存储JSON格式的数据
+    const jsonContent = JSON.stringify(cosData, null, 2);
 
-    const builder = new XMLBuilder({
-      ignoreAttributes: false,
-      attributeNamePrefix: "@_",
-      textNodeName: "#text",
-      format: true,
-      indentBy: "  ",
-      suppressEmptyNode: true,
-    });
-
-    const xmlStructure = {
-      ListBucketResult: {
-        Name: cosData.Name,
-        Prefix: cosData.Prefix,
-        Marker: cosData.Marker || "",
-        MaxKeys: cosData.MaxKeys,
-        IsTruncated: cosData.IsTruncated || "false",
-        NextMarker: cosData.NextMarker || "",
-        Contents: contents,
-      },
-    };
-
-    const xmlContent =
-      '<?xml version="1.0" encoding="UTF-8"?>\n' + builder.build(xmlStructure);
-
-    // 4. 更新数据库中的cos_xml字段
+    // 4. 更新数据库中的cos_xml字段（虽然字段名是cos_xml，但现在存储JSON）
     const updateUrl = `courses:update?filterByTk=${courseId}`;
     const updateResponse = await postAPIAxios(updateUrl, {
-      cos_xml: xmlContent,
+      cos_xml: jsonContent,
     });
 
     return updateResponse;

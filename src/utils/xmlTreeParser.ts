@@ -267,26 +267,64 @@ export const parseContentToTree = (content: string | object): TreeNode[] => {
   if (!content) return [];
 
   try {
-    // 检查是否是JSON格式的数据
-    if (
-      typeof content === "object" ||
-      (typeof content === "string" && content.trim().startsWith("["))
-    ) {
-      const jsonData =
-        typeof content === "string" ? JSON.parse(content) : content;
+    // 如果是字符串，尝试解析为JSON
+    if (typeof content === "string") {
+      // 先检查是否是JSON格式
+      if (content.trim().startsWith("{") || content.trim().startsWith("[")) {
+        const jsonData = JSON.parse(content);
 
-      // 检查是否是Contents格式的JSON数据
-      if (Array.isArray(jsonData) && jsonData.length > 0 && jsonData[0].Key) {
-        return parseJSONContentsToTree(jsonData);
+        // 检查是否是praise.site API返回的格式：包含Contents数组
+        if (jsonData.Contents && Array.isArray(jsonData.Contents)) {
+          console.log("检测到praise.site API格式的JSON数据");
+          return parseJSONContentsToTree(jsonData.Contents);
+        }
+
+        // 检查是否是直接的Contents数组
+        if (Array.isArray(jsonData) && jsonData.length > 0 && jsonData[0].Key) {
+          return parseJSONContentsToTree(jsonData);
+        }
+
+        return buildTreeFromJSON(jsonData);
       }
 
-      return buildTreeFromJSON(jsonData);
+      // 如果不是JSON，当作XML处理
+      return parseXMLToTree(content);
     }
 
-    // 处理XML格式的数据
-    return parseXMLToTree(content as string);
+    // 如果是对象，检查数据格式
+    if (typeof content === "object") {
+      // 检查是否是praise.site API返回的格式
+      if (
+        (content as any).Contents &&
+        Array.isArray((content as any).Contents)
+      ) {
+        console.log("检测到praise.site API格式的对象数据");
+        return parseJSONContentsToTree((content as any).Contents);
+      }
+
+      // 检查是否是直接的Contents数组
+      if (
+        Array.isArray(content) &&
+        content.length > 0 &&
+        (content as any)[0].Key
+      ) {
+        return parseJSONContentsToTree(content as any);
+      }
+
+      return buildTreeFromJSON(content as any);
+    }
+
+    return [];
   } catch (e) {
     console.error("数据解析失败:", e);
+    // 如果JSON解析失败，尝试作为XML解析
+    if (typeof content === "string") {
+      try {
+        return parseXMLToTree(content);
+      } catch (xmlError) {
+        console.error("XML解析也失败:", xmlError);
+      }
+    }
     return [];
   }
 };

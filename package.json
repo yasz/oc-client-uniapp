@@ -34,7 +34,9 @@
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
     "type-check": "vue-tsc --noEmit",
     "deploy": "node scripts/deploy.js",
+    "deploy:test": "node scripts/deploy-test.js",
     "build:deploy": "npm run build:h5 && npm run deploy",
+    "build:deploy:test": "npm run build:h5 && npm run deploy:test",
     "split-xml": "node scripts/split-xml-by-directory.js"
   },
   "dependencies": {
