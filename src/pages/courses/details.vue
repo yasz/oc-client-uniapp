@@ -19,7 +19,8 @@
             </view>
             <view class="mt-4 flex justify-center flex-1 overflow-y-auto">
                 <view class="w-[95%]">
-                    <SyllabusComponent :content="courseData.path" v-if="currentTabIndex === 0 && courseData.path" />
+                    <SyllabusComponent :content="courseData.cos_xml"
+                        v-if="currentTabIndex === 0 && courseData.cos_xml" />
                     <view v-if="currentTabIndex === 1" class="prose bg-white p-4 rounded-lg shadow">
                         <div v-if="courseData.content" v-html="courseData.content"></div>
                         <text v-else>暂无内容</text>
