@@ -7,12 +7,8 @@
             <view class="absolute flex z-10 pt-[8%] w-full justify-center">
                 <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
                 <view class="w-[50%] flex-col pt-[10%]">
-                    <view class="text-center">
-                        <text class="text-[#754D39] text-xs font-bold leading-tight">
-                            欢迎来到Lifefunner 乐凡中文！<br />
-                            Lifefunner使中文学习更有效、更轻松。
-                        </text>
-                    </view>
+                    <img class="w-[100%]" src="@/static/index/signup/tip1.png" alt="tip1" />
+                    <img class="w-[80%]" src="@/static/index/signup/tip2.png" alt="tip2" />
                 </view>
             </view>
 
@@ -310,7 +306,7 @@ const submitForm = async () => {
 
 <style scoped>
 .form-item {
-    @apply relative w-full my-4;
+    @apply relative my-4;
 }
 
 .required-star {
@@ -318,6 +314,6 @@ const submitForm = async () => {
 }
 
 .input-item {
-    @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
+    @apply bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
 }
 </style>
