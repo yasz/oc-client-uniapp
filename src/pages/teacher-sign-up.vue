@@ -23,12 +23,7 @@
                   placeholder-style="color: #d1d5db;" />
               </view>
 
-              <!-- 昵称 -->
-              <view class="form-item">
-                <text class="required-star">*</text>
-                <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
-                  placeholder-style="color: #d1d5db;" />
-              </view>
+
 
               <!-- 邮箱 -->
               <view v-if="!isReregisterMode" class="form-item">
@@ -165,7 +160,7 @@ onMounted(() => {
 
   // 如果是重新注册模式，预填充用户信息
   if (isReregisterMode.value) {
-    formModel.value.nickname = authStore.nickname || '';
+    formModel.value.realname = authStore.nickname || '';
     // 其他字段保持空白，让用户填写
   }
 });
@@ -193,7 +188,7 @@ const formModel = ref({
   password: "",
   confirmPassword: "",
   realname: "",
-  nickname: "",
+
   contact: "",
   gender: "",
   birth: "",
@@ -227,7 +222,7 @@ const submitForm = async () => {
   if (isReregisterMode.value) {
     // 验证所有必填字段
     const requiredFields = [
-      { field: 'nickname', name: '昵称' },
+
       { field: 'realname', name: '姓名' },
       { field: 'contact', name: '联系方式' },
       { field: 'gender', name: '性别' },
@@ -253,6 +248,7 @@ const submitForm = async () => {
       const res = await updateTeacher(Number(authStore.userId), {
         name: updateData.realname,
         ...updateData,
+        nickname: updateData.realname,
         re_registered: true,
       });
       if (res.data) {
