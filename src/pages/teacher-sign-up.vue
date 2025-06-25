@@ -1,132 +1,148 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center bg-gradient-to-t">
-    <div class="text-center pt-40">
-      <div class="text-[1.05rem] text-gray-500 tracking-wider leading-tight leading-loose">
-        欢迎来到Lifefunner乐凡中文！<br />
-        Lifefunner使中文学习更有效、更轻松。
-      </div>
-      <div class="text-base text-gray-500 tracking-wider mb-2 mt-10">
-        Welcome to Lifefunner!<br />
-        Lifefunner helps Chinese learning <br />happy and easy.
-      </div>
-    </div>
-    <view class="w-[80%] flex flex-col gap-4">
-      <form @submit="submitForm">
-        <!-- 账号 -->
-        <view v-if="!isReregisterMode" class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.username" placeholder="账号" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+  <view>
+    <view class="fixed inset-0 bg-gradient-yellow z--3"></view>
 
-        <!-- 昵称 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
-            placeholder-style="color: #d1d5db;" />
+    <!-- 注册表单页面 -->
+    <view class="min-h-screen flex flex-col items-center relative">
+      <view class="absolute flex z-10 pt-[8%] w-full justify-center">
+        <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
+        <view class="w-[50%] flex-col pt-[10%]">
+          <view class="text-center">
+            <text class="text-[#754D39] text-xs font-bold leading-tight">
+              欢迎来到Lifefunner乐凡中文！<br />
+              Lifefunner使中文学习更有效、更轻松。
+            </text>
+          </view>
         </view>
+      </view>
 
-        <!-- 邮箱 -->
-        <view v-if="!isReregisterMode" class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.email" placeholder="邮箱" required type="email"
-            placeholder-style="color: #d1d5db;" />
-        </view>
+      <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
+        <view class="bg-white rounded-3xl shadow-lg p-6 teacher-form-container">
+          <scroll-view scroll-y="true" class="form-scroll-view">
+            <form @submit="submitForm">
+              <!-- 账号 -->
+              <view v-if="!isReregisterMode" class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.username" placeholder="账号" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 手机号码 -->
-        <view v-if="!isReregisterMode" class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.phone" placeholder="手机号码" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 昵称 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 密码 -->
-        <view v-if="!isReregisterMode" class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入密码" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 邮箱 -->
+              <view v-if="!isReregisterMode" class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.email" placeholder="邮箱" required type="email"
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 确认密码 -->
-        <view v-if="!isReregisterMode" class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.confirmPassword" type="password" placeholder="请再次输入密码" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 手机号码 -->
+              <view v-if="!isReregisterMode" class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.phone" placeholder="手机号码" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 姓名 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.realname" placeholder="请输入您的名字" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 密码 -->
+              <view v-if="!isReregisterMode" class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入密码" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 联系方式 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.contact" placeholder="请输入您联系方式" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 确认密码 -->
+              <view v-if="!isReregisterMode" class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.confirmPassword" type="password" placeholder="请再次输入密码"
+                  required placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 性别 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
-            <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
-              placeholder-style="color: #d1d5db;" />
-          </picker>
-        </view>
+              <!-- 姓名 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.realname" placeholder="请输入您的名字" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 出生年月 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <picker mode="date" :value="formModel.birth" @change="onBirthChange">
-            <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月"
-              placeholder-style="color: #d1d5db;" />
-          </picker>
-        </view>
+              <!-- 联系方式 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.contact" placeholder="请输入您联系方式" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 英语水平 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.english_level" placeholder="英语水平"
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 性别 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
+                  <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
+                    placeholder-style="color: #d1d5db;" />
+                </picker>
+              </view>
 
-        <!-- 宗教信仰 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.religion" placeholder="宗教信仰"
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 出生年月 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <picker mode="date" :value="formModel.birth" @change="onBirthChange">
+                  <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月"
+                    placeholder-style="color: #d1d5db;" />
+                </picker>
+              </view>
 
-        <!-- 教学经历 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.experience" placeholder="语文/国际中文相关教学工作经历" required
-            placeholder-style="color: #d1d5db;" />
-        </view>
+              <!-- 英语水平 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.english_level" placeholder="英语水平"
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 中文教学证书 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.chinese_level" placeholder="中文教学相关证书（普通话等级、教师资格证类型等；或高考语文成绩）"
-            placeholder-style="color: #d1d5db;font-size: 9px;" />
-        </view>
+              <!-- 宗教信仰 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.religion" placeholder="宗教信仰"
+                  placeholder-style="color: #d1d5db;" />
+              </view>
 
-        <!-- 备注 -->
-        <view class="form-item">
-          <text class="required-star">*</text>
-          <input class="input-item" v-model="formModel.remark" placeholder="备注" placeholder-style="color: #d1d5db;" />
+              <!-- 教学经历 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.experience" placeholder="语文/国际中文相关教学工作经历" required
+                  placeholder-style="color: #d1d5db;" />
+              </view>
+
+              <!-- 中文教学证书 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.chinese_level"
+                  placeholder="中文教学相关证书（普通话等级、教师资格证类型等；或高考语文成绩）" placeholder-style="color: #d1d5db;font-size: 9px;" />
+              </view>
+
+              <!-- 备注 -->
+              <view class="form-item">
+                <text class="required-star">*</text>
+                <input class="input-item" v-model="formModel.remark" placeholder="备注"
+                  placeholder-style="color: #d1d5db;" />
+              </view>
+              <button form-type="submit" @click="submitForm"
+                class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
+                style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
+                {{ isReregisterMode ? '申请成为本平台教师' : '申请成为本平台教师' }}
+              </button>
+            </form>
+          </scroll-view>
         </view>
-        <button form-type="submit" @click="submitForm"
-          class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
-          style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-          {{ isReregisterMode ? '申请成为本平台教师' : '申请成为本平台教师' }}
-        </button>
-      </form>
+      </view>
+
+      <view class="absolute bottom-8 w-full flex justify-center">
+        <img class="w-40" src="@/static/index/signup/logo.png" alt="logo" />
+      </view>
     </view>
-  </div>
+  </view>
 </template>
 
 <script setup lang="ts">
@@ -324,10 +340,20 @@ const submitForm = async () => {
 }
 
 .input-item {
-  @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3;
+  @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
 }
 
-.textarea-container {
-  @apply w-full relative;
+.teacher-form-container {
+  height: 60vh;
+  max-height: 60vh;
+}
+
+.form-scroll-view {
+  height: 100%;
+  max-height: 100%;
+}
+
+.bg-gradient-yellow {
+  background: linear-gradient(180deg, #f9e9a4 0%, #f7d45a 100%);
 }
 </style>
