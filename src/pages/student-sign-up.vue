@@ -135,7 +135,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { signUpStudent, updateStudent } from "@/utils/api";
+import { signUpStudent, updateStudent, createMessage } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -292,6 +292,17 @@ const submitForm = async () => {
             ...formModel.value,
         });
         if (res.data) {
+            // 发送站内信通知管理员
+            try {
+                await createMessage({
+                    sender_id: res.data.id || 1, // 新注册学生id
+                    receiver_id: 12,
+                    title: "新学生注册通知",
+                    content: `有新学生注册：\n账号：${formModel.value.username}\n邮箱：${formModel.value.email}\n手机：${formModel.value.phone}\n性别：${formModel.value.gender}\n出生年月：${formModel.value.birth}\n国籍：${formModel.value.nationality}\n常居地：${formModel.value.residence}\n中文水平：${formModel.value.chinese_level}\n想学课程：${formModel.value.desired_courses}\n老师要求：${formModel.value.teacher_requirements}`
+                });
+            } catch (messageErr) {
+                console.error("发送站内信失败:", messageErr);
+            }
             await modal("提交成功！");
         } else {
             await modal("提交失败！");

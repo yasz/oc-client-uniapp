@@ -139,7 +139,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { signUpTeacher, updateTeacher } from "@/utils/api";
+import { signUpTeacher, updateTeacher, createMessage } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -255,6 +255,17 @@ const submitForm = async () => {
         await modal("信息更新成功！");
         // 更新authStore中的re_registered状态
         authStore.re_registered = true;
+        // 发送站内信通知管理员
+        try {
+          await createMessage({
+            sender_id: res.data.id || 1, // 新注册教师id
+            receiver_id: 12,
+            title: "新教师注册通知",
+            content: `有新教师注册：\n姓名：${updateData.realname}\n账号：${username}\n邮箱：${email}\n联系方式：${updateData.contact}\n性别：${updateData.gender}\n出生年月：${updateData.birth}\n英语水平：${updateData.english_level}\n宗教信仰：${updateData.religion}\n教学经历：${updateData.experience}\n中文教学证书：${updateData.chinese_level}\n备注：${updateData.remark}`
+          });
+        } catch (messageErr) {
+          console.error("发送站内信失败:", messageErr);
+        }
         // 返回上一页
         uni.navigateBack();
       } else {
@@ -311,6 +322,17 @@ const submitForm = async () => {
       ...formModel.value,
     });
     if (res.data) {
+      // 发送站内信通知管理员
+      try {
+        await createMessage({
+          sender_id: res.data.id || 1, // 新注册教师id
+          receiver_id: 12,
+          title: "新教师注册通知",
+          content: `有新教师注册：\n姓名：${formModel.value.realname}\n账号：${formModel.value.username}\n邮箱：${formModel.value.email}\n联系方式：${formModel.value.contact}\n性别：${formModel.value.gender}\n出生年月：${formModel.value.birth}\n英语水平：${formModel.value.english_level}\n宗教信仰：${formModel.value.religion}\n教学经历：${formModel.value.experience}\n中文教学证书：${formModel.value.chinese_level}\n备注：${formModel.value.remark}`
+        });
+      } catch (messageErr) {
+        console.error("发送站内信失败:", messageErr);
+      }
       await modal("提交成功！");
     } else {
       await modal("提交失败！");
