@@ -12,8 +12,8 @@
                 </view>
             </view>
 
-            <view class="w-[90%]  flex flex-col gap-4 pt-[40%]">
-                <view class="bg-white rounded-3xl shadow-lg p-3">
+            <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
+                <view class="bg-white rounded-3xl shadow-lg p-6 form-container">
                     <scroll-view scroll-y="true" class="h-[38vh]">
                         <form @submit="submitForm">
                             <!-- 账号 -->
@@ -315,5 +315,10 @@ const submitForm = async () => {
 
 .input-item {
     @apply bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
+}
+
+.form-container {
+    height: 50vh;
+    max-height: 60vh;
 }
 </style>

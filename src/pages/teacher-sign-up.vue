@@ -13,7 +13,7 @@
       </view>
 
       <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
-        <view class="bg-white rounded-3xl shadow-lg p-6 teacher-form-container">
+        <view class="bg-white rounded-3xl shadow-lg p-6 form-container">
           <scroll-view scroll-y="true" class="form-scroll-view">
             <form @submit="submitForm">
               <!-- 账号 -->
@@ -124,13 +124,14 @@
                 <input class="input-item" v-model="formModel.remark" placeholder="备注"
                   placeholder-style="color: #d1d5db;" />
               </view>
-              <button form-type="submit" @click="submitForm"
-                class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
-                style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-                {{ isReregisterMode ? '申请成为本平台教师' : '申请成为本平台教师' }}
-              </button>
+
             </form>
           </scroll-view>
+          <button form-type="submit" @click="submitForm"
+            class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
+            style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
+            {{ isReregisterMode ? '申请成为本平台教师' : '申请成为本平台教师' }}
+          </button>
         </view>
       </view>
 
@@ -336,16 +337,16 @@ const submitForm = async () => {
 }
 
 .input-item {
-  @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
+  @apply bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
 }
 
-.teacher-form-container {
-  height: 60vh;
+.form-container {
+  height: 50vh;
   max-height: 60vh;
 }
 
 .form-scroll-view {
-  height: 100%;
+  height: 80%;
   max-height: 100%;
 }
 </style>
