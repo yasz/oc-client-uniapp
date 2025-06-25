@@ -2,6 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { watch } from "vue";
 import pinia from "./store";
+import { getUserInfoWithSpecialToken } from "@/utils/api";
 
 // 创建 Pinia store 来管理认证状态
 export const useAuthStore = defineStore("authStore", {
@@ -39,6 +40,32 @@ export const useAuthStore = defineStore("authStore", {
           this.nickname = nickname;
           this.roles = roles.map((e: any) => e.name);
           this.re_registered = re_registered || false;
+
+          // 获取用户详细信息（头像、创建时间等）
+          if (this.userId) {
+            try {
+              const userInfoResponse = await getUserInfoWithSpecialToken(
+                Number(this.userId)
+              );
+              const userInfo = userInfoResponse.data;
+              if (userInfo?.data?.avatar?.[0]?.url) {
+                this.avatar =
+                  import.meta.env.VITE_BUCKET_ENDPOINT +
+                  userInfo.data.avatar[0].url;
+              }
+              // 存储用户创建时间
+              if (userInfo?.data?.createdAt) {
+                this.createdAt = userInfo.data.createdAt;
+              }
+              // 存储二次注册状态
+              if (userInfo?.data?.re_registered !== undefined) {
+                this.nickname = userInfo.data.nickname;
+                this.re_registered = userInfo.data.re_registered;
+              }
+            } catch (error) {
+              console.error("获取用户详细信息失败:", error);
+            }
+          }
         }
         return response.data;
       } catch (error) {

@@ -14,6 +14,7 @@
             <view class="p-4">
                 <view class="flex justify-between items-center text-white">
                     <view class="flex-1">
+                        {{ authStore.re_registered }}
                         <view v-if="!authStore.re_registered"
                             class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
                             style="-webkit-text-stroke: 0.1px #523201" @click="handleReregisterClick">
@@ -47,9 +48,36 @@
         </div>
 
         <view class="p-4 bg-gray-100">
-            <!-- 使用课程卡片组件 -->
-            <CourseCard v-for="(course, index) in filteredCourses" :key="index" :course="course"
-                :is-favorited="isCourseFavorited(course.id)" :show-subject="false" />
+            <!-- 课程列表 -->
+            <template v-if="filteredCourses.length > 0">
+                <CourseCard v-for="(course, index) in filteredCourses" :key="index" :course="course"
+                    :is-favorited="isCourseFavorited(course.id)" :show-subject="false" />
+            </template>
+
+            <!-- 空状态提示 -->
+            <template v-else>
+                <view class="flex flex-col items-center justify-center py-2 px-2">
+                    <view class="bg-white rounded-2xl p-4 shadow-sm max-w-md mx-auto">
+                        <view class="text-center mb-6">
+                            <text class="text-xl font-bold text-[#f9b33b] mb-2 block">欢迎来到Lifefun乐凡中文！</text>
+                        </view>
+
+                        <view class="space-y-4 text-gray-700 leading-relaxed">
+                            <text class="block text-base">
+                                我们致力于打造快乐的中文学习平台，使中文学习更有效、更轻松。
+                            </text>
+
+                            <text class="block text-base">
+                                本平台的学生资源，面向对中文学习有兴趣/有需求的成人、青少年及孩童。欢迎使用免费资源，并咨询私教课的相关讯息。
+                            </text>
+
+                            <text class="block text-base">
+                                同时，诚邀优秀的国际中文教师加入授课，本平台将提供免费的教师学习课程和教学资源。（👆 点击上方按钮）
+                            </text>
+                        </view>
+                    </view>
+                </view>
+            </template>
         </view>
         <view class="bg-gray-100" style="height:300rpx;" />
         <Layout />

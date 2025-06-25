@@ -4,7 +4,7 @@ import {
   postAPI,
   postAPIAxios,
   postPulicAPIAxios,
-} from "./common";
+} from "./http";
 import axios from "axios";
 
 export const listAssignments = async (params: any = {}) => {

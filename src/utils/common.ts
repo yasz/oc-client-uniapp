@@ -192,20 +192,7 @@ class MySearchParams {
   }
 }
 
-export function post(url: string, data: any) {
-  return http("POST", url, data);
-}
-export function patch(url: string, data: any) {
-  return http("PATCH", url, data);
-}
-
-export function postAPI(url: string, data: any) {
-  return http("POST", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
-}
-export function getAPI(url: string, data: any) {
-  return http("GET", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
-}
-
+// 依赖 authStore 的 http 函数
 export function http(method: any, url: string, data: any) {
   return new Promise((resolve, reject) => {
     const token = useAuthStore().token || uni.getStorageSync("authToken");
@@ -232,80 +219,22 @@ export function http(method: any, url: string, data: any) {
     });
   });
 }
-export async function getAPIAxios(url: string, data: any) {
-  const token = uni.getStorageSync("authToken");
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
-      {
-        params: data, // GET 请求应使用 params 传递参数
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        timeout: 5000,
-      }
-    );
-    const res = response.data;
-    if (res.code === 401) {
-      uni.redirectTo({ url: "/pages/sign-in" });
-    }
-    return res;
-  } catch (error) {
-    return await Promise.reject(error);
-  }
+
+export function post(url: string, data: any) {
+  return http("POST", url, data);
 }
-export async function postPulicAPIAxios(url: string, data: any) {
-  const token = import.meta.env.VITE_SPECIAL_TOKEN;
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
-      data, // POST 请求的参数应放在请求体中
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        timeout: 5000,
-      }
-    );
-    const res = response.data;
-    if (res.code === 401) {
-      uni.redirectTo({ url: "/pages/sign-in" });
-    }
-    return res;
-  } catch (error) {
-    console.log(error);
-    return await Promise.reject(error);
-  }
+export function patch(url: string, data: any) {
+  return http("PATCH", url, data);
 }
 
-export async function postAPIAxios(url: string, data: any) {
-  const token = uni.getStorageSync("authToken");
-  try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}/${url}`,
-      data, // POST 请求的参数应放在请求体中
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        timeout: 5000,
-      }
-    );
-    const res = response.data;
-    if (res.code === 401) {
-      uni.redirectTo({ url: "/pages/sign-in" });
-    }
-    return res;
-  } catch (error) {
-    return await Promise.reject(error);
-  }
+export function postAPI(url: string, data: any) {
+  return http("POST", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
 }
+export function getAPI(url: string, data: any) {
+  return http("GET", `${import.meta.env.VITE_API_ENDPOINT}/${url}`, data);
+}
+
+// HTTP 函数已迁移到 http.ts 文件，避免循环依赖
 
 export function getCurrentPageUrl() {
   const pages = getCurrentPages(); // 获取页面栈

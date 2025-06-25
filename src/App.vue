@@ -19,6 +19,7 @@ onLaunch(async () => {
       if (res?.data?.avatar?.[0]?.url) {
         authStore.avatar =
           import.meta.env.VITE_BUCKET_ENDPOINT + res.data.avatar[0].url;
+
       }
       // 存储用户创建时间
       if (res?.data?.createdAt) {
