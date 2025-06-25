@@ -13,7 +13,7 @@
         <text class="block text-[56rpx] font-black text-[#9b6310] leading-tight tracking-[2rpx] pr-6"
           style="-webkit-text-stroke: 0.3px #523201">WELCOME</text>
         <text class="block text-[28rpx] font-medium text-[#8b4513] leading-snug tracking-[1rpx] mt-[8rpx]"
-          style="-webkit-text-stroke: 0.7px #523201">欢迎来到Lifefunner"乐凡中文"！</text>
+          style="-webkit-text-stroke: 0.7px #523201">欢迎来到Lifefunner乐凡中文！</text>
       </view>
       <view style="
           z-index: 3;
@@ -74,9 +74,9 @@
           <image src="/static/index/wechat.png" style="width: 480rpx; height: 360rpx" />
           <image src="/static/index/alipay.png" style="width: 480rpx; height: 360rpx" />
         </view>
-
+        <view class="text-xs text-gray-500 text-center">验证提示：马*乐</view>
         <view class="my-[30rpx] text-center">
-          <view class="text-center text-gray-600 text-sm mb-2">海外银行捐赠 / Overseas Bank Donation</view>
+          <!-- <view class="text-center text-gray-600 text-sm mb-2">海外银行捐赠 / Overseas Bank Donation</view> -->
           <view class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700 text-left">
             <view class="flex justify-between items-center">
               <view class="truncate">
@@ -96,7 +96,7 @@
         </view>
 
         <view class="flex flex-col items-center">
-          <view class="text-xs text-gray-500">验证提示：马*乐</view>
+
           <view class="text-sm pt-5 font-semibold">感谢您的赠予！</view>
           <text class="text-sm">投我以木桃，报之以琼瑶。</text>
           <text class="text-sm">我们将以热忱的工作和教学回馈您的</text>

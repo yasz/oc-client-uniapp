@@ -1,8 +1,8 @@
 <template>
     <view class="min-h-screen flex flex-col items-center relative bg-gradient-yellow ">
-        <view class="w-full flex items-center px-8 pt-8 ">
+        <!-- <view class="w-full flex items-center px-8 pt-8 ">
             <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
-        </view>
+        </view> -->
 
         <view class="w-[90%] flex flex-col gap-4 pt-[20%]">
             <view class="bg-white rounded-3xl shadow-lg p-6">

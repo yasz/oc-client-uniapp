@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col items-center bg-gradient-to-t">
     <div class="text-center pt-40">
       <div class="text-[1.05rem] text-gray-500 tracking-wider leading-tight leading-loose">
-        欢迎来到Lifefunner"乐凡中文"！<br />
+        欢迎来到Lifefunner 乐凡中文！<br />
         Lifefunner使中文学习更有效、更轻松。
       </div>
       <div class="text-base text-gray-500 tracking-wider mb-2 mt-10">

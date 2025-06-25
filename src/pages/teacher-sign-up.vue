@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col items-center bg-gradient-to-t">
     <div class="text-center pt-40">
       <div class="text-[1.05rem] text-gray-500 tracking-wider leading-tight leading-loose">
-        欢迎来到Lifefunner"乐凡中文"！<br />
+        欢迎来到Lifefunner乐凡中文！<br />
         Lifefunner使中文学习更有效、更轻松。
       </div>
       <div class="text-base text-gray-500 tracking-wider mb-2 mt-10">
@@ -53,7 +53,7 @@
         <button form-type="submit" @click="submitForm"
           class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
           style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-          {{ isReregisterMode ? '完善信息' : '申请成为平台老师' }}
+          {{ isReregisterMode ? '申请成为本平台教师' : '申请成为本平台教师' }}
         </button>
       </form>
     </view>
