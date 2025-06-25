@@ -17,8 +17,8 @@
             </view>
 
             <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
-                <view class="bg-white rounded-3xl shadow-lg p-6 h-[40vh] max-h-[60vh]">
-                    <scroll-view scroll-y="true" class="h-full max-h-full">
+                <view class="bg-white rounded-3xl shadow-lg p-6 h-[45vh] max-h-[60vh]">
+                    <scroll-view scroll-y="true" class="h-full max-h-full h-[38vh]">
                         <form @submit="submitForm">
                             <!-- 账号 -->
                             <view v-if="!isReregisterMode" class="form-item">
