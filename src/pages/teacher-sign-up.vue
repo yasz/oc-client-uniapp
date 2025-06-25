@@ -7,12 +7,8 @@
       <view class="absolute flex z-10 pt-[8%] w-full justify-center">
         <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
         <view class="w-[50%] flex-col pt-[10%]">
-          <view class="text-center">
-            <text class="text-[#754D39] text-xs font-bold leading-tight">
-              欢迎来到Lifefunner乐凡中文！<br />
-              Lifefunner使中文学习更有效、更轻松。
-            </text>
-          </view>
+          <img class="w-[100%]" src="@/static/index/signup/tip1.png" alt="tip1" />
+          <img class="w-[80%]" src="@/static/index/signup/tip2.png" alt="tip2" />
         </view>
       </view>
 
@@ -351,9 +347,5 @@ const submitForm = async () => {
 .form-scroll-view {
   height: 100%;
   max-height: 100%;
-}
-
-.bg-gradient-yellow {
-  background: linear-gradient(180deg, #f9e9a4 0%, #f7d45a 100%);
 }
 </style>

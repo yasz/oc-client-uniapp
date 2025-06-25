@@ -17,8 +17,8 @@
             </view>
 
             <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
-                <view class="bg-white rounded-3xl shadow-lg p-6 student-form-container">
-                    <scroll-view scroll-y="true" class="form-scroll-view">
+                <view class="bg-white rounded-3xl shadow-lg p-6 h-[40vh] max-h-[60vh]">
+                    <scroll-view scroll-y="true" class="h-full max-h-full">
                         <form @submit="submitForm">
                             <!-- 账号 -->
                             <view v-if="!isReregisterMode" class="form-item">
@@ -119,14 +119,14 @@
                                     placeholder="对授课老师的要求" required placeholder-style="color: #d1d5db;" />
                             </view>
 
-                            <button form-type="submit" @click="submitForm"
-                                class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
-                                style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)"
-                                :disabled="loading">
-                                {{ isReregisterMode ? '申请直播课' : '申请直播课' }}
-                            </button>
+
                         </form>
                     </scroll-view>
+                    <button form-type="submit" @click="submitForm"
+                        class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
+                        style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
+                        {{ isReregisterMode ? '申请直播课' : '申请直播课' }}
+                    </button>
                 </view>
             </view>
 
@@ -319,15 +319,5 @@ const submitForm = async () => {
 
 .input-item {
     @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3 pl-6 pr-6;
-}
-
-.student-form-container {
-    height: 60vh;
-    max-height: 60vh;
-}
-
-.form-scroll-view {
-    height: 100%;
-    max-height: 100%;
 }
 </style>
