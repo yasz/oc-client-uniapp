@@ -12,25 +12,25 @@
     </div>
     <view class="w-[80%] flex flex-col gap-4">
       <form @submit="submitForm">
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.username" placeholder="账号(必填)" required
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.username" placeholder="账号" required
           placeholder-style="color: #d1d5db;" />
-        <input class="input-item" v-model="formModel.nickname" placeholder="昵称(必填)" required
+        <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
           placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.email" placeholder="邮箱" required
           type="email" placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.phone" placeholder="手机号码(必填)" required
+        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.phone" placeholder="手机号码" required
           placeholder-style="color: #d1d5db;" />
         <input v-if="!isReregisterMode" class="input-item" v-model="formModel.password" type="password"
-          placeholder="请输入密码(必填)" required placeholder-style="color: #d1d5db;" />
+          placeholder="请输入密码" required placeholder-style="color: #d1d5db;" />
         <input v-if="!isReregisterMode" class="input-item" v-model="formModel.confirmPassword" type="password"
-          placeholder="请再次输入密码(必填)" required placeholder-style="color: #d1d5db;" />
+          placeholder="请再次输入密码" required placeholder-style="color: #d1d5db;" />
 
         <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
           <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
             placeholder-style="color: #d1d5db;" />
         </picker>
         <picker mode="date" :value="formModel.birth" @change="onBirthChange">
-          <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月(必填)"
+          <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月"
             placeholder-style="color: #d1d5db;" />
         </picker>
         <input class="input-item" v-model="formModel.nationality" placeholder="国籍" required
@@ -41,15 +41,14 @@
           placeholder-style="color: #d1d5db;" />
         <picker class="input-item" mode="selector" :range="courseOptions" @change="handleCourseChange"
           :value="courseIndex">
-          <input readonly :value="formModel.desired_courses" placeholder="想要学的课程(必填)"
-            placeholder-style="color: #d1d5db;" />
+          <input readonly :value="formModel.desired_courses" placeholder="想要学的课程" placeholder-style="color: #d1d5db;" />
         </picker>
         <input class="input-item" v-model="formModel.teacher_requirements" placeholder="对授课老师的要求" required
           placeholder-style="color: #d1d5db;" />
         <button form-type="submit" @click="submitForm"
           class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
           style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-          {{ isReregisterMode ? '完善信息' : '申请直播课' }}
+          {{ isReregisterMode ? '申请直播课' : '申请直播课' }}
         </button>
       </form>
     </view>

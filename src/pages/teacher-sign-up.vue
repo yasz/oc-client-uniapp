@@ -12,44 +12,113 @@
     </div>
     <view class="w-[80%] flex flex-col gap-4">
       <form @submit="submitForm">
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.username" placeholder="账号(必填)" required
-          placeholder-style="color: #d1d5db;" />
-        <input class="input-item" v-model="formModel.nickname" placeholder="昵称(必填)" required
-          placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required
-          type="email" placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.phone" placeholder="手机号码(必填)" required
-          placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.password" type="password"
-          placeholder="请输入密码(必填)" required placeholder-style="color: #d1d5db;" />
-        <input v-if="!isReregisterMode" class="input-item" v-model="formModel.confirmPassword" type="password"
-          placeholder="请再次输入密码(必填)" required placeholder-style="color: #d1d5db;" />
-        <input class="input-item" v-model="formModel.realname" placeholder="请输入您的名字(必填)" required
-          placeholder-style="color: #d1d5db;" />
+        <!-- 账号 -->
+        <view v-if="!isReregisterMode" class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.username" placeholder="账号" required
+            placeholder-style="color: #d1d5db;" />
+        </view>
 
-        <input class="input-item" v-model="formModel.contact" placeholder="请输入您联系方式(必填)" required
-          placeholder-style="color: #d1d5db;" />
-        <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
-          <input class="input-item" readonly :value="formModel.gender" placeholder="性 别(必填)"
+        <!-- 昵称 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
             placeholder-style="color: #d1d5db;" />
-        </picker>
-        <picker mode="date" :value="formModel.birth" @change="onBirthChange">
-          <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月(必填)"
+        </view>
+
+        <!-- 邮箱 -->
+        <view v-if="!isReregisterMode" class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.email" placeholder="邮箱" required type="email"
             placeholder-style="color: #d1d5db;" />
-        </picker>
-        <picker mode="selector" :range="englishLevelOptions" :value="englishLevelIndex" @change="onEnglishLevelChange">
-          <input class="input-item" readonly :value="formModel.english_level" placeholder="英语水平(必填)"
+        </view>
+
+        <!-- 手机号码 -->
+        <view v-if="!isReregisterMode" class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.phone" placeholder="手机号码" required
             placeholder-style="color: #d1d5db;" />
-        </picker>
-        <picker mode="selector" :range="religionOptions" :value="religionIndex" @change="onReligionChange">
-          <input class="input-item" readonly :value="formModel.religion" placeholder="宗教信仰(必填)"
+        </view>
+
+        <!-- 密码 -->
+        <view v-if="!isReregisterMode" class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入密码" required
             placeholder-style="color: #d1d5db;" />
-        </picker>
-        <input class="input-item" v-model="formModel.experience" placeholder="语文/国际中文相关教学工作经历(必填) " required
-          placeholder-style="color: #d1d5db;" />
-        <input class="input-item" v-model="formModel.chinese_level"
-          placeholder="中文相关证书(普通话等级证,教师资格证，若无,请简知高考语文成绩 卷/卷 分 等)" placeholder-style="color: #d1d5db;" />
-        <input class="input-item" v-model="formModel.remark" placeholder="备注" placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 确认密码 -->
+        <view v-if="!isReregisterMode" class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.confirmPassword" type="password" placeholder="请再次输入密码" required
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 姓名 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.realname" placeholder="请输入您的名字" required
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 联系方式 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.contact" placeholder="请输入您联系方式" required
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 性别 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
+            <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
+              placeholder-style="color: #d1d5db;" />
+          </picker>
+        </view>
+
+        <!-- 出生年月 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <picker mode="date" :value="formModel.birth" @change="onBirthChange">
+            <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月"
+              placeholder-style="color: #d1d5db;" />
+          </picker>
+        </view>
+
+        <!-- 英语水平 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.english_level" placeholder="英语水平"
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 宗教信仰 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.religion" placeholder="宗教信仰"
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 教学经历 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.experience" placeholder="语文/国际中文相关教学工作经历" required
+            placeholder-style="color: #d1d5db;" />
+        </view>
+
+        <!-- 中文教学证书 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.chinese_level" placeholder="中文教学相关证书（普通话等级、教师资格证类型等；或高考语文成绩）"
+            placeholder-style="color: #d1d5db;font-size: 9px;" />
+        </view>
+
+        <!-- 备注 -->
+        <view class="form-item">
+          <text class="required-star">*</text>
+          <input class="input-item" v-model="formModel.remark" placeholder="备注" placeholder-style="color: #d1d5db;" />
+        </view>
         <button form-type="submit" @click="submitForm"
           class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
           style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
@@ -122,24 +191,12 @@ const formModel = ref({
   remark: "",
 });
 const genderOptions = ["男", "女"];
-const religionOptions = ["无", "佛教", "基督教", "伊斯兰教", "其他"];
-const englishLevelOptions = ["CET4以下", "CET4", "CET6", "CET6以上"];
 
 const genderIndex = ref(-1);
-const religionIndex = ref(-1);
-const englishLevelIndex = ref(-1);
 
 const onGenderChange = (e: any) => {
   genderIndex.value = e.detail.value;
   formModel.value.gender = genderOptions[genderIndex.value];
-};
-const onReligionChange = (e: any) => {
-  religionIndex.value = e.detail.value;
-  formModel.value.religion = religionOptions[religionIndex.value];
-};
-const onEnglishLevelChange = (e: any) => {
-  englishLevelIndex.value = e.detail.value;
-  formModel.value.english_level = englishLevelOptions[englishLevelIndex.value];
 };
 const onBirthChange = (e: any) => {
   formModel.value.birth = e.detail.value;
@@ -155,10 +212,26 @@ const submitForm = async () => {
 
   // 重新注册模式下的验证逻辑
   if (isReregisterMode.value) {
-    if (!formModel.value.nickname) {
-      await modal("昵称为必填项");
-      loading.value = false;
-      return;
+    // 验证所有必填字段
+    const requiredFields = [
+      { field: 'nickname', name: '昵称' },
+      { field: 'realname', name: '姓名' },
+      { field: 'contact', name: '联系方式' },
+      { field: 'gender', name: '性别' },
+      { field: 'birth', name: '出生年月' },
+      { field: 'english_level', name: '英语水平' },
+      { field: 'religion', name: '宗教信仰' },
+      { field: 'experience', name: '教学经历' },
+      { field: 'chinese_level', name: '中文教学证书' },
+      { field: 'remark', name: '备注' }
+    ];
+
+    for (const { field, name } of requiredFields) {
+      if (!formModel.value[field as keyof typeof formModel.value]) {
+        await modal(`${name}为必填项`);
+        loading.value = false;
+        return;
+      }
     }
 
     try {
@@ -187,15 +260,31 @@ const submitForm = async () => {
   }
 
   // 原始注册模式的验证逻辑
-  if (
-    !formModel.value.username ||
-    !formModel.value.email ||
-    !formModel.value.password ||
-    !formModel.value.confirmPassword
-  ) {
-    await modal("账号、邮箱、密码、确认密码为必填项");
-    loading.value = false;
-    return;
+  // 验证所有必填字段
+  const requiredFields = [
+    { field: 'username', name: '账号' },
+    { field: 'email', name: '邮箱' },
+    { field: 'password', name: '密码' },
+    { field: 'confirmPassword', name: '确认密码' },
+    { field: 'phone', name: '手机号码' },
+    { field: 'nickname', name: '昵称' },
+    { field: 'realname', name: '姓名' },
+    { field: 'contact', name: '联系方式' },
+    { field: 'gender', name: '性别' },
+    { field: 'birth', name: '出生年月' },
+    { field: 'english_level', name: '英语水平' },
+    { field: 'religion', name: '宗教信仰' },
+    { field: 'experience', name: '教学经历' },
+    { field: 'chinese_level', name: '中文教学证书' },
+    { field: 'remark', name: '备注' }
+  ];
+
+  for (const { field, name } of requiredFields) {
+    if (!formModel.value[field as keyof typeof formModel.value]) {
+      await modal(`${name}为必填项`);
+      loading.value = false;
+      return;
+    }
   }
   if (!validateEmail(formModel.value.email)) {
     await modal("邮箱格式不正确");
@@ -226,7 +315,19 @@ const submitForm = async () => {
 </script>
 
 <style scoped>
+.form-item {
+  @apply relative w-full my-4;
+}
+
+.required-star {
+  @apply absolute left-4 top-1/2 transform -translate-y-1/2 text-red-500 font-bold text-lg z-10;
+}
+
 .input-item {
-  @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 px-0 py-4 my-4;
+  @apply w-full bg-gray-100 rounded-full text-center text-base mb-1 py-3;
+}
+
+.textarea-container {
+  @apply w-full relative;
 }
 </style>
