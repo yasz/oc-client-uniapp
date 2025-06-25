@@ -43,10 +43,11 @@ import SyllabusComponent from './components/syllabus.vue';
 // 定义响应式变量
 const courseData = ref<any>({});
 const isDataLoaded = ref(false);
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const currentTabIndex = ref(0);
 
-const tabItems = [{ name: 'Syllabus' }, { name: 'Introduction' }];
+const tabItems = [{ name: t('Syllabus') }, { name: t('Introduction') }];
 
 const coverURL = computed(() => {
     if (courseData.value?.cover?.[0]?.url) {

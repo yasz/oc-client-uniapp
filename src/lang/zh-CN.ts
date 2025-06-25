@@ -6,8 +6,8 @@ const zhCN: Record<string, any> = {
   groups: "小组",
   " group": "小组",
   Hi: "您好",
-  introduction: "课程介绍",
-  syllabus: "目录",
+  Introduction: "课程介绍",
+  Syllabus: "目录",
   searchCourses: "搜索课程...",
 
   assignments: "作业",

@@ -14,7 +14,7 @@
             <view class="p-4">
                 <view class="flex justify-between items-center text-white">
                     <view class="flex-1">
-                        {{ authStore.re_registered }}
+
                         <view v-if="!authStore.re_registered"
                             class="inline-block bg-white text-[#9b6310] py-3 px-5 rounded-full text-sm font-bold mb-4"
                             style="-webkit-text-stroke: 0.1px #523201" @click="handleReregisterClick">
