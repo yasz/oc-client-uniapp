@@ -2,42 +2,22 @@
   <view class="bg-primary" style="height: calc(100vh - 44px)">
     <view class="pt-40">
       <view class="flex flex-center-row">
-        <image
-          src="/static/puzzles/title1.png"
-          style="width: 50vw"
-          mode="widthFix"
-        />
+        <image src="/static/puzzles/title1.png" style="width: 50vw" mode="widthFix" />
       </view>
 
       <view class="flex flex-center-row pt-20">
-        <image
-          :src="
-            isAllCompleted
-              ? '/static/puzzles/title3.png'
-              : '/static/puzzles/title2.png'
-          "
-          :style="{ width: isAllCompleted ? '40vw' : '30vw' }"
-          mode="widthFix"
-        />
+        <image :src="isAllCompleted
+            ? '/static/puzzles/title3.png'
+            : '/static/puzzles/title2.png'
+          " :style="{ width: isAllCompleted ? '40vw' : '30vw' }" mode="widthFix" />
       </view>
       <view class="pt-20">
-        <PuzzleGrid
-          :scale="0.2"
-          :completed="completedPieces"
-          @pieceClick="handlePieceClick"
-        />
+        <PuzzleGrid :scale="0.2" :completed="completedPieces" @pieceClick="handlePieceClick" />
       </view>
 
-      <view
-        v-if="isAllCompleted"
-        style="position: fixed; bottom: 20%; width: 80%; left: 10%"
-        class="flex flex-center-row"
-      >
-        <button
-          style="font-size: 20px; border-radius: 30px; color: #fff"
-          class="bg-orange px-40 py-6"
-          @click="submit"
-        >
+      <view v-if="isAllCompleted" style="position: fixed; bottom: 20%; width: 80%; left: 10%"
+        class="flex flex-center-row">
+        <button style="font-size: 20px; border-radius: 30px; color: #fff" class="bg-orange px-40 py-6" @click="submit">
           继续下一幅拼图
         </button>
       </view>
@@ -59,7 +39,7 @@ import {
   updateStudentPuzzleProgress,
   completeStudentPuzzle,
 } from "@/utils/api";
-import { getAPIAxios } from "@/utils/common";
+import { getAPIAxios } from "@/utils/http";
 import { useAuthStore } from "@/stores/authStore";
 
 const authStore = useAuthStore();

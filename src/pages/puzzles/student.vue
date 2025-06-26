@@ -3,33 +3,19 @@
     <view class="fixed inset-0 bg-primary z-0">
       <view class="pt-80">
         <view class="flex flex-center-row">
-          <image
-            src="/static/puzzles/title1.png"
-            style="width: 50vw"
-            mode="widthFix"
-          />
+          <image src="/static/puzzles/title1.png" style="width: 50vw" mode="widthFix" />
         </view>
       </view>
       <view class="flex flex-center-row pt-20">
-        <image
-          :src="
-            false ? '/static/puzzles/title3.png' : '/static/puzzles/title2.png'
-          "
-          :style="{ width: false ? '40vw' : '30vw' }"
-          mode="widthFix"
-        />
+        <image :src="false ? '/static/puzzles/title3.png' : '/static/puzzles/title2.png'
+          " :style="{ width: false ? '40vw' : '30vw' }" mode="widthFix" />
       </view>
       <view class="mt-[120%]">
-        <view
-          class="relative"
-          @click="
-            go(`/my/puzzle-treasure?count=${student.brick_completed_count}`)
-          "
-        >
-          <button
-            form-type="submit"
-            class="w-[60%] t-26 py-20 my-20 rounded-full text-white font-bold bg-orange text-base"
-          >
+        <view class="relative" @click="
+          go(`/my/puzzle-treasure?count=${student.brick_completed_count}`)
+          ">
+          <button form-type="submit"
+            class="w-[60%] t-26 py-20 my-20 rounded-full text-white font-bold bg-orange text-base">
             我的宝盒
           </button>
         </view>
@@ -38,50 +24,31 @@
     <view class="z-1" v-if="puzzleLeft">
       <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
         <view :class="`scale-[0.2]`">
-          <template
-            v-for="(piece, index) in puzzleBackgroundPieces"
-            :key="index"
-          >
-            <img
-              :src="piece.src"
-              class="absolute"
-              :style="{
-                left: piece.x - 276 + 'px',
-                top: piece.y - 1094 + 'px',
-              }"
-            />
+          <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
+            <img :src="piece.src" class="absolute" :style="{
+              left: piece.x - 276 + 'px',
+              top: piece.y - 1094 + 'px',
+            }" />
           </template>
         </view>
       </view>
     </view>
 
     <view class="z-2">
-      <template
-        v-for="(got, index) in gottenPieces"
-        :key="`completed-${index}`"
-      >
-        <view
-          v-if="got"
-          class="fixed"
-          :style="{
-            transform: 'scale(0.2)',
-            transformOrigin: '0 0',
-            left: piecePositions[index]?.x + 'px',
-            top: piecePositions[index]?.y + 'px',
-            zIndex: activePiece === index ? 100 : 1,
-          }"
-        >
-          <img
-            :src="`/static/puzzles/completed/${index + 1}.png`"
-            @touchstart.prevent="handleTouchStart($event, index)"
-            @touchmove.prevent="handleTouchMove($event, index)"
-            @touchend.prevent="handleTouchEnd($event, index)"
-            style="
+      <template v-for="(got, index) in gottenPieces" :key="`completed-${index}`">
+        <view v-if="got" class="fixed" :style="{
+          transform: 'scale(0.2)',
+          transformOrigin: '0 0',
+          left: piecePositions[index]?.x + 'px',
+          top: piecePositions[index]?.y + 'px',
+          zIndex: activePiece === index ? 100 : 1,
+        }">
+          <img :src="`/static/puzzles/completed/${index + 1}.png`" @touchstart.prevent="handleTouchStart($event, index)"
+            @touchmove.prevent="handleTouchMove($event, index)" @touchend.prevent="handleTouchEnd($event, index)" style="
               touch-action: none;
               -webkit-user-select: none;
               user-select: none;
-            "
-          />
+            " />
         </view>
       </template>
     </view>
@@ -98,7 +65,7 @@ import {
 } from "@/components/puzzle-data";
 import { useAuthStore } from "@/stores/authStore";
 import { go } from "@/utils/common";
-import { getAPIAxios } from "@/utils/common";
+import { getAPIAxios } from "@/utils/http";
 import { onShow } from "@dcloudio/uni-app";
 import { ref, watch } from "vue";
 const info = uni.getSystemInfoSync();
