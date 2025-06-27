@@ -1,13 +1,13 @@
 <template>
-    <view v-if="isDataLoaded" class="flex flex-col w-[100vw]">
-        <u-image mode="aspectFit" width="100%" :src="coverURL" />
+    <view v-if="isDataLoaded" class="flex flex-col ">
+        <u-image mode="widthFix" width="100%" :src="coverURL" />
 
         <view class=" flex-1 flex flex-col pt-4 px-4 py-8 bg-gray-100">
 
             <view class="bg-white mt-4 p-3 rounded-lg shadow ">
                 <view class="flex flex-col">
                     <text class="text-gray-600 text-sm">{{ courseData.name }}</text>
-                    <text class="text-gray-800 text-lg font-bold mt-1">{{ courseData.name_en }}</text>
+                    <text class="text-gray-800 text-lg font-bold mt-1">{{ capitalizedNameEn }}</text>
                 </view>
             </view>
 
@@ -50,10 +50,24 @@ const currentTabIndex = ref(0);
 const tabItems = [{ name: t('Syllabus') }, { name: t('Introduction') }];
 
 const coverURL = computed(() => {
+    // 优先使用 cover_content
+    if (courseData.value?.cover_content?.[0]?.url) {
+        return import.meta.env.VITE_BUCKET_ENDPOINT + courseData.value.cover_content[0].url;
+    }
+    // 如果没有 cover_content，则使用 cover
     if (courseData.value?.cover?.[0]?.url) {
         return import.meta.env.VITE_BUCKET_ENDPOINT + courseData.value.cover[0].url;
     }
     return ''; // 或者一个默认图片的 URL
+});
+
+// 英文名称首字母大写
+const capitalizedNameEn = computed(() => {
+    if (!courseData.value?.name_en) return '';
+    return courseData.value.name_en
+        .split(' ')
+        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
 });
 
 function handleTabChange(event: any) {

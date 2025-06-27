@@ -53,8 +53,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import hippoImg from '@/static/index/signup/hippo.png';
-import thanksImg from '@/static/index/signup/finish_thanks.png';
 
 const route = useRoute();
 const isTeacher = ref(false);

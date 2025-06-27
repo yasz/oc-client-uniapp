@@ -69,7 +69,7 @@ export const getCourseById = async (id: any) => {
     return Promise.reject("Missing required parameter 'id'");
   }
 
-  const url = `courses:get?filterByTk=${id}&appends[]=cover&appends[]=file_id`;
+  const url = `courses:get?filterByTk=${id}&appends[]=cover&appends[]=cover_content&appends[]=file_id`;
 
   try {
     const response = await getAPIAxios(url, null);
