@@ -17,7 +17,8 @@
     <!-- <view class="flex z-10 pt-[20%] justify-center items-center z-8 w-[80%]"> -->
     <view class="flex z-0 mt-[-10vh] justify-center items-center">
         <view class="w-[90vw] pt-56">
-            <view class="bg-white rounded-3xl shadow-lg p-6 w-[90%] text-center text-base leading-relaxed">
+            <view
+                class="bg-white rounded-3xl shadow-lg p-6 w-[90%] text-center text-base leading-relaxed max-h-[40vh] overflow-y-auto">
                 <template v-if="isTeacher">
                     <div class="text-left">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您注册成为 Lifefunner乐凡中文 平台的教师！<br />
@@ -40,11 +41,12 @@
                         </span>
                     </div>
                 </template>
-                <button class="mt-8 w-[80%] py-3 rounded-full text-white font-bold text-base bg-[#FFA53B]"
-                    @click="goCourses">
-                    返回课程
-                </button>
+
             </view>
+            <button class="mt-8 w-[80%] py-3 rounded-full text-orange  font-bold text-base bg-[#FFFFFF]"
+                @click="goCourses">
+                返回课程
+            </button>
         </view>
     </view>
 
