@@ -1,11 +1,11 @@
 <template>
-    <view class="min-h-screen flex flex-col items-center relative bg-gradient-yellow ">
+    <view class="min-h-screen flex flex-col items-center justify-center relative bg-gradient-yellow px-4">
         <!-- <view class="w-full flex items-center px-8 pt-8 ">
             <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
         </view> -->
 
-        <view class="w-[90%] flex flex-col gap-4 pt-[20%]">
-            <view class="bg-white rounded-3xl shadow-lg p-6">
+        <view class="w-full max-w-md flex flex-col gap-4">
+            <view class="bg-white rounded-3xl shadow-lg p-6 md:p-8">
                 <view class="text-center mb-6">
                     <text class="text-xl font-bold text-gray-700">重置密码</text>
                 </view>

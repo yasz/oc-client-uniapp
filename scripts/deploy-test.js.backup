@@ -48,7 +48,6 @@ function checkLocalBuild() {
 
     const indexHtml = path.join(DEPLOY_CONFIG.localBuildPath, 'index.html');
     const assetsDir = path.join(DEPLOY_CONFIG.localBuildPath, 'assets');
-    const staticDir = path.join(DEPLOY_CONFIG.localBuildPath, 'static');
 
     if (!fs.existsSync(indexHtml)) {
         log('❌ index.html 不存在', 'red');
@@ -56,12 +55,7 @@ function checkLocalBuild() {
     }
 
     if (!fs.existsSync(assetsDir)) {
-        log('❌ static 目录不存在', 'red');
-        process.exit(1);
-    }
-
-    if (!fs.existsSync(staticDir)) {
-        log('❌ static 目录不存在', 'red');
+        log('❌ assets 目录不存在', 'red');
         process.exit(1);
     }
 
@@ -72,7 +66,7 @@ function checkLocalBuild() {
 async function removeRemoteFiles() {
     log('🗑️  删除远端旧文件...', 'yellow');
 
-    const sshCommand = `sshpass -p '${DEPLOY_CONFIG.password}' ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "rm -rf ${DEPLOY_CONFIG.remotePath}/assets ${DEPLOY_CONFIG.remotePath}/static ${DEPLOY_CONFIG.remotePath}/index.html"`;
+    const sshCommand = `sshpass -p '${DEPLOY_CONFIG.password}' ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "rm -rf ${DEPLOY_CONFIG.remotePath}/assets ${DEPLOY_CONFIG.remotePath}/index.html"`;
 
     try {
         const { stdout, stderr } = await execAsync(sshCommand);
@@ -96,9 +90,6 @@ async function uploadFiles() {
     // 上传 assets 目录
     const uploadAssetsCommand = `sshpass -p '${DEPLOY_CONFIG.password}' scp -o StrictHostKeyChecking=no -r ${DEPLOY_CONFIG.localBuildPath}/assets ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:${DEPLOY_CONFIG.remotePath}/`;
 
-    // 上传 static 目录
-    const uploadStaticCommand = `sshpass -p '${DEPLOY_CONFIG.password}' scp -o StrictHostKeyChecking=no -r ${DEPLOY_CONFIG.localBuildPath}/static ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:${DEPLOY_CONFIG.remotePath}/`;
-
     try {
         // 上传 index.html
         log('📄 上传 index.html...', 'blue');
@@ -110,11 +101,6 @@ async function uploadFiles() {
         await execAsync(uploadAssetsCommand);
         log('✅ assets 目录上传成功', 'green');
 
-        // 上传 static 目录
-        log('📁 上传 static 目录...', 'blue');
-        await execAsync(uploadStaticCommand);
-        log('✅ static 目录上传成功', 'green');
-
     } catch (error) {
         log(`❌ 文件上传失败: ${error.message}`, 'red');
         throw error;
@@ -125,7 +111,7 @@ async function uploadFiles() {
 async function verifyDeployment() {
     log('🔍 验证部署结果...', 'blue');
 
-    const verifyCommand = `sshpass -p '${DEPLOY_CONFIG.password}' ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "ls -la ${DEPLOY_CONFIG.remotePath}/ | grep -E '(index.html|assets|static)'"`;
+    const verifyCommand = `sshpass -p '${DEPLOY_CONFIG.password}' ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "ls -la ${DEPLOY_CONFIG.remotePath}/ | grep -E '(index.html|assets)'"`;
 
     try {
         const { stdout } = await execAsync(verifyCommand);
