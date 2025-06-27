@@ -110,9 +110,8 @@
 
                             <!-- 对授课老师的要求 -->
                             <view class="form-item">
-                                <text class="required-star">*</text>
                                 <input class="input-item" v-model="formModel.teacher_requirements"
-                                    placeholder="对授课老师的要求" required placeholder-style="color: #d1d5db;" />
+                                    placeholder="对授课老师的要求" placeholder-style="color: #d1d5db;" />
                             </view>
 
 
@@ -217,7 +216,6 @@ const submitForm = async () => {
             { field: 'residence', name: '常居地' },
             { field: 'chinese_level', name: '现在中文水平' },
             { field: 'desired_courses', name: '想要学的课程' },
-            { field: 'teacher_requirements', name: '对授课老师的要求' }
         ];
 
         for (const { field, name } of requiredFields) {
@@ -278,7 +276,6 @@ const submitForm = async () => {
         { field: 'residence', name: '常居地' },
         { field: 'chinese_level', name: '现在中文水平' },
         { field: 'desired_courses', name: '想要学的课程' },
-        { field: 'teacher_requirements', name: '对授课老师的要求' }
     ];
 
     for (const { field, name } of requiredFields) {

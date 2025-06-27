@@ -115,7 +115,6 @@
 
               <!-- 备注 -->
               <view class="form-item">
-                <text class="required-star">*</text>
                 <input class="input-item" v-model="formModel.remark" placeholder="备注"
                   placeholder-style="color: #d1d5db;" />
               </view>
@@ -232,7 +231,7 @@ const submitForm = async () => {
       { field: 'religion', name: '宗教信仰' },
       { field: 'experience', name: '教学经历' },
       { field: 'chinese_level', name: '中文教学证书' },
-      { field: 'remark', name: '备注' }
+      // { field: 'remark', name: '备注' }
     ];
 
     for (const { field, name } of requiredFields) {
@@ -297,7 +296,7 @@ const submitForm = async () => {
     { field: 'religion', name: '宗教信仰' },
     { field: 'experience', name: '教学经历' },
     { field: 'chinese_level', name: '中文教学证书' },
-    { field: 'remark', name: '备注' }
+    // { field: 'remark', name: '备注' }
   ];
 
   for (const { field, name } of requiredFields) {
