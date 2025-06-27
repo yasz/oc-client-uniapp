@@ -110,7 +110,11 @@ export const buildTreeFromXMLContents = (
   //console.log("总数据条数:", contents.length);
 
   contents.forEach((item, index) => {
-    if (!item.Key || item.Key.includes(".DS_Store")) {
+    if (
+      !item.Key ||
+      item.Key.includes(".DS_Store") ||
+      item.Key.includes("/._")
+    ) {
       return;
     }
 
