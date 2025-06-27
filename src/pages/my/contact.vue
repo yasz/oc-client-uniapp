@@ -2,11 +2,7 @@
   <div class="px-20 py-20">
     <div class="text-gray-400 text-sm mb-2">官方账号</div>
     <div class="space-y-3">
-      <div class="flex items-center bg-white rounded-xl shadow p-4" @click="
-        goToWebView(
-          'https://www.xiaohongshu.com/user/profile/593b7c9e33594a286da325ec'
-        )
-        ">
+      <div class="flex items-center bg-white rounded-xl shadow p-4" @click="openRedBook()">
         <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500 mr-3">
           <img src="/static/my/contact/redbook.png" class="w-7 h-7 object-contain" />
         </div>
@@ -75,5 +71,21 @@ const goToWebView = (url: string) => {
   if (url) {
     go(`/webview/index?url=${encodeURIComponent(url)}`);
   }
+};
+
+const openRedBook = () => {
+  // #ifdef H5
+  window.open('https://www.xiaohongshu.com/user/profile/593b7c9e33594a286da325ec', '_blank');
+  // #endif
+
+  // #ifdef APP-PLUS
+  plus.runtime.openURL('https://www.xiaohongshu.com/user/profile/593b7c9e33594a286da325ec');
+  // #endif
+
+  // #ifdef MP
+  uni.navigateTo({
+    url: `/webview/index?url=${encodeURIComponent('https://www.xiaohongshu.com/user/profile/593b7c9e33594a286da325ec')}`
+  });
+  // #endif
 };
 </script>
