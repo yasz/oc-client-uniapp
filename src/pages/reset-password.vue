@@ -27,10 +27,7 @@
                     </button>
                 </form>
 
-                <button type="button" @click="goBack"
-                    class="w-full py-4 mt-4 rounded-full text-gray-600 font-bold text-base border border-gray-300">
-                    返回登录
-                </button>
+
             </view>
         </view>
 
