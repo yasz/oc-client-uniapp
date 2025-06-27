@@ -81,6 +81,7 @@
         </view>
         <view class="bg-gray-100" style="height:300rpx;" />
         <Layout />
+
     </view>
 </template>
 
@@ -224,10 +225,7 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
     if (response.data) {
         const authStore = useAuthStore();
         let courseData = response.data;
-        if (!authStore.roles.includes('teacher')) {
-            // Filter out teacher courses (category id 14)
-            courseData = courseData.filter((e: any) => e.id !== 14);
-        }
+
 
         const temp = courseData.filter((e: any) => e.children).flatMap((e: any) => {
             return e.children.map((child: any) => {
@@ -247,7 +245,7 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
 };
 onMounted(async () => {
     const authStore = useAuthStore();
-    if (!authStore.roles.includes('teacher')) {
+    if (!authStore.roles.includes('teacher') || (authStore.roles.includes('teacher') && !authStore.re_registered)) { //学生隐藏，老师隐藏未注册的
         menuItems.value = menuItems.value.filter(item => item.id !== 14);
     }
 
