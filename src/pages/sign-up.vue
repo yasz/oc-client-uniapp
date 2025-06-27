@@ -3,7 +3,7 @@
     <view class="fixed inset-0 bg-gradient-yellow z--3"></view>
 
     <!-- 选择用户类型页面 -->
-    <view v-if="!showForm" class="flex-col pt-[20%] items-center z--2">
+    <view v-if="!showForm" class="flex-col pt-[10vh] items-center z--2">
       <img class="w-40" src="@/static/index/signup/logo.png" alt="logo" />
       <view class="flex-col t-40 items-center tracking-widest pt-60">
         <text class="text-[#754D39] bold font-black"> WELCOME TO</text>
@@ -23,16 +23,18 @@
     </view>
 
     <!-- 注册表单页面 -->
-    <view v-if="showForm" class="min-h-screen flex flex-col items-center relative">
-      <view class="absolute flex z-10 pt-[8%] w-full justify-center">
-        <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
-        <view class="w-[50%] flex-col pt-[10%]">
-          <img class="w-[100%]" src="@/static/index/signup/tip1.png" alt="tip1" />
-          <img class="w-[80%]" src="@/static/index/signup/tip2.png" alt="tip2" />
+    <view v-if="showForm" class="min-h-screen flex flex-col items-center relative ">
+      <view class="relative z-10 pt-[5%] w-full justify-center md:hidden">
+        <view class="absolute flex z-10 pt-[5%] w-full justify-center">
+          <img class="w-32" src="@/static/index/signup/hippo.png" alt="hippo" />
+          <view class="w-[50%] flex-col pt-[10%]">
+            <img class="w-[80%]" src="@/static/index/signup/tip1.png" alt="tip1" />
+            <img class="w-[60%]" src="@/static/index/signup/tip2.png" alt="tip2" />
+          </view>
         </view>
       </view>
 
-      <view class="w-[90%] flex flex-col gap-4 pt-[40%]">
+      <view class="w-[90%] flex flex-col gap-4 pt-[20vh]">
         <view class="bg-white rounded-3xl shadow-lg p-6">
           <form @submit="submitForm">
             <input class="input-item" v-model="formModel.username" placeholder="手机号(必填)" required
@@ -122,8 +124,6 @@ const submitForm = async () => {
     loading.value = false;
     return;
   }
-
-
 
   if (!validateEmail(formModel.value.email)) {
     await modal("邮箱格式不正确");
