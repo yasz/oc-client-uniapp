@@ -268,7 +268,7 @@ const submitForm = async () => {
         }
         // 返回上一页
         // await modal("信息更新成功！");
-        go("/sign-up-finish?from=teacher")
+        go("/sign-up-finish?role=teacher")
       } else {
         await modal("更新失败！");
       }

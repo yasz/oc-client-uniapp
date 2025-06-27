@@ -138,6 +138,7 @@ import { ref, onMounted } from "vue";
 import { signUpStudent, updateStudent, createMessage } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/stores/authStore";
+import { go } from "@/utils/common";
 
 const modal = useModal().modal;
 const loading = ref(false);
@@ -235,7 +236,7 @@ const submitForm = async () => {
                 re_registered: true,
             });
             if (res.data) {
-                await modal("信息更新成功！");
+                // await modal("信息更新成功！");
                 try {
                     await createMessage({
                         sender_id: res.data.id || 1, // 新注册学生id
@@ -248,6 +249,7 @@ const submitForm = async () => {
                 }
                 // 更新authStore中的re_registered状态
                 authStore.re_registered = true;
+                go("/sign-up-finish?role=student");
                 // 返回上一页
                 uni.navigateBack();
             } else {

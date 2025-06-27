@@ -2,8 +2,8 @@
     <view>
         <view class="fixed inset-0 bg-gradient-yellow z--3"></view>
 
-        <view class="flex z-10 pt-[20%] justify-center items-center pl-[5%]">
-            <img class="w-[50%] z-10" src="@/static/index/signup/hippo.png" alt="hippo" />
+        <view class="flex z-10 pt-[10%] justify-center items-center pl-[5%]">
+            <img class="w-[40%] z-10" src="@/static/index/signup/hippo.png" alt="hippo" />
             <view class="w-[50%] pt-[24%]">
                 <img class="w-[80%]" src="@/static/index/signup/finish_thanks.png" alt="tip2" />
             </view>
