@@ -21,23 +21,20 @@
                 class="bg-white rounded-3xl shadow-lg p-6 w-[90%] text-center text-base leading-relaxed max-h-[40vh] overflow-y-auto">
                 <template v-if="isTeacher">
                     <div class="text-left">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您注册成为 Lifefunner乐凡中文 平台的教师！<br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;现已为您开放相应的教师资源（课件、教案等），请重新登陆账号，即可查看。<br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另外，我们会根据您提供的资料匹配学生，如果适配成功将人工与您确认授课相关信息。近期请留意您的邮箱，保持电话畅通。
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您申请成为Lifefunner“乐凡中文”的授课教师！<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们会根据您提供的资料匹配学生，如果适配成功，将人工与您确认授课相关信息。近期请留意您的邮箱，保持电话畅通。
                     </div>
                 </template>
                 <template v-else>
                     <div class="text-left">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您申请Lifefunner乐凡中文VIP
-                        学员，我们将在查阅您提供的资料之后，予以人工回复。<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您申请Lifefunner乐凡中文的私教课！<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们将在查阅您提供的资料之后，予以人工回复。<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;近期请留意您的邮箱，或保持电话畅通（基于您提供的联系方式）。<br />
                         <br />
                         <span class="text-sm text-gray-500">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for applying to become a
-                            Lifefunner VIP student/registered teacher!<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will reply to you manually after
-                            reviewing the information you provided. Kindly pay
-                            attention to your email or ensure your phone normal working in the coming days.
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for applying to Lifefunner’s private classes!<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will reply to you manually after reviewing the information you provided.<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kindly pay attention to your email or ensure your phone normal working in the coming days.
                         </span>
                     </div>
                 </template>

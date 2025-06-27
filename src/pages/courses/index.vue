@@ -57,22 +57,37 @@
             <!-- 空状态提示 -->
             <template v-else>
                 <view class="flex flex-col items-center justify-center py-2 px-2">
-                    <view class="bg-white rounded-2xl p-4 shadow-sm max-w-md mx-auto">
+                    <view class="bg-white rounded-2xl p-4 shadow-sm mx-auto">
                         <view class="text-center mb-6">
                             <text class="text-xl font-bold text-[#f9b33b] mb-2 block">欢迎来到Lifefun乐凡中文！</text>
                         </view>
 
-                        <view class="space-y-4 text-gray-700 leading-relaxed">
+                        <!-- Teacher Welcome Message -->
+                        <view v-if="authStore.roles.includes('teacher')" class="space-y-4 text-gray-700 leading-relaxed">
                             <text class="block text-base">
-                                我们致力于打造快乐的中文学习平台，使中文学习更有效、更轻松。
+                                我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
                             </text>
-
                             <text class="block text-base">
-                                本平台的学生资源，面向对中文学习有兴趣/有需求的成人、青少年及孩童。欢迎使用免费资源，并咨询私教课的相关讯息。
+                                我们的教师学习课程，对中文教学感兴趣的朋友免费开放，请点击上方“教师课程”标签观看。
                             </text>
-
                             <text class="block text-base">
-                                同时，诚邀优秀的国际中文教师加入授课，本平台将提供免费的教师学习课程和教学资源。（👆 点击上方按钮）
+                                更加期待您点击左上方“申请成为本平台教师”按钮，加入授课团队。
+                            </text>
+                        </view>
+
+                        <!-- Student Welcome Message -->
+                        <view v-else class="space-y-4 text-gray-700 leading-relaxed">
+                            <text class="block text-base">
+                                我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
+                            </text>
+                            <text class="block text-base">
+                                本平台的学生资源，面向对中文学习有兴趣/有需求的成人、青少年及孩童。
+                            </text>
+                            <text class="block text-base">
+                                欢迎使用免费资源，并咨询私教课的相关信息。
+                            </text>
+                            <text class="block text-base">
+                                免费资源可点击上方不同的课程标签浏览，需要私教课请点击左上角“我需要私教课”按钮。
                             </text>
                         </view>
                     </view>
