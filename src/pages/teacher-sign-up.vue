@@ -142,6 +142,7 @@ import { ref, onMounted } from "vue";
 import { signUpTeacher, updateTeacher, createMessage } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 import { useAuthStore } from "@/stores/authStore";
+import { go } from "@/utils/common";
 
 const modal = useModal().modal;
 const loading = ref(false);
@@ -252,8 +253,7 @@ const submitForm = async () => {
         re_registered: true,
       });
       if (res.data) {
-        await modal("信息更新成功！");
-        // 更新authStore中的re_registered状态
+
         authStore.re_registered = true;
         // 发送站内信通知管理员
         try {
@@ -267,7 +267,8 @@ const submitForm = async () => {
           console.error("发送站内信失败:", messageErr);
         }
         // 返回上一页
-        uni.navigateBack();
+        // await modal("信息更新成功！");
+        go("/sign-up-finish?from=teacher")
       } else {
         await modal("更新失败！");
       }

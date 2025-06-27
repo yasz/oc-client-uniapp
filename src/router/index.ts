@@ -149,6 +149,18 @@ const soliRoutes = [
     }),
   },
   {
+    path: `/sign-up-finish`,
+    component: __dynamicImportComponent__(`@/pages/sign-up-finish.vue`, {
+      pageType: `top`,
+      style: {
+        navigationBarTitleText: `sign-up`,
+        navigationBarBackgroundColor: `#42b883`,
+        navigationBarTextStyle: `white`,
+        name: "sign-up",
+      },
+    }),
+  },
+  {
     path: `/my`,
     component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
       pageType: `top`,
