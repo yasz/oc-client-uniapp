@@ -254,8 +254,16 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
             });
         }).flat();
 
-        console.log('【调试~~】:【', temp, '】');
-        courses.splice(0, courses.length, ...temp); // Use splice to reset the courses array
+        // 如果用户有分配的课程，只显示分配的课程；如果没有分配课程，则不显示任何课程
+        let finalCourses: any[] = [];
+        
+        if (authStore.userInfo?.user_courses && authStore.userInfo.user_courses.length > 0) {
+            const assignedCourseIds = authStore.userInfo.user_courses.map((c: any) => c.id);
+            finalCourses = temp.filter((c: any) => assignedCourseIds.includes(c.id));
+        }
+
+        console.log('finalCourses~~】:【', finalCourses, '】');
+        courses.splice(0, courses.length, ...finalCourses); // Use splice to reset the courses array
     }
 };
 onMounted(async () => {

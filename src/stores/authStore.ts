@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("authStore", {
     avatar: null as string | null, // 用户头像
     createdAt: null as string | null, // 用户创建时间
     re_registered: false as boolean, // 二次注册状态
+    userInfo: null as any, // 用户信息，包含分配的课程
   }),
 
   getters: {
@@ -41,26 +42,30 @@ export const useAuthStore = defineStore("authStore", {
           this.roles = roles.map((e: any) => e.name);
           this.re_registered = re_registered || false;
 
-          // 获取用户详细信息（头像、创建时间等）
+          // 获取用户详细信息（头像、创建时间、分配的课程等）
           if (this.userId) {
             try {
               const userInfoResponse = await getUserInfoWithSpecialToken(
                 Number(this.userId)
               );
-              const userInfo = userInfoResponse.data;
-              if (userInfo?.data?.avatar?.[0]?.url) {
+              const userInfo = userInfoResponse.data.data;
+              
+              // 存储完整的用户信息
+              this.userInfo = userInfo;
+              
+              if (userInfo?.avatar?.[0]?.url) {
                 this.avatar =
                   import.meta.env.VITE_BUCKET_ENDPOINT +
-                  userInfo.data.avatar[0].url;
+                  userInfo.avatar[0].url;
               }
               // 存储用户创建时间
-              if (userInfo?.data?.createdAt) {
-                this.createdAt = userInfo.data.createdAt;
+              if (userInfo?.createdAt) {
+                this.createdAt = userInfo.createdAt;
               }
               // 存储二次注册状态
-              if (userInfo?.data?.re_registered !== undefined) {
-                this.nickname = userInfo.data.nickname;
-                this.re_registered = userInfo.data.re_registered;
+              if (userInfo?.re_registered !== undefined) {
+                this.nickname = userInfo.nickname;
+                this.re_registered = userInfo.re_registered;
               }
             } catch (error) {
               console.error("获取用户详细信息失败:", error);
@@ -85,6 +90,7 @@ export const useAuthStore = defineStore("authStore", {
       this.avatar = null; // 清空头像
       this.createdAt = null; // 清空创建时间
       this.re_registered = false; // 清空二次注册状态
+      this.userInfo = null; // 清空用户信息
     },
 
     // 从存储中加载 token 并验证
