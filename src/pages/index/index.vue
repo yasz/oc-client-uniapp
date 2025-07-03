@@ -48,7 +48,7 @@
           currentDetail?.title
         }}</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
-        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify whitespace-pre-wrap"
+        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify prose"
           v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>
@@ -245,5 +245,7 @@ const copyText = (text: string) => {
 </script>
 
 <style>
-/* All old CSS is removed. */
+.prose p {
+  text-indent: 2em;
+}
 </style>
