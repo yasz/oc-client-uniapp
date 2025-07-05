@@ -1,25 +1,41 @@
 <template>
   <div class="px-4 py-4">
+    <!-- 顶部标题 -->
+    <div class="flex items-center justify-between mb-4">
+   
+    </div>
+
     <!-- 消息列表 -->
     <div v-if="messages.length > 0" class="space-y-3">
       <div
         v-for="message in messages"
         :key="message.id"
-        class="bg-white rounded-xl shadow p-4 cursor-pointer"
+        class="bg-white rounded-xl shadow p-4"
         :class="{ 'opacity-60': message.status }"
-        @click="showMessageDetail(message)"
+        @click="handleMessageClick(message)"
       >
         <div class="flex items-center justify-between mb-2">
-          <div class="text-base font-medium text-gray-900">
-            {{ message.title || "无标题" }}
+          <div class="flex items-center space-x-3">
+            <div class="text-base font-medium text-gray-900">
+              {{ message.title || "无标题" }}
+            </div>
           </div>
-          <div class="flex items-center">
+          <div class="flex items-center space-x-2">
             <div
               v-if="!message.status"
-              class="w-2 h-2 rounded-full bg-red-500 mr-2"
+              class="w-2 h-2 rounded-full bg-red-500"
             ></div>
             <div class="text-xs text-gray-400">
               {{ formatDate(message.createdAt) }}
+            </div>
+            <!-- 删除图标 -->
+            <div 
+              class="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-red-500"
+              @click.stop="handleDeleteMessage(message.id)"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
             </div>
           </div>
         </div>
@@ -65,7 +81,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { listMessages, updateMessage } from "@/utils/api";
+import { listMessages, updateMessage, deleteMessage } from "@/utils/api";
 import { useAuthStore } from "@/stores/authStore";
 
 // 定义消息接口
@@ -105,7 +121,7 @@ const formatDate = (dateStr: string) => {
 const fetchMessages = async () => {
   try {
     const response = (await listMessages(
-      authStore.userId
+      Number(authStore.userId)
     )) as ApiResponse<Message>;
     messages.value = response.data || [];
   } catch (error) {
@@ -115,6 +131,43 @@ const fetchMessages = async () => {
       icon: "none",
     });
   }
+};
+
+// 处理消息点击
+const handleMessageClick = (message: Message) => {
+  showMessageDetail(message);
+};
+
+// 删除单条消息
+const handleDeleteMessage = async (messageId: number) => {
+  // 显示确认对话框
+  uni.showModal({
+    title: "确认删除",
+    content: "确定要删除这条消息吗？",
+    success: async (res) => {
+      if (res.confirm) {
+        try {
+          await deleteMessage(messageId);
+          
+          // 从本地列表中移除已删除的消息
+          messages.value = messages.value.filter(
+            message => message.id !== messageId
+          );
+          
+          uni.showToast({
+            title: "删除成功",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("删除消息失败:", error);
+          uni.showToast({
+            title: "删除失败",
+            icon: "none",
+          });
+        }
+      }
+    }
+  });
 };
 
 // 显示消息详情

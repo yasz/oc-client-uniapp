@@ -418,7 +418,10 @@ export async function updateStudent(studentId: number, data: any) {
 
 export const listMessages = async (receiverId?: number) => {
   const filter = receiverId
-    ? `{"$and":[{"receiver_id":{"id":{"$eq":${receiverId}}}}]}`
+    ? `{"$and":[
+    {"receiver_id":{"id":{"$eq":${receiverId}}} }
+    ,{"is_hidden":{"$isFalsy":true}}
+    ]}`
     : "{}";
   const url = `messages:list?pageSize=20&sort=-createdAt&appends[]=sender_id&appends[]=receiver_id&filter=${filter}`;
 
@@ -453,6 +456,21 @@ export const updateMessage = async (messageId: number) => {
   try {
     const response = await postAPI(url, {
       status: true,
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 删除消息（将is_hidden设置为true）
+export const deleteMessage = async (messageId: number) => {
+  const url = `messages:update?filterByTk=${messageId}`;
+  try {
+    const response = await postAPI(url, {
+      is_hidden: true,
     });
     console.log("Response:", response);
     return response;
