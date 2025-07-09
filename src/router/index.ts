@@ -326,6 +326,29 @@ const soliRoutes = [
         name: "list",
       },
     }),
+  },  {
+    path: `/my/admin-teachers`,
+    component: __dynamicImportComponent__(`@/pages/my/admin-teachers.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "list",
+      },
+    }),
+  },
+  {
+    path: `/my/admin-courses`,
+    component: __dynamicImportComponent__(`@/pages/my/admin-courses.vue`, {
+      pageType: `top`,
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "list",
+      },
+    }),
   },
   {
     path: `/my/assignments`,

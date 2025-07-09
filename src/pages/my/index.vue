@@ -30,7 +30,7 @@
         " @click="handleMenuClick(i)">
         <view class="w-[64rpx] h-[64rpx] rounded-full flex justify-center items-center mr-[16rpx]"
           :style="'border: 3rpx solid #fce157;'">
-          <image :src="`/static/my/i${i}.png`" mode="aspectFit" class="w-[36rpx] h-[36rpx]" />
+          <image :src="getMenuIcon(i)" mode="aspectFit" class="w-[36rpx] h-[36rpx]" />
         </view>
         <text class="flex-1 text-[28rpx] text-[#333]">{{
           getMenuText(i)
@@ -76,7 +76,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type MenuIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 const hasStudents = ref(false);
 const day = ref<number | null>(null);
 const authStore = useAuthStore();
@@ -147,6 +147,8 @@ const menuTexts: Record<MenuIndex, string> = {
   7: "我的日程",
   8: "我的作业",
   9: "我的拼图账户",
+  10: "关联教师",
+  11: "分配课程",
 };
 
 const menuRoutes: Record<MenuIndex, string> = {
@@ -159,17 +161,33 @@ const menuRoutes: Record<MenuIndex, string> = {
   7: `/my/calendar-list`,
   8: "/my/assignment-list",
   9: "/my/puzzle-list",
+  10: "/my/admin-teachers",
+  11: "/my/admin-courses",
 };
 
 const getMenuText = (index: number): string => {
   return menuTexts[index as MenuIndex] || "";
 };
 
+const getMenuIcon = (index: number): string => {
+  // 管理员菜单项使用系统提醒的图标
+  if (index === 10 || index === 11) {
+    return "/static/my/i2.png";
+  }
+  return `/static/my/i${index}.png`;
+};
+
 const getVisibleMenuItems = () => {
   const isTeacher = authStore.roles.includes("teacher");
+  const isAdmin = authStore.roles.includes("admin");
 
   // 基础菜单项（所有用户都可见）
   const baseItems = [1, 2, 3];
+
+  // 如果是管理员，添加管理员专属菜单
+  if (isAdmin) {
+    return [...baseItems, 10, 11];
+  }
 
   // 如果是教师且有学生，添加教师专属菜单
   if (isTeacher && hasStudents.value) {
