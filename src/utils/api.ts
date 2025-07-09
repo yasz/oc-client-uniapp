@@ -353,7 +353,27 @@ export const listAllStudents = async () => {
     console.error("Error:", error);
   }
 };
+export const listAllTeachers = async () => {
+  const url = `teachers:list?appends[]=avatar`;
+  try {
+    const response = await getAPI(url, null);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
+export const associateStudentTeacher = async (studentId: number, teacherId: number) => {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      teacher_id: { id: teacherId }
+    });
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 export const getUserInfoWithSpecialToken = async (userId: number) => {
   return axios.get(
     `${
