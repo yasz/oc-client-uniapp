@@ -344,7 +344,15 @@ export const getCalendar = async (studentId: number) => {
   );
 };
 
-
+export const listAllStudents = async () => {
+  const url = `students:list?appends[]=avatar&appends[]=teacher_id`;
+  try {
+    const response = await getAPI(url, null);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
 export const getUserInfoWithSpecialToken = async (userId: number) => {
   return axios.get(
