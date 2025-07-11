@@ -145,7 +145,7 @@ const fetchCourses = async () => {
   try {
     // 判断角色
     const authStore = useAuthStore();
-    const ids = authStore.roles && authStore.roles.includes('teacher') ? [1, 2, 3, 4] : [1, 2, 3];
+    const ids = authStore.roles && authStore.roles.includes('teacher') ? [1, 2, 3, 4] : [ 2, 3,4];
     const response: any = await listCMSByIds(ids);
     if (response?.data) {
       cmsData.value = response.data;
