@@ -109,8 +109,12 @@
               <!-- 中文教学证书 -->
               <view class="form-item">
                 <text class="required-star">*</text>
-                <input class="input-item" v-model="formModel.chinese_level"
-                  placeholder="中文教学相关证书（普通话等级、教师资格证类型等；或高考语文成绩）" placeholder-style="color: #d1d5db;font-size: 9px;" />
+                <input
+                  class="input-item h-[80rpx]"
+                  v-model="formModel.chinese_level"
+                  :placeholder="'中文教学相关证书（普通话等级、\n教师资格证类型等或高考语文成绩）'"
+                  placeholder-style="color: #d1d5db; font-size: 16px; white-space: pre-line;"
+                />
               </view>
 
               <!-- 备注 -->
