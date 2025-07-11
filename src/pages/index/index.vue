@@ -115,7 +115,7 @@ import { listCMSByIds } from "@/utils/api";
 import { useI18n } from "vue-i18n";
 import Layout from "../layout.vue";
 import { ref, onMounted } from "vue";
-
+import { useAuthStore } from "@/stores/authStore";
 const { t, locale } = useI18n();
 const searchKeyword = ref("");
 const currentTab = ref("home");
@@ -143,7 +143,10 @@ const moments = ref<{ image: string; description: string; content: string }[]>(
 // 获取所有课程信息
 const fetchCourses = async () => {
   try {
-    const response: any = await listCMSByIds([1, 2, 3, 4]);
+    // 判断角色
+    const authStore = useAuthStore();
+    const ids = authStore.roles && authStore.roles.includes('teacher') ? [1, 2, 3, 4] : [1, 2, 3];
+    const response: any = await listCMSByIds(ids);
     if (response?.data) {
       cmsData.value = response.data;
       // 转换数据格式
