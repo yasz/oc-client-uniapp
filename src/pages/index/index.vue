@@ -31,7 +31,7 @@
         class="flex-1 mx-[10rpx] bg-white rounded-[20rpx] p-[15rpx] flex flex-col items-center shadow-sm first:ml-0 last:mr-0"
         @click="showDetail('course', index)">
         <image :src="course.image" mode="aspectFit" class="w-[90rpx] h-[90rpx] mb-[12rpx]" />
-        <view class="flex flex-col items-center">
+        <view class="flex flex-col prose items-center">
           <text class="text-[24rpx] font-bold text-gray-800 leading-tight text-center">{{
             course.line1
           }}</text>
@@ -42,13 +42,13 @@
 
     <!-- 课程详情弹窗 -->
     <uni-popup ref="popup" :is-mask-click="true" type="center">
-      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx]">
+      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx] h-[80vh] max-h-[80vh] overflow-y-auto">
         <image :src="currentDetail?.icon" mode="aspectFit" class="block w-[120rpx] h-[120rpx] mx-auto mb-[20rpx]" />
         <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">{{
           currentDetail?.title
         }}</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
-        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify prose"
+        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify prose prose-p:indent-[2em]"
           v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>

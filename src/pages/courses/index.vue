@@ -63,7 +63,7 @@
                         </view>
 
                         <!-- Teacher Welcome Message -->
-                        <view v-if="authStore.roles.includes('teacher')" class="space-y-4 text-gray-700 leading-relaxed">
+                        <view v-if="authStore.roles.includes('teacher')" class="space-y-4 text-center text-gray-700 leading-relaxed">
                             <text class="block text-base">
                                 我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
                             </text>
