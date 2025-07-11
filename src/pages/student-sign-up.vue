@@ -120,7 +120,7 @@
                     <button form-type="submit" @click="submitForm"
                         class="w-full py-8 my-20 rounded-full text-white font-bold text-base"
                         style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-                        {{ isReregisterMode ? '申请直播课' : '申请直播课' }}
+                        {{ isReregisterMode ? '申请老师授课' : '申请老师授课' }}
                     </button>
                 </view>
             </view>
