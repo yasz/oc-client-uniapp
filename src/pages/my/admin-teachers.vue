@@ -33,20 +33,6 @@
         </view>
       </view>
     </view>
-    <!-- 选择教师弹窗 -->
-    <u-modal v-model="showModal" title="选择教师">
-      <view class="p-4">
-        <picker :range="teachers" range-key="nickname" @change="onTeacherChange">
-          <view class="text-left">
-            {{ selectedTeacherIndex >= 0 ? teachers[selectedTeacherIndex].nickname : '请选择教师' }}
-          </view>
-        </picker>
-        <view class="flex gap-3 mt-6">
-          <u-button type="default" @click="showModal = false">取消</u-button>
-          <u-button type="primary" @click="confirmAssociate">确认</u-button>
-        </view>
-      </view>
-    </u-modal>
   </view>
 </template>
 
@@ -60,7 +46,6 @@ const authStore = useAuthStore();
 const students = ref<any[]>([]);
 const teachers = ref<any[]>([]);
 const selectedId = ref<number>();
-const showModal = ref(false);
 const selectedStudent = ref<any>(null);
 const selectedTeacherIndex = ref(-1);
 
@@ -88,10 +73,12 @@ onShow(async () => {
         import.meta.env.VITE_BUCKET_ENDPOINT +
         (student.avatar?.[0]?.url || "https://via.placeholder.com/50"),
     }));
+    
     // 获取教师列表
     const tRes: any = await listAllTeachers();
     teachers.value = tRes.data;
   } catch (error) {
+    console.error('数据加载失败:', error);
     uni.showToast({
       title: "获取学生或教师列表失败",
       icon: "none",
@@ -101,28 +88,74 @@ onShow(async () => {
 
 const openAssociateModal = (student: any) => {
   selectedStudent.value = student;
-  showModal.value = true;
-  selectedTeacherIndex.value = -1;
+  selectedId.value = student.id;
+  
+  // 预选当前学生的教师
+  if (student.teacher_id) {
+    const teacherIndex = teachers.value.findIndex(t => t.id === student.teacher_id.id);
+    selectedTeacherIndex.value = teacherIndex >= 0 ? teacherIndex : -1;
+  } else {
+    selectedTeacherIndex.value = -1;
+  }
+  
+  // 使用原生modal显示教师选择
+  showTeacherSelectionModal();
 };
 
-const onTeacherChange = (e: any) => {
-  selectedTeacherIndex.value = e.detail.value;
+const showTeacherSelectionModal = () => {
+  // 构建教师选择列表
+  const teacherOptions = ['取消关联教师'];
+  teachers.value.forEach(teacher => {
+    teacherOptions.push(teacher.nickname);
+  });
+  
+  uni.showActionSheet({
+    itemList: teacherOptions,
+    success: (res) => {
+      const selectedIndex = res.tapIndex;
+      if (selectedIndex === 0) {
+        // 取消关联
+        selectedTeacherIndex.value = -1;
+      } else {
+        // 选择教师
+        selectedTeacherIndex.value = selectedIndex - 1;
+      }
+      confirmAssociate();
+    },
+    fail: () => {
+      console.log('用户取消选择');
+    }
+  });
 };
 
 const confirmAssociate = async () => {
-  if (selectedTeacherIndex.value < 0) {
-    uni.showToast({ title: "请选择教师", icon: "none" });
-    return;
+  try {
+    if (selectedTeacherIndex.value === -1) {
+      // 取消关联教师
+      await associateStudentTeacher(selectedStudent.value.id, null);
+      uni.showToast({ title: "已取消关联", icon: "success" });
+    } else if (selectedTeacherIndex.value >= 0) {
+      // 关联新教师
+      const teacher = teachers.value[selectedTeacherIndex.value];
+      await associateStudentTeacher(selectedStudent.value.id, teacher.id);
+      uni.showToast({ title: "关联成功", icon: "success" });
+    } else {
+      uni.showToast({ title: "请选择教师", icon: "none" });
+      return;
+    }
+    
+    // 重新获取学生列表，确保UI同步
+    const res: any = await listAllStudents();
+    students.value = res.data.map((student: any) => ({
+      ...student,
+      avatarUrl:
+        import.meta.env.VITE_BUCKET_ENDPOINT +
+        (student.avatar?.[0]?.url || "https://via.placeholder.com/50"),
+    }));
+  } catch (error) {
+    uni.showToast({ title: "操作失败", icon: "none" });
+    console.error("关联教师失败:", error);
   }
-  const teacher = teachers.value[selectedTeacherIndex.value];
-  await associateStudentTeacher(selectedStudent.value.id, teacher.id);
-  selectedStudent.value.teacher_id = teacher;
-  showModal.value = false;
-  uni.showToast({ title: "关联成功", icon: "success" });
-};
-
-const handleStudentClick = (student: any) => {
-  // 现在点击用于弹出关联教师modal
 };
 </script>
 
@@ -174,4 +207,6 @@ const handleStudentClick = (student: any) => {
   font-size: 24rpx;
   color: #666;
 }
+
+
 </style>

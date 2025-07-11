@@ -345,7 +345,7 @@ export const getCalendar = async (studentId: number) => {
 };
 
 export const listAllStudents = async () => {
-  const url = `students:list?appends[]=avatar&appends[]=teacher_id`;
+  const url = `students:list?appends[]=avatar&appends[]=teacher_id&appends[]=teacher_id.avatar`;
   try {
     const response = await getAPI(url, null);
     return response;
@@ -363,15 +363,16 @@ export const listAllTeachers = async () => {
   }
 };
 
-export const associateStudentTeacher = async (studentId: number, teacherId: number) => {
+export const associateStudentTeacher = async (studentId: number, teacherId: number | null) => {
   const url = `students:update?filterByTk=${studentId}`;
   try {
     const response = await postAPIAxios(url, {
-      teacher_id: { id: teacherId }
+      teacher_id: teacherId ? { id: teacherId } : null
     });
     return response;
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 };
 export const getUserInfoWithSpecialToken = async (userId: number) => {
