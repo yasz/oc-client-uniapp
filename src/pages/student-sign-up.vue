@@ -126,7 +126,7 @@
             </view>
 
             <view class="absolute bottom-8 w-full flex justify-center">
-                <img class="w-40" src="@/static/index/signup/logo.png" alt="logo" />
+                <img class="w-40 block md:hidden" src="@/static/index/signup/logo.png" alt="logo" />
             </view>
         </view>
     </view>
