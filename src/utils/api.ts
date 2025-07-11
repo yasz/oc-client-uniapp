@@ -344,8 +344,9 @@ export const getCalendar = async (studentId: number) => {
   );
 };
 
+
 export const listAllStudents = async () => {
-  const url = `students:list?appends[]=avatar&appends[]=teacher_id&appends[]=teacher_id.avatar`;
+  const url = `students:list?appends[]=avatar&appends[]=teacher_id&appends[]=teacher_id.avatar&appends[]=user_courses&page=1`;
   try {
     const response = await getAPI(url, null);
     return response;
@@ -620,3 +621,67 @@ export async function syncCourseFromCDN(courseId: number, coursePath: string) {
     throw error;
   }
 }
+
+// 课程分配相关API - 通过学生表管理
+export const assignCourseToStudent = async (studentId: number, courseId: number) => {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    // 先获取当前学生的课程列表
+    const currentStudent = await getAPIAxios(`students:get?filterByTk=${studentId}&appends[]=user_courses`, null);
+    const currentCourses = currentStudent.data.user_courses || [];
+    
+    // 检查课程是否已经分配
+    const isAlreadyAssigned = currentCourses.some((course: any) => course.id === courseId);
+    if (isAlreadyAssigned) {
+      throw new Error('课程已经分配给该学生');
+    }
+    
+    // 添加新课程到列表
+    const updatedCourses = [...currentCourses, { id: courseId }];
+    
+    const response = await postAPIAxios(url, {
+      user_courses: updatedCourses
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const removeCourseFromStudent = async (studentId: number, courseId: number) => {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    // 先获取当前学生的课程列表
+    const currentStudent = await getAPIAxios(`students:get?filterByTk=${studentId}&appends[]=user_courses`, null);
+    const currentCourses = currentStudent.data.user_courses || [];
+    
+    // 移除指定课程
+    const updatedCourses = currentCourses.filter((course: any) => course.id !== courseId);
+    
+    const response = await postAPIAxios(url, {
+      user_courses: updatedCourses
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const removeAllCoursesFromStudent = async (studentId: number) => {
+  const url = `students:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      user_courses: []
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
