@@ -71,8 +71,12 @@
               <view class="form-item">
                 <text class="required-star">*</text>
                 <picker mode="selector" :range="genderOptions" :value="genderIndex" @change="onGenderChange">
-                  <input class="input-item" readonly :value="formModel.gender" placeholder="性 别"
-                    placeholder-style="color: #d1d5db;" />
+                  <view
+                    class="input-item border border-gray-300 rounded px-4 py-2 h-[44rpx] flex items-center justify-center cursor-pointer text-gray-900"
+                    :style="{ color: formModel.gender ? '#111' : '#d1d5db' }"
+                  >
+                    {{ formModel.gender || '性 别' }}
+                  </view>
                 </picker>
               </view>
 
@@ -80,8 +84,12 @@
               <view class="form-item">
                 <text class="required-star">*</text>
                 <picker mode="date" :value="formModel.birth" @change="onBirthChange">
-                  <input class="input-item" readonly :value="formModel.birth" placeholder="请选择出生年月"
-                    placeholder-style="color: #d1d5db;" />
+                  <view
+                    class="input-item border border-gray-300 rounded px-4 py-2 h-[44rpx] flex items-center justify-center cursor-pointer text-gray-900"
+                    :style="{ color: formModel.birth ? '#111' : '#d1d5db' }"
+                  >
+                    {{ formModel.birth || '请选择出生年月' }}
+                  </view>
                 </picker>
               </view>
 
