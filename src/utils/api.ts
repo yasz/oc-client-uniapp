@@ -685,3 +685,73 @@ export const removeAllCoursesFromStudent = async (studentId: number) => {
   }
 };
 
+// 获取所有可分配的子课程
+export const listAssignableCourses = async () => {
+  try {
+    // 获取所有课程（包含树形结构）
+    const allCoursesResponse = await getAPIAxios(
+      "courses:list?pageSize=100&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1",
+      null
+    );
+    
+    const allCourses = allCoursesResponse.data || [];
+    
+    // 过滤出子课程（有parentId的课程）
+    const childCourses = allCourses.filter((course: any) => course.parentId);
+    
+    // 为每个子课程添加父级信息
+    const coursesWithParent = childCourses.map((course: any) => {
+      const parent = allCourses.find((c: any) => c.id === course.parentId);
+      return {
+        ...course,
+        parentName: parent?.name || '未知分类'
+      };
+    });
+    
+    return {
+      data: coursesWithParent
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 获取所有父级课程
+export const listParentCourses = async () => {
+  try {
+    const response = await getAPIAxios(
+      "courses:list?pageSize=50&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1",
+      null
+    );
+    
+    const allCourses = response.data || [];
+    
+    // 过滤出父级课程（没有parentId的课程）
+    const parentCourses = allCourses.filter((course: any) => !course.parentId);
+    
+    return {
+      data: parentCourses
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 获取指定父级课程下的子课程
+export const listChildCourses = async (parentId: number) => {
+  try {
+    const filter = `{"parentId":{"$eq":${parentId}}}`;
+    const response = await getAPIAxios(
+      `courses:list?pageSize=50&sort=seq&appends[]=file_id&appends[]=cover&filter=${filter}`,
+      null
+    );
+    
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
