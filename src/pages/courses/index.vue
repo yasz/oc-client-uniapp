@@ -76,7 +76,7 @@
                         </view>
 
                         <!-- Student Welcome Message -->
-                        <view v-else class="space-y-4 text-gray-700 leading-relaxed">
+                        <view v-else class="space-y-4 text-center text-gray-700 leading-relaxed">
                             <text class="block text-base">
                                 我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
                             </text>
@@ -87,7 +87,7 @@
                                 欢迎使用免费资源，并咨询私教课的相关信息。
                             </text>
                             <text class="block text-base">
-                                免费资源可点击上方不同的课程标签浏览，需要私教课请点击左上角“我需要私教课”按钮。
+                                免费资源可点击上方不同的课程标签浏览，需要私教课请点击左上角“我需要老师授课”按钮。
                             </text>
                         </view>
                     </view>
