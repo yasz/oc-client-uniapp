@@ -20,7 +20,7 @@
                             style="-webkit-text-stroke: 0.1px #523201" @click="handleReregisterClick">
 
                             {{ authStore.roles.includes('teacher') ? '成为本平台教师' : '我需要老师授课' }}
-                        </view>ƒ
+                        </view>
 
                         <view class="text-xl font-bold text-[#9b6310]" style="-webkit-text-stroke: 0.2px #523201">
                             中国语文海外学
