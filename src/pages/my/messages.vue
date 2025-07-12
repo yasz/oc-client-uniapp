@@ -66,9 +66,15 @@
         <div class="text-base text-gray-600 whitespace-pre-wrap">
           {{ currentMessage?.content }}
         </div>
-        <div class="mt-4 flex justify-end">
+        <div class="mt-4 flex justify-between">
           <button
-            class="py-2 bg-primary text-white rounded-lg text-base font-medium"
+            class="py-2 px-4 bg-gray-500 text-white rounded-lg text-base font-medium"
+            @click="copyMessageContent"
+          >
+            复制内容
+          </button>
+          <button
+            class="py-2 px-4 bg-primary text-white rounded-lg text-base font-medium"
             @click="closePopup"
           >
             关闭
@@ -189,6 +195,28 @@ const showMessageDetail = async (message: Message) => {
     } catch (error) {
       console.error("更新消息状态失败:", error);
     }
+  }
+};
+
+// 复制消息内容
+const copyMessageContent = () => {
+  if (currentMessage.value?.content) {
+    // 使用uni-app的剪贴板API
+    uni.setClipboardData({
+      data: currentMessage.value.content,
+      success: () => {
+        uni.showToast({
+          title: "内容已复制到剪贴板",
+          icon: "success",
+        });
+      },
+      fail: () => {
+        uni.showToast({
+          title: "复制失败",
+          icon: "none",
+        });
+      },
+    });
   }
 };
 
