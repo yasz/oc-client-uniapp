@@ -48,7 +48,7 @@
           currentDetail?.title
         }}</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
-        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify prose prose-p:indent-[2em]"
+        <view class="text-[28rpx] porse text-gray-500 leading-[1.8] text-justify prose prose-p:indent-[2em]"
           v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>
