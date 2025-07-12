@@ -254,20 +254,8 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
             });
         }).flat();
 
-        // 如果用户有分配的课程，只显示分配的课程；如果没有分配课程，则不显示任何课程
-        // 但是管理员可以看到所有课程
-        let finalCourses: any[] = [];
-        
-        if (authStore.roles.includes('admin')) {
-            // 管理员可以看到所有课程
-            finalCourses = temp;
-        } else if (authStore.userInfo?.user_courses && authStore.userInfo.user_courses.length > 0) {
-            const assignedCourseIds = authStore.userInfo.user_courses.map((c: any) => c.id);
-            finalCourses = temp.filter((c: any) => assignedCourseIds.includes(c.id));
-        }
-
-        console.log('finalCourses~~】:【', finalCourses, '】');
-        courses.splice(0, courses.length, ...finalCourses); // Use splice to reset the courses array
+        // 显示所有课程卡片，权限控制将在课程详情页面进行
+        courses.splice(0, courses.length, ...temp); // Use splice to reset the courses array
     }
 };
 onMounted(async () => {
