@@ -20,7 +20,7 @@
                             style="-webkit-text-stroke: 0.1px #523201" @click="handleReregisterClick">
 
                             {{ authStore.roles.includes('teacher') ? '成为本平台教师' : '我需要老师授课' }}
-                        </view>
+                        </view>ƒ
 
                         <view class="text-xl font-bold text-[#9b6310]" style="-webkit-text-stroke: 0.2px #523201">
                             中国语文海外学
@@ -260,7 +260,7 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
 };
 onMounted(async () => {
     const authStore = useAuthStore();
-    if (!authStore.roles.includes('teacher') || (authStore.roles.includes('teacher') && !authStore.re_registered)) { //学生隐藏，老师隐藏未注册的
+    if (!authStore.roles.includes('teacher') ) { //学生隐藏，老师隐藏未注册的
         menuItems.value = menuItems.value.filter(item => item.id !== 14);
     }
 
