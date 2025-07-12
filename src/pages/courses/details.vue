@@ -19,7 +19,7 @@
             </view>
             <view class="mt-4 flex justify-center flex-1 overflow-y-auto">
                 <view class="w-[95%]">
-                    <SyllabusComponent :content="courseData.cos_xml"
+                    <SyllabusComponent :content="courseData.cos_xml" :courseId="courseId"
                         v-if="currentTabIndex === 0 && courseData.cos_xml" />
                     <view v-if="currentTabIndex === 1" class="prose bg-white p-4 rounded-lg shadow">
                         <div v-if="courseData.content" v-html="courseData.content"></div>
@@ -43,6 +43,7 @@ import SyllabusComponent from './components/syllabus.vue';
 // 定义响应式变量
 const courseData = ref<any>({});
 const isDataLoaded = ref(false);
+const courseId = ref<number | null>(null);
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const currentTabIndex = ref(0);
@@ -76,6 +77,7 @@ function handleTabChange(event: any) {
 
 onLoad(async (e: any) => {
     if (e.id) {
+        courseId.value = Number(e.id);
         try {
             const response: any = await getCourseById(e.id);
             if (response.data) {

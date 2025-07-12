@@ -1,8 +1,8 @@
 <template>
   <view class="bg-white p-1 rounded-lg shadow">
-    <template v-if="tree.length > 0">
+    <template v-if="filteredTree.length > 0">
       <uni-collapse>
-        <TreeNode v-for="item in tree" :key="item.path" :node="item" @open-attachment="openAttachment" />
+        <TreeNode v-for="item in filteredTree" :key="item.path" :node="item" @open-attachment="openAttachment" />
       </uni-collapse>
     </template>
     <view v-else class="text-center py-4 text-gray-500">
@@ -15,16 +15,79 @@
 import { computed } from 'vue';
 import TreeNode from '@/components/TreeNode.vue';
 import { parseContentToTree, type TreeNode as TreeNodeType } from '@/utils/xmlTreeParser';
+import { useAuthStore } from '@/stores/authStore';
 
 // --- Props ---
 const props = defineProps<{
   content: string;
+  courseId?: number; // 添加课程ID属性
 }>();
+
+const authStore = useAuthStore();
 
 // --- 计算属性：使用独立的解析工具 ---
 const tree = computed((): TreeNodeType[] => {
   return parseContentToTree(props.content);
 });
+
+// --- 权限控制：根据用户权限过滤目录 ---
+const filteredTree = computed((): TreeNodeType[] => {
+  if (!tree.value || tree.value.length === 0) return [];
+  
+  // 检查用户是否有该课程的权限
+  const hasCourseAccess = checkCourseAccess();
+  
+  return tree.value.filter(node => {
+    // 如果是管理员，显示所有内容
+    if (authStore.roles.includes('admin')) {
+      return true;
+    }
+    
+    // 根据目录名称进行权限控制
+    const nodeName = node.name.toLowerCase();
+    
+    // 如果用户没有课程权限，隐藏学生资源和教师资源
+    if (!hasCourseAccess) {
+      return !nodeName.includes('学生资源') && !nodeName.includes('教师资源');
+    }
+    
+    // 如果用户有课程权限
+    if (hasCourseAccess) {
+      // 显示学生资源
+      if (nodeName.includes('学生资源')) {
+        return true;
+      }
+      
+      // 如果是教师且有课程权限，显示教师资源
+      if (nodeName.includes('教师资源') && authStore.roles.includes('teacher')) {
+        return true;
+      }
+      
+      // 其他目录正常显示
+      return !nodeName.includes('教师资源');
+    }
+    
+    return true;
+  });
+});
+
+// 检查用户是否有该课程的权限
+const checkCourseAccess = (): boolean => {
+  if (!props.courseId) return false;
+  
+  // 管理员有所有权限
+  if (authStore.roles.includes('admin')) {
+    return true;
+  }
+  
+  // 检查用户的课程列表
+  if (authStore.userInfo?.user_courses && authStore.userInfo.user_courses.length > 0) {
+    const assignedCourseIds = authStore.userInfo.user_courses.map((c: any) => c.id);
+    return assignedCourseIds.includes(props.courseId);
+  }
+  
+  return false;
+};
 
 // --- 文件处理逻辑 ---
 const openAttachment = (path: string) => {
