@@ -1,30 +1,18 @@
 <template>
   <view class="student-selector">
     <view class="student-list">
-      <view
-        v-for="student in students"
-        :key="student.id"
-        class="student-item"
-        :class="{ 'student-item--active': selectedId === student.id }"
-        @click="openAssociateModal(student)"
-      >
-        <image
-          class="student-avatar"
-          mode="aspectFill"
-          :src="student.avatarUrl"
-        />
+      <view v-for="student in students" :key="student.id" class="student-item"
+        :class="{ 'student-item--active': selectedId === student.id }" @click="openAssociateModal(student)">
+        <image class="student-avatar" mode="aspectFill" :src="student.avatarUrl" />
         <view class="flex flex-col flex-1">
           <text class="student-name">{{ student.nickname }}</text>
+          <text class="student-name">{{ student.username }}</text>
           <text class="text-xs text-gray-400">ID: {{ student.id }}</text>
         </view>
         <view class="flex flex-col items-end justify-center min-w-[120rpx]">
           <template v-if="student.teacher_id">
-            <image
-              class="teacher-avatar"
-              mode="aspectFill"
-              :src="teacherAvatarUrl(student.teacher_id)"
-              style="width: 40rpx; height: 40rpx; border-radius: 50%; margin-bottom: 2rpx;"
-            />
+            <image class="teacher-avatar" mode="aspectFill" :src="teacherAvatarUrl(student.teacher_id)"
+              style="width: 40rpx; height: 40rpx; border-radius: 50%; margin-bottom: 2rpx;" />
             <text class="text-blue-600 text-xs mt-1">{{ student.teacher_id.nickname }}</text>
           </template>
           <template v-else>
@@ -73,7 +61,7 @@ onShow(async () => {
         import.meta.env.VITE_BUCKET_ENDPOINT +
         (student.avatar?.[0]?.url || "https://via.placeholder.com/50"),
     }));
-    
+
     // 获取教师列表
     const tRes: any = await listAllTeachers();
     teachers.value = tRes.data;
@@ -89,7 +77,7 @@ onShow(async () => {
 const openAssociateModal = (student: any) => {
   selectedStudent.value = student;
   selectedId.value = student.id;
-  
+
   // 预选当前学生的教师
   if (student.teacher_id) {
     const teacherIndex = teachers.value.findIndex(t => t.id === student.teacher_id.id);
@@ -97,7 +85,7 @@ const openAssociateModal = (student: any) => {
   } else {
     selectedTeacherIndex.value = -1;
   }
-  
+
   // 使用原生modal显示教师选择
   showTeacherSelectionModal();
 };
@@ -108,7 +96,7 @@ const showTeacherSelectionModal = () => {
   teachers.value.forEach(teacher => {
     teacherOptions.push(teacher.nickname);
   });
-  
+
   uni.showActionSheet({
     itemList: teacherOptions,
     success: (res) => {
@@ -143,7 +131,7 @@ const confirmAssociate = async () => {
       uni.showToast({ title: "请选择教师", icon: "none" });
       return;
     }
-    
+
     // 重新获取学生列表，确保UI同步
     const res: any = await listAllStudents();
     students.value = res.data.map((student: any) => ({
@@ -207,6 +195,4 @@ const confirmAssociate = async () => {
   font-size: 24rpx;
   color: #666;
 }
-
-
 </style>

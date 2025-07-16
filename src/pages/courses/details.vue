@@ -48,7 +48,7 @@ import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const currentTabIndex = ref(0);
 
-const tabItems = [{ name: t('Syllabus') }, { name: t('Introduction') }];
+const tabItems = [{ name: t('Syllabus') }];
 
 const coverURL = computed(() => {
     // 优先使用 cover_content
