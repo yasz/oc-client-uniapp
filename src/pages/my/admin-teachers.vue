@@ -94,7 +94,7 @@ const showTeacherSelectionModal = () => {
   // 构建教师选择列表
   const teacherOptions = ['取消关联教师'];
   teachers.value.forEach(teacher => {
-    teacherOptions.push(teacher.nickname);
+    teacherOptions.push(`${teacher.username}(${teacher.nickname})`);
   });
 
   uni.showActionSheet({
