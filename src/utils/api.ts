@@ -355,7 +355,7 @@ export const listAllStudents = async () => {
   }
 };
 export const listAllTeachers = async () => {
-  const url = `teachers:list?appends[]=avatar`;
+  const url = `teachers:list?appends[]=avatar&appends[]=user_courses`;
   try {
     const response = await getAPI(url, null);
     return response;
@@ -622,6 +622,7 @@ export async function syncCourseFromCDN(courseId: number, coursePath: string) {
   }
 }
 
+
 // 课程分配相关API - 通过学生表管理
 export const assignCourseToStudent = async (studentId: number, courseId: number) => {
   const url = `students:update?filterByTk=${studentId}`;
@@ -673,6 +674,64 @@ export const removeCourseFromStudent = async (studentId: number, courseId: numbe
 
 export const removeAllCoursesFromStudent = async (studentId: number) => {
   const url = `students:update?filterByTk=${studentId}`;
+  try {
+    const response = await postAPIAxios(url, {
+      user_courses: []
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+// 课程分配相关API - 通过教师表管理
+export const assignCourseToTeacher = async (teacherId: number, courseId: number) => {
+  const url = `teachers:update?filterByTk=${teacherId}`;
+  try {
+    const currentTeacher = await getAPIAxios(`teachers:get?filterByTk=${teacherId}&appends[]=user_courses`, null);
+    const currentCourses = currentTeacher.data.user_courses || [];
+    
+    const isAlreadyAssigned = currentCourses.some((course: any) => course.id === courseId);
+    if (isAlreadyAssigned) {
+      throw new Error('课程已经分配给该教师');
+    }
+    
+    const updatedCourses = [...currentCourses, { id: courseId }];
+    
+    const response = await postAPIAxios(url, {
+      user_courses: updatedCourses
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const removeCourseFromTeacher = async (teacherId: number, courseId: number) => {
+  const url = `teachers:update?filterByTk=${teacherId}`;
+  try {
+    const currentTeacher = await getAPIAxios(`teachers:get?filterByTk=${teacherId}&appends[]=user_courses`, null);
+    const currentCourses = currentTeacher.data.user_courses || [];
+    
+    const updatedCourses = currentCourses.filter((course: any) => course.id !== courseId);
+    
+    const response = await postAPIAxios(url, {
+      user_courses: updatedCourses
+    });
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const removeAllCoursesFromTeacher = async (teacherId: number) => {
+  const url = `teachers:update?filterByTk=${teacherId}`;
   try {
     const response = await postAPIAxios(url, {
       user_courses: []
