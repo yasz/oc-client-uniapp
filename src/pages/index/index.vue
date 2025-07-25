@@ -42,7 +42,7 @@
 
     <!-- 课程详情弹窗 -->
     <uni-popup ref="popup" :is-mask-click="true" type="center">
-      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx] h-[80vh] max-h-[80vh] overflow-y-auto">
+      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx] max-h-[80vh] overflow-y-auto">
         <image :src="currentDetail?.icon" mode="aspectFit" class="block w-[120rpx] h-[120rpx] mx-auto mb-[20rpx]" />
         <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">{{
           currentDetail?.title
@@ -57,7 +57,7 @@
     <view class="p-[30rpx]">
       <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻</text>
       <view class="grid grid-cols-2 gap-[20rpx] pt-20">
-        <view v-for="(moment, index) in moments" :key="index" class="bg-white rounded-[10rpx] overflow-hidden">
+        <view v-for="(moment, index) in moments" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index)">
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
@@ -68,7 +68,7 @@
 
     <!-- 捐赠弹窗 -->
     <uni-popup ref="donatePopup" :is-mask-click="true" type="center">
-      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx]">
+      <view class="w-[600rpx] p-[40rpx] bg-white rounded-[20rpx] max-h-[80vh] overflow-y-auto">
         <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">支持/Donate</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
         <view class="flex justify-center gap-[10px] my-[30rpx]">
