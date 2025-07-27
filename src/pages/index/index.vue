@@ -55,7 +55,7 @@
     </uni-popup>
 
     <view class="p-[30rpx]">
-      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻</text>
+      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻 & 通告说明</text>
       <view class="grid grid-cols-2 gap-[20rpx] pt-20">
         <view v-for="(moment, index) in moments" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index)">
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
