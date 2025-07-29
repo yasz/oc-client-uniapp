@@ -15,6 +15,7 @@ export default defineConfig({
   plugins: [
     vitePluginUniRouter({
       pluginPath: `./uni-simple-router`,
+      routesMain: "router/index.ts",
     }),
     uni(),
   ],

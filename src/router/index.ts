@@ -177,9 +177,7 @@ const soliRoutes = [
     component: __dynamicImportComponent__(`@/pages/my/profile.vue`, {
       pageType: `top`,
       style: {
-        navigationStyle: "default",
-        navigationBarBackgroundColor: `#F8AE3D`,
-        navigationBarTextStyle: `white`,
+        navigationStyle: "custom",
         name: "contact",
         // navigationBarTitleText: ``,
       },

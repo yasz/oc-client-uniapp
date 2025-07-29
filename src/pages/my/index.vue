@@ -193,6 +193,13 @@ const getVisibleMenuItems = () => {
   if (isTeacher && hasStudents.value) {
     return [...baseItems, 4, 5, 6];
   } else if (!isTeacher) {
+    // #ifdef H5
+    const systemInfo = uni.getSystemInfoSync();
+    const isPC = !["ios", "android"].includes(systemInfo.platform);
+    if (isPC && systemInfo.windowWidth > 500) {
+      return [...baseItems, 7, 8]; // PC端宽屏，隐藏我的拼图账户
+    }
+    // #endif
     return [...baseItems, 7, 8, 9];
   }
 
