@@ -174,7 +174,7 @@ const soliRoutes = [
   },
   {
     path: `/my/profile`,
-    component: __dynamicImportComponent__(`@/pages/my/profile.vue`, {
+    component: __dynamicImportComponent__(`../pages/my/profile.vue`, {
       pageType: `top`,
       style: {
         navigationStyle: "custom",

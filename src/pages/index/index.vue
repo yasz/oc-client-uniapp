@@ -54,10 +54,24 @@
       </view>
     </uni-popup>
 
+    <!-- 通告说明 -->
     <view class="p-[30rpx]">
-      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻 & 通告说明</text>
-      <view class="grid grid-cols-2 gap-[20rpx] pt-20">
-        <view v-for="(moment, index) in moments" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index)">
+      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">通告说明</text>
+      <view class="grid grid-cols-2 gap-[20rpx]">
+        <view v-for="(moment, index) in announcements" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index)">
+          <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
+          <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
+            moment.description
+          }}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 精彩时刻 -->
+    <view class="p-[30rpx] pt-0">
+      <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻</text>
+      <view class="grid grid-cols-2 gap-[20rpx]">
+        <view v-for="(moment, index) in highlights" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index + 2)">
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
@@ -115,7 +129,7 @@ import { listCMSByIds } from "@/utils/api";
 
 import { useI18n } from "vue-i18n";
 import Layout from "../layout.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 const { t, locale } = useI18n();
 const searchKeyword = ref("");
@@ -137,9 +151,10 @@ interface CMSItem {
 
 const courses = ref<Course[]>([]);
 const cmsData = ref<CMSItem[]>([]);
-const moments = ref<{ image: string; description: string; content: string }[]>(
-  []
-);
+const moments = ref<{ image: string; description: string; content: string }[]>([]);
+
+const announcements = computed(() => moments.value.slice(0, 2));
+const highlights = computed(() => moments.value.slice(2));
 
 // 获取所有课程信息
 const fetchCourses = async () => {
