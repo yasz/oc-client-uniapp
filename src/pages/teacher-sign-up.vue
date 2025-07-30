@@ -63,7 +63,7 @@
               <!-- 联系方式 -->
               <view class="form-item">
                 <text class="required-star">*</text>
-                <input class="input-item" v-model="formModel.contact" placeholder="请输入您联系方式" required
+                <input class="input-item" v-model="formModel.contact" placeholder="请输入您的联系方式" required
                   placeholder-style="color: #d1d5db;" />
               </view>
 

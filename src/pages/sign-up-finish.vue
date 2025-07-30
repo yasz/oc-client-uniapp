@@ -10,9 +10,9 @@
         </view>
 
 
-        <view class="absolute bottom-8 w-full flex justify-center">
+        <!-- <view class="absolute bottom-8 w-full flex justify-center">
             <img class="w-40" src="@/static/index/signup/logo.png" alt="logo" />
-        </view>
+        </view> -->
     </view>
     <!-- <view class="flex z-10 pt-[20%] justify-center items-center z-8 w-[80%]"> -->
     <view class="flex z-0 mt-[-10vh] justify-center items-center">

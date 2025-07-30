@@ -22,8 +22,8 @@
       </view>
     </view>
     <view class="z-1" v-if="puzzleLeft">
-      <view :class="`fixed top-[40%]`" :style="{ left: puzzleLeft / 2 + 'px' }">
-        <view :class="`scale-[0.2]`">
+      <view :class="`fixed top-[40%] puzzle-background-container`" :style="{ left: puzzleLeft / 2 + 'px' }">
+        <view :style="{ transform: 'scale(0.2)', transformOrigin: 'top left' }">
           <template v-for="(piece, index) in puzzleBackgroundPieces" :key="index">
             <img :src="piece.src" class="absolute" :style="{
               left: piece.x - 276 + 'px',
@@ -38,7 +38,7 @@
       <template v-for="(got, index) in gottenPieces" :key="`completed-${index}`">
         <view v-if="got" class="fixed" :style="{
           transform: 'scale(0.2)',
-          transformOrigin: '0 0',
+          transformOrigin: 'top left',
           left: piecePositions[index]?.x + 'px',
           top: piecePositions[index]?.y + 'px',
           zIndex: activePiece === index ? 100 : 1,
@@ -105,18 +105,35 @@ const fetchStudentData = async (studentId: any) => {
 };
 
 const initializePiecePositions = () => {
-  const positions: { x: number; y: number }[] = [];
-  for (let i = 0; i < 9; i++) {
-    if (gottenPieces.value?.[i]) {
-      positions[i] = {
-        x: Math.random() * (info.screenWidth - 100), // 留出边距
-        y: Math.random() * (info.screenHeight - 200) + 100, // 留出上下边距
-      };
+  uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(rect => {
+    if (rect) {
+      const positions: { x: number; y: number }[] = [];
+      const scale = 0.2;
+      const calculatedTop = info.windowHeight * 0.4;
+
+      for (let i = 0; i < 9; i++) {
+        if (gottenPieces.value?.[i]) {
+          const targetPiece = puzzleBackgroundPieces[i];
+          const targetX = rect.left + (targetPiece.x - 276) * scale;
+          const targetY = calculatedTop + (targetPiece.y - 1094) * scale;
+          positions[i] = {
+            x: targetX,
+            y: targetY,
+          };
+        } else {
+          positions[i] = { x: -9999, y: -9999 };
+        }
+      }
+      piecePositions.value = positions;
     } else {
-      positions[i] = { x: -9999, y: -9999 };
+      // Fallback for when the rect isn't found immediately
+      const positions: { x: number; y: number }[] = [];
+      for (let i = 0; i < 9; i++) {
+        positions[i] = { x: -9999, y: -9999 };
+      }
+      piecePositions.value = positions;
     }
-  }
-  piecePositions.value = positions;
+  }).exec();
 };
 
 const handleTouchStart = (event: any, index: number) => {
@@ -149,20 +166,28 @@ const handleTouchEnd = (event: any, index: number) => {
   // 检查是否接近目标位置
   const piece = piecePositions.value[index];
   const targetPiece = puzzleBackgroundPieces[index];
-  const targetX = targetPiece.x - 276;
-  const targetY = targetPiece.y - 1094;
 
-  const distance = Math.sqrt(
-    Math.pow(piece.x - targetX, 2) + Math.pow(piece.y - targetY, 2)
-  );
+  // 获取背景容器的位置和大小
+  uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(rect => {
+    if (rect) {
+      const scale = 0.2;
+      const calculatedTop = info.windowHeight * 0.4;
+      const targetX = rect.left + (targetPiece.x - 276) * scale;
+      const targetY = calculatedTop + (targetPiece.y - 1094) * scale;
 
-  // 如果距离小于50像素，自动吸附到目标位置
-  if (distance < 50) {
-    piecePositions.value[index] = {
-      x: targetX,
-      y: targetY,
-    };
-  }
+      const distance = Math.sqrt(
+        Math.pow(piece.x - targetX, 2) + Math.pow(piece.y - targetY, 2)
+      );
+
+      // 如果距离小于50像素，自动吸附到目标位置
+      if (distance < 50) {
+        piecePositions.value[index] = {
+          x: targetX,
+          y: targetY,
+        };
+      }
+    }
+  }).exec();
 
   activePiece.value = null;
 };
