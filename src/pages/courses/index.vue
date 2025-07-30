@@ -217,9 +217,9 @@ const toggleSelection = async (id: number) => {
 };
 const selectedItem = ref<number | undefined>(undefined); // 当前选中的菜单项
 const menuItems = ref<MenuItem[]>([
-    { id: 12, line1: '小学语文', line2: '（部编版）' },
-    { id: 11, line1: 'YCT', line2: '标准课程' },
-    { id: 13, line1: 'HSK', line2: '标准课程' },
+{ id: 11, line1: 'YCT', line2: '标准课程' },
+{ id: 13, line1: 'HSK', line2: '标准课程' },
+{ id: 12, line1: '小学语文', line2: '（部编版）' },
     { id: 14, line1: '教师', line2: '课程' }
 ]);
 
