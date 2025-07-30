@@ -105,35 +105,21 @@ const fetchStudentData = async (studentId: any) => {
 };
 
 const initializePiecePositions = () => {
-  uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(rect => {
-    if (rect) {
-      const positions: { x: number; y: number }[] = [];
-      const scale = 0.2;
-      const calculatedTop = info.windowHeight * 0.4;
+  const currentInfo = uni.getSystemInfoSync(); // Get fresh screen info
+  const positions: { x: number; y: number }[] = [];
+  const topAreaHeight = currentInfo.windowHeight * 0.7; // Define area for pieces above the button
 
-      for (let i = 0; i < 9; i++) {
-        if (gottenPieces.value?.[i]) {
-          const targetPiece = puzzleBackgroundPieces[i];
-          const targetX = rect.left + (targetPiece.x - 276) * scale;
-          const targetY = calculatedTop + (targetPiece.y - 1094) * scale;
-          positions[i] = {
-            x: targetX,
-            y: targetY,
-          };
-        } else {
-          positions[i] = { x: -9999, y: -9999 };
-        }
-      }
-      piecePositions.value = positions;
+  for (let i = 0; i < 9; i++) {
+    if (gottenPieces.value?.[i]) {
+      positions[i] = {
+        x: Math.random() * (currentInfo.screenWidth - 100), // Random x, with margin
+        y: Math.random() * (topAreaHeight - 150) + 50, // Random y in the top area, with margin
+      };
     } else {
-      // Fallback for when the rect isn't found immediately
-      const positions: { x: number; y: number }[] = [];
-      for (let i = 0; i < 9; i++) {
-        positions[i] = { x: -9999, y: -9999 };
-      }
-      piecePositions.value = positions;
+      positions[i] = { x: -9999, y: -9999 };
     }
-  }).exec();
+  }
+  piecePositions.value = positions;
 };
 
 const handleTouchStart = (event: any, index: number) => {
