@@ -122,6 +122,12 @@
                                     placeholder="对授课老师的要求" placeholder-style="color: #d1d5db;" />
                             </view>
 
+                            <!-- 联系方式 -->
+                            <view class="form-item">
+                                <input class="input-item" v-model="formModel.contact"
+                                    placeholder="联系方式" placeholder-style="color: #d1d5db;" />
+                            </view>
+
 
                         </form>
                     </scroll-view>
@@ -183,6 +189,7 @@ const formModel = ref({
     chinese_level: "",
     desired_courses: "",
     teacher_requirements: "",
+    contact: "",
 });
 
 const genderOptions = ["男", "女"];
@@ -248,7 +255,18 @@ const submitForm = async () => {
                         sender_id: res.data.id || 1, // 新注册学生id
                         receiver_id: 12,
                         title: "新学生注册通知",
-                        content: `有新学生注册：\n账号：${res.data[0].username}\n邮箱：${res.data[0].email}\n手机：${formModel.value.phone}\n性别：${formModel.value.gender}\n出生年月：${formModel.value.birth}\n国籍：${formModel.value.nationality}\n常居地：${formModel.value.residence}\n中文水平：${formModel.value.chinese_level}\n想学课程：${formModel.value.desired_courses}\n老师要求：${formModel.value.teacher_requirements}`
+                        content: `有新学生注册：
+账号：${res.data[0].username}
+邮箱：${res.data[0].email}
+手机：${formModel.value.phone}
+性别：${formModel.value.gender}
+出生年月：${formModel.value.birth}
+国籍：${formModel.value.nationality}
+常居地：${formModel.value.residence}
+中文水平：${formModel.value.chinese_level}
+想学课程：${formModel.value.desired_courses}
+老师要求：${formModel.value.teacher_requirements}
+联系方式：${formModel.value.contact}`
                     });
                 } catch (messageErr) {
                     console.error("发送站内信失败:", messageErr);

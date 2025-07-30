@@ -10,7 +10,7 @@
         <image :src="false ? '/static/puzzles/title3.png' : '/static/puzzles/title2.png'
           " :style="{ width: false ? '40vw' : '30vw' }" mode="widthFix" />
       </view>
-      <view class="mt-[120%]">
+      <view class="mt-[105%]">
         <view class="relative" @click="
           go(`/my/puzzle-treasure?count=${student.brick_completed_count}`)
           ">
@@ -157,7 +157,7 @@ const handleTouchEnd = (event: any, index: number) => {
   uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(rect => {
     if (rect) {
       const scale = 0.2;
-      const calculatedTop = info.windowHeight * 0.4;
+      const calculatedTop = uni.getSystemInfoSync().windowHeight * 0.4;
       const targetX = rect.left + (targetPiece.x - 276) * scale;
       const targetY = calculatedTop + (targetPiece.y - 1094) * scale;
 
