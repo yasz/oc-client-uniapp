@@ -23,10 +23,10 @@
                                     placeholder-style="color: #d1d5db;" />
                             </view>
 
-                            <!-- 昵称 -->
+                            <!-- 姓名 -->
                             <view class="form-item">
                                 <text class="required-star">*</text>
-                                <input class="input-item" v-model="formModel.nickname" placeholder="昵称" required
+                                <input class="input-item" v-model="formModel.nickname" placeholder="姓名" required
                                     placeholder-style="color: #d1d5db;" />
                             </view>
 
@@ -99,10 +99,10 @@
                                     placeholder-style="color: #d1d5db;" />
                             </view>
 
-                            <!-- 现在中文水平 -->
+                            <!-- 现有中文水平 -->
                             <view class="form-item">
                                 <text class="required-star">*</text>
-                                <input class="input-item" v-model="formModel.chinese_level" placeholder="现在中文水平"
+                                <input class="input-item" v-model="formModel.chinese_level" placeholder="现有中文水平"
                                     required placeholder-style="color: #d1d5db;" />
                             </view>
 
@@ -217,12 +217,12 @@ const submitForm = async () => {
     if (isReregisterMode.value) {
         // 验证所有必填字段
         const requiredFields = [
-            { field: 'nickname', name: '昵称' },
+            { field: 'nickname', name: '姓名' },
             { field: 'gender', name: '性别' },
             { field: 'birth', name: '出生年月' },
             { field: 'nationality', name: '国籍' },
             { field: 'residence', name: '常居地' },
-            { field: 'chinese_level', name: '现在中文水平' },
+            { field: 'chinese_level', name: '现有中文水平' },
             { field: 'desired_courses', name: '想要学的课程' },
         ];
 
@@ -278,12 +278,12 @@ const submitForm = async () => {
         { field: 'password', name: '密码' },
         { field: 'confirmPassword', name: '确认密码' },
         { field: 'phone', name: '手机号码' },
-        { field: 'nickname', name: '昵称' },
+        { field: 'nickname', name: '姓名' },
         { field: 'gender', name: '性别' },
         { field: 'birth', name: '出生年月' },
         { field: 'nationality', name: '国籍' },
         { field: 'residence', name: '常居地' },
-        { field: 'chinese_level', name: '现在中文水平' },
+        { field: 'chinese_level', name: '现有中文水平' },
         { field: 'desired_courses', name: '想要学的课程' },
     ];
 
