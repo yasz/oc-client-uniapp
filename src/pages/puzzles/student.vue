@@ -66,6 +66,7 @@ import {
 import { useAuthStore } from "@/stores/authStore";
 import { go } from "@/utils/common";
 import { getAPIAxios } from "@/utils/http";
+import { updateStudent } from "@/utils/api";
 import { onShow } from "@dcloudio/uni-app";
 import { ref, watch } from "vue";
 const info = uni.getSystemInfoSync();
@@ -74,6 +75,7 @@ const student = ref<any>(null);
 
 // 拖拽相关状态
 const gottenPieces = ref<any>(null);
+const finishedPieces = ref<boolean[]>([]);
 const piecePositions = ref<{ x: number; y: number }[]>([]);
 const activePiece = ref<number | null>(null);
 const touchOffset = ref<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -93,6 +95,8 @@ const fetchStudentData = async (studentId: any) => {
       student.value = response.data;
       gottenPieces.value =
         student.value.brick_current_progress || Array(9).fill(false);
+      finishedPieces.value =
+        student.value.brick_finished_progress || Array(9).fill(false);
       initializePiecePositions();
     }
   } catch (error) {
@@ -109,8 +113,18 @@ const initializePiecePositions = () => {
   const positions: { x: number; y: number }[] = [];
   const topAreaHeight = currentInfo.windowHeight * 0.7; // Define area for pieces above the button
 
+  const scale = 0.2;
+  const containerLeft = puzzleLeft.value / 2;
+  const containerTop = currentInfo.windowHeight * 0.4;
+
   for (let i = 0; i < 9; i++) {
-    if (gottenPieces.value?.[i]) {
+    if (finishedPieces.value?.[i]) {
+      const targetPiece = puzzleBackgroundPieces[i];
+      positions[i] = {
+        x: containerLeft + (targetPiece.x - 276) * scale,
+        y: containerTop + (targetPiece.y - 1094) * scale,
+      };
+    } else if (gottenPieces.value?.[i]) {
       positions[i] = {
         x: Math.random() * (currentInfo.screenWidth - 100), // Random x, with margin
         y: Math.random() * (topAreaHeight - 150) + 50, // Random y in the top area, with margin
@@ -123,6 +137,9 @@ const initializePiecePositions = () => {
 };
 
 const handleTouchStart = (event: any, index: number) => {
+  if (finishedPieces.value?.[index]) {
+    return;
+  }
   event.preventDefault();
   const touch = event.touches[0];
   const piece = piecePositions.value[index];
@@ -154,7 +171,7 @@ const handleTouchEnd = (event: any, index: number) => {
   const targetPiece = puzzleBackgroundPieces[index];
 
   // 获取背景容器的位置和大小
-  uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(rect => {
+  uni.createSelectorQuery().select('.puzzle-background-container').boundingClientRect(async (rect) => {
     if (rect) {
       const scale = 0.2;
       const calculatedTop = uni.getSystemInfoSync().windowHeight * 0.4;
@@ -171,6 +188,20 @@ const handleTouchEnd = (event: any, index: number) => {
           x: targetX,
           y: targetY,
         };
+        
+        if (!finishedPieces.value[index]) {
+          const newFinishedPieces = [...finishedPieces.value];
+          newFinishedPieces[index] = true;
+          finishedPieces.value = newFinishedPieces;
+
+          try {
+            await updateStudent(student.value.id, {
+              brick_finished_progress: newFinishedPieces,
+            });
+          } catch (error) {
+            console.error("Failed to save puzzle progress:", error);
+          }
+        }
       }
     }
   }).exec();
