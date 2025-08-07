@@ -7,7 +7,7 @@
             <view class="bg-white mt-4 p-3 rounded-lg shadow ">
                 <view class="flex flex-col">
                     <text class="text-gray-600 text-sm">{{ courseData.name }}</text>
-                    <text class="text-gray-800 text-lg font-bold mt-1">{{ capitalizedNameEn }}</text>
+                    <!-- <text class="text-gray-800 text-lg font-bold mt-1">{{ capitalizedNameEn }}</text> -->
                 </view>
             </view>
 
