@@ -54,8 +54,7 @@ function checkLocalBuild() {
 async function removeRemoteFiles() {
     log('🗑️  删除远端旧文件...', 'yellow');
 
-    const privateKeyOption = DEPLOY_CONFIG.sshConfig.privateKey ? `-i ${DEPLOY_CONFIG.sshConfig.privateKey}` : '';
-    const sshCommand = `ssh ${privateKeyOption} ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "rm -rf ${DEPLOY_CONFIG.remotePath}/assets ${DEPLOY_CONFIG.remotePath}/index.html"`;
+    const sshCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "sudo rm -rf ${DEPLOY_CONFIG.remotePath}/assets ${DEPLOY_CONFIG.remotePath}/index.html"`;
 
     try {
         const { stdout, stderr } = await execAsync(sshCommand);
@@ -73,24 +72,33 @@ async function removeRemoteFiles() {
 async function uploadFiles() {
     log('📤 上传新文件到远端...', 'blue');
 
-    const privateKeyOption = DEPLOY_CONFIG.sshConfig.privateKey ? `-i ${DEPLOY_CONFIG.sshConfig.privateKey}` : '';
+    // 首先在远程创建临时目录
+    const createTempDirCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "mkdir -p ~/temp_deploy"`;
+    await execAsync(createTempDirCommand);
 
+    // 上传到临时目录
     // 上传 index.html
-    const uploadIndexCommand = `scp ${privateKeyOption} ${DEPLOY_CONFIG.localBuildPath}/index.html ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:${DEPLOY_CONFIG.remotePath}/`;
+    const uploadIndexCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" scp -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.localBuildPath}/index.html ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:~/temp_deploy/`;
 
     // 上传 assets 目录
-    const uploadAssetsCommand = `scp ${privateKeyOption} -r ${DEPLOY_CONFIG.localBuildPath}/assets ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:${DEPLOY_CONFIG.remotePath}/`;
+    const uploadAssetsCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" scp -o StrictHostKeyChecking=no -r ${DEPLOY_CONFIG.localBuildPath}/assets ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host}:~/temp_deploy/`;
 
-    try {
+    // 移动文件到目标目录的命令（使用sudo）
+    const moveFilesCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "sudo mv ~/temp_deploy/* ${DEPLOY_CONFIG.remotePath}/ && rm -rf ~/temp_deploy"`;    try {
         // 上传 index.html
         log('📄 上传 index.html...', 'blue');
         await execAsync(uploadIndexCommand);
-        log('✅ index.html 上传成功', 'green');
+        log('✅ index.html 上传到临时目录成功', 'green');
 
         // 上传 assets 目录
         log('📁 上传 assets 目录...', 'blue');
         await execAsync(uploadAssetsCommand);
-        log('✅ assets 目录上传成功', 'green');
+        log('✅ assets 目录上传到临时目录成功', 'green');
+
+        // 移动文件到目标目录
+        log('📦 移动文件到目标目录...', 'blue');
+        await execAsync(moveFilesCommand);
+        log('✅ 文件移动成功', 'green');
 
     } catch (error) {
         log(`❌ 文件上传失败: ${error.message}`, 'red');
@@ -102,8 +110,7 @@ async function uploadFiles() {
 async function verifyDeployment() {
     log('🔍 验证部署结果...', 'blue');
 
-    const privateKeyOption = DEPLOY_CONFIG.sshConfig.privateKey ? `-i ${DEPLOY_CONFIG.sshConfig.privateKey}` : '';
-    const verifyCommand = `ssh ${privateKeyOption} ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "ls -la ${DEPLOY_CONFIG.remotePath}/ | grep -E '(index.html|assets)'"`;
+    const verifyCommand = `/opt/homebrew/bin/sshpass -p "${DEPLOY_CONFIG.password}" ssh -o StrictHostKeyChecking=no ${DEPLOY_CONFIG.username}@${DEPLOY_CONFIG.host} "sudo ls -la ${DEPLOY_CONFIG.remotePath}/ | grep -E '(index.html|assets)'"`;
 
     try {
         const { stdout } = await execAsync(verifyCommand);
