@@ -159,9 +159,8 @@ const highlights = computed(() => moments.value.slice(2));
 // 获取所有课程信息
 const fetchCourses = async () => {
   try {
-    // 判断角色
-    const authStore = useAuthStore();
-    const ids = authStore.roles && authStore.roles.includes('teacher') ? [1, 2, 3, 4] : [ 2, 3,4];
+    // 向所有用户开放全部课程
+    const ids = [1, 2, 3, 4];
     const response: any = await listCMSByIds(ids);
     if (response?.data) {
       cmsData.value = response.data;
@@ -228,18 +227,22 @@ const showDetail = async (type: "course" | "moment", index: number) => {
           title: courseDetail.title + courseDetail.sub_title,
           description: courseDetail.content,
         };
+        popup.value?.open();
       }
     } else {
       if (moments.value[index]) {
         const momentDetail = moments.value[index];
-        currentDetail.value = {
-          icon: momentDetail.image,
-          title: momentDetail.description,
-          description: momentDetail.content,
-        };
+        // 只有当文章有内容时才显示弹窗
+        if (momentDetail.content?.trim()) {
+          currentDetail.value = {
+            icon: momentDetail.image,
+            title: momentDetail.description,
+            description: momentDetail.content,
+          };
+          popup.value?.open();
+        }
       }
     }
-    popup.value?.open();
   } catch (error) {
     console.error("Failed to show detail:", error);
   }

@@ -324,7 +324,8 @@ const soliRoutes = [
         name: "list",
       },
     }),
-  },  {
+  },
+  {
     path: `/my/admin-teachers`,
     component: __dynamicImportComponent__(`@/pages/my/admin-teachers.vue`, {
       pageType: `top`,
@@ -396,8 +397,7 @@ function checkAuth(url: string) {
   if (
     [
       "/sign-in",
-      "/sign-in",
-      "/my",
+      "/index",
       "/sign-up",
       "/teacher-sign-up",
       "/student-sign-up",
