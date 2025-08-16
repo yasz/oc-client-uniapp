@@ -222,10 +222,16 @@ export const listCMSByIds = async (ids: number[]) => {
   }
 
   const filter = `{"$and":[{"id":{"$in":${JSON.stringify(ids)}}}]}`;
-  const url = `cms:list?sort=seq&appends[]=cover&page=1&filter=${filter}`;
+  const url = `${import.meta.env.VITE_API_ENDPOINT}/cms:list?sort=seq&appends[]=cover&page=1&filter=${filter}`;
 
   try {
-    const response = await getAPI(url, null);
+    const response = await axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_SPECIAL_TOKEN}`,
+      },
+    });
     console.log("Response:", response);
     return response;
   } catch (error) {
