@@ -1,6 +1,7 @@
 import {
   getAPI,
   getAPIAxios,
+  getPulicAPIAxios,
   postAPI,
   postAPIAxios,
   postPulicAPIAxios,
@@ -225,7 +226,7 @@ export const listCMSByIds = async (ids: number[]) => {
   const url = `cms:list?sort=seq&appends[]=cover&page=1&filter=${filter}`;
 
   try {
-    const response = await getAPIAxios(url, null);
+    const response = await getPulicAPIAxios(url, null);
     console.log("Response:", response);
     return response;
   } catch (error) {
@@ -344,7 +345,6 @@ export const getCalendar = async (studentId: number) => {
   );
 };
 
-
 export const listAllStudents = async () => {
   const url = `students:list?appends[]=avatar&appends[]=teacher_id&appends[]=teacher_id.avatar&appends[]=user_courses&page=1`;
   try {
@@ -364,11 +364,14 @@ export const listAllTeachers = async () => {
   }
 };
 
-export const associateStudentTeacher = async (studentId: number, teacherId: number | null) => {
+export const associateStudentTeacher = async (
+  studentId: number,
+  teacherId: number | null
+) => {
   const url = `students:update?filterByTk=${studentId}`;
   try {
     const response = await postAPIAxios(url, {
-      teacher_id: teacherId ? { id: teacherId } : null
+      teacher_id: teacherId ? { id: teacherId } : null,
     });
     return response;
   } catch (error) {
@@ -622,26 +625,33 @@ export async function syncCourseFromCDN(courseId: number, coursePath: string) {
   }
 }
 
-
 // 课程分配相关API - 通过学生表管理
-export const assignCourseToStudent = async (studentId: number, courseId: number) => {
+export const assignCourseToStudent = async (
+  studentId: number,
+  courseId: number
+) => {
   const url = `students:update?filterByTk=${studentId}`;
   try {
     // 先获取当前学生的课程列表
-    const currentStudent = await getAPIAxios(`students:get?filterByTk=${studentId}&appends[]=user_courses`, null);
+    const currentStudent = await getAPIAxios(
+      `students:get?filterByTk=${studentId}&appends[]=user_courses`,
+      null
+    );
     const currentCourses = currentStudent.data.user_courses || [];
-    
+
     // 检查课程是否已经分配
-    const isAlreadyAssigned = currentCourses.some((course: any) => course.id === courseId);
+    const isAlreadyAssigned = currentCourses.some(
+      (course: any) => course.id === courseId
+    );
     if (isAlreadyAssigned) {
-      throw new Error('课程已经分配给该学生');
+      throw new Error("课程已经分配给该学生");
     }
-    
+
     // 添加新课程到列表
     const updatedCourses = [...currentCourses, { id: courseId }];
-    
+
     const response = await postAPIAxios(url, {
-      user_courses: updatedCourses
+      user_courses: updatedCourses,
     });
     console.log("Response:", response);
     return response;
@@ -651,18 +661,26 @@ export const assignCourseToStudent = async (studentId: number, courseId: number)
   }
 };
 
-export const removeCourseFromStudent = async (studentId: number, courseId: number) => {
+export const removeCourseFromStudent = async (
+  studentId: number,
+  courseId: number
+) => {
   const url = `students:update?filterByTk=${studentId}`;
   try {
     // 先获取当前学生的课程列表
-    const currentStudent = await getAPIAxios(`students:get?filterByTk=${studentId}&appends[]=user_courses`, null);
+    const currentStudent = await getAPIAxios(
+      `students:get?filterByTk=${studentId}&appends[]=user_courses`,
+      null
+    );
     const currentCourses = currentStudent.data.user_courses || [];
-    
+
     // 移除指定课程
-    const updatedCourses = currentCourses.filter((course: any) => course.id !== courseId);
-    
+    const updatedCourses = currentCourses.filter(
+      (course: any) => course.id !== courseId
+    );
+
     const response = await postAPIAxios(url, {
-      user_courses: updatedCourses
+      user_courses: updatedCourses,
     });
     console.log("Response:", response);
     return response;
@@ -676,7 +694,7 @@ export const removeAllCoursesFromStudent = async (studentId: number) => {
   const url = `students:update?filterByTk=${studentId}`;
   try {
     const response = await postAPIAxios(url, {
-      user_courses: []
+      user_courses: [],
     });
     console.log("Response:", response);
     return response;
@@ -687,21 +705,29 @@ export const removeAllCoursesFromStudent = async (studentId: number) => {
 };
 
 // 课程分配相关API - 通过教师表管理
-export const assignCourseToTeacher = async (teacherId: number, courseId: number) => {
+export const assignCourseToTeacher = async (
+  teacherId: number,
+  courseId: number
+) => {
   const url = `teachers:update?filterByTk=${teacherId}`;
   try {
-    const currentTeacher = await getAPIAxios(`teachers:get?filterByTk=${teacherId}&appends[]=user_courses`, null);
+    const currentTeacher = await getAPIAxios(
+      `teachers:get?filterByTk=${teacherId}&appends[]=user_courses`,
+      null
+    );
     const currentCourses = currentTeacher.data.user_courses || [];
-    
-    const isAlreadyAssigned = currentCourses.some((course: any) => course.id === courseId);
+
+    const isAlreadyAssigned = currentCourses.some(
+      (course: any) => course.id === courseId
+    );
     if (isAlreadyAssigned) {
-      throw new Error('课程已经分配给该教师');
+      throw new Error("课程已经分配给该教师");
     }
-    
+
     const updatedCourses = [...currentCourses, { id: courseId }];
-    
+
     const response = await postAPIAxios(url, {
-      user_courses: updatedCourses
+      user_courses: updatedCourses,
     });
     console.log("Response:", response);
     return response;
@@ -711,16 +737,24 @@ export const assignCourseToTeacher = async (teacherId: number, courseId: number)
   }
 };
 
-export const removeCourseFromTeacher = async (teacherId: number, courseId: number) => {
+export const removeCourseFromTeacher = async (
+  teacherId: number,
+  courseId: number
+) => {
   const url = `teachers:update?filterByTk=${teacherId}`;
   try {
-    const currentTeacher = await getAPIAxios(`teachers:get?filterByTk=${teacherId}&appends[]=user_courses`, null);
+    const currentTeacher = await getAPIAxios(
+      `teachers:get?filterByTk=${teacherId}&appends[]=user_courses`,
+      null
+    );
     const currentCourses = currentTeacher.data.user_courses || [];
-    
-    const updatedCourses = currentCourses.filter((course: any) => course.id !== courseId);
-    
+
+    const updatedCourses = currentCourses.filter(
+      (course: any) => course.id !== courseId
+    );
+
     const response = await postAPIAxios(url, {
-      user_courses: updatedCourses
+      user_courses: updatedCourses,
     });
     console.log("Response:", response);
     return response;
@@ -734,7 +768,7 @@ export const removeAllCoursesFromTeacher = async (teacherId: number) => {
   const url = `teachers:update?filterByTk=${teacherId}`;
   try {
     const response = await postAPIAxios(url, {
-      user_courses: []
+      user_courses: [],
     });
     console.log("Response:", response);
     return response;
@@ -752,23 +786,23 @@ export const listAssignableCourses = async () => {
       "courses:list?pageSize=100&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1",
       null
     );
-    
+
     const allCourses = allCoursesResponse.data || [];
-    
+
     // 过滤出子课程（有parentId的课程）
     const childCourses = allCourses.filter((course: any) => course.parentId);
-    
+
     // 为每个子课程添加父级信息
     const coursesWithParent = childCourses.map((course: any) => {
       const parent = allCourses.find((c: any) => c.id === course.parentId);
       return {
         ...course,
-        parentName: parent?.name || '未知分类'
+        parentName: parent?.name || "未知分类",
       };
     });
-    
+
     return {
-      data: coursesWithParent
+      data: coursesWithParent,
     };
   } catch (error) {
     console.error("Error:", error);
@@ -783,14 +817,14 @@ export const listParentCourses = async () => {
       "courses:list?pageSize=50&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1",
       null
     );
-    
+
     const allCourses = response.data || [];
-    
+
     // 过滤出父级课程（没有parentId的课程）
     const parentCourses = allCourses.filter((course: any) => !course.parentId);
-    
+
     return {
-      data: parentCourses
+      data: parentCourses,
     };
   } catch (error) {
     console.error("Error:", error);
@@ -806,11 +840,10 @@ export const listChildCourses = async (parentId: number) => {
       `courses:list?pageSize=50&sort=seq&appends[]=file_id&appends[]=cover&filter=${filter}`,
       null
     );
-    
+
     return response;
   } catch (error) {
     console.error("Error:", error);
     throw error;
   }
 };
-

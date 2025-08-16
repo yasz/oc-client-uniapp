@@ -34,7 +34,7 @@
         <view class="flex flex-col prose items-center">
           <text class="text-[24rpx] font-bold text-gray-800 leading-tight text-center">{{
             course.line1
-          }}</text>
+            }}</text>
           <text class="text-[20rpx] text-gray-500 mt-[4rpx] leading-tight text-center">{{ course.line2 }}</text>
         </view>
       </view>
@@ -46,7 +46,7 @@
         <image :src="currentDetail?.icon" mode="aspectFit" class="block w-[120rpx] h-[120rpx] mx-auto mb-[20rpx]" />
         <view class="text-[32rpx] font-bold text-gray-800 text-center mb-[20rpx]">{{
           currentDetail?.title
-        }}</view>
+          }}</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
         <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify" style="text-indent: 2em;"
           v-html="currentDetail?.description"></view>
@@ -62,7 +62,7 @@
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
-          }}</text>
+            }}</text>
         </view>
       </view>
     </view>
@@ -76,7 +76,7 @@
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
-          }}</text>
+            }}</text>
         </view>
       </view>
     </view>
