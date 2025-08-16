@@ -48,8 +48,7 @@
           currentDetail?.title
         }}</view>
         <view class="h-[4rpx] bg-[#ffb800] w-[60rpx] mx-auto mb-[30rpx]"></view>
-        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify"
-          style="text-indent: 2em;"
+        <view class="text-[28rpx] text-gray-500 leading-[1.8] text-justify" style="text-indent: 2em;"
           v-html="currentDetail?.description"></view>
       </view>
     </uni-popup>
@@ -58,7 +57,8 @@
     <view class="p-[30rpx]">
       <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">通告说明</text>
       <view class="grid grid-cols-2 gap-[20rpx]">
-        <view v-for="(moment, index) in announcements" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index)">
+        <view v-for="(moment, index) in announcements" :key="index" class="bg-white rounded-[10rpx] overflow-hidden"
+          @click="showDetail('moment', index)">
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
@@ -71,7 +71,8 @@
     <view class="p-[30rpx] pt-0">
       <text class="text-[36rpx] font-bold mb-[30rpx] text-gray-800">精彩时刻</text>
       <view class="grid grid-cols-2 gap-[20rpx]">
-        <view v-for="(moment, index) in highlights" :key="index" class="bg-white rounded-[10rpx] overflow-hidden" @click="showDetail('moment', index + 2)">
+        <view v-for="(moment, index) in highlights" :key="index" class="bg-white rounded-[10rpx] overflow-hidden"
+          @click="showDetail('moment', index + 2)">
           <image :src="moment.image" mode="aspectFill" class="w-full h-[200rpx] object-cover" />
           <text class="block text-[24rpx] text-gray-500 p-[10rpx] text-center">{{
             moment.description
@@ -162,6 +163,7 @@ const fetchCourses = async () => {
     // 向所有用户开放全部课程
     const ids = [1, 2, 3, 4];
     const response: any = await listCMSByIds(ids);
+
     if (response?.data) {
       cmsData.value = response.data;
       // 转换数据格式
