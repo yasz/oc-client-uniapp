@@ -37,7 +37,7 @@
       <view class="w-[90%] flex flex-col gap-4 pt-[20vh]">
         <view class="bg-white rounded-3xl shadow-lg p-6">
           <form @submit="submitForm">
-            <input class="input-item" v-model="formModel.username" placeholder="手机号(必填)" required
+            <input v-if="userType === 'teacher'" class="input-item" v-model="formModel.username" placeholder="手机号(必填)" required
               placeholder-style="color: #d1d5db;" type="number" />
             <input class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required type="email"
               placeholder-style="color: #d1d5db;" />
@@ -114,13 +114,19 @@ const submitForm = async () => {
   loading.value = true;
 
   // 校验必填字段
-  if (
-    !formModel.value.username ||
-    !formModel.value.email ||
-    !formModel.value.password ||
-    !formModel.value.confirmPassword
-  ) {
-    await modal("手机号、邮箱、密码、确认密码为必填项");
+  const requiredFields = userType.value === 'teacher' 
+    ? ['username', 'email', 'password', 'confirmPassword']
+    : ['email', 'password', 'confirmPassword'];
+  
+  const missingFields = requiredFields.filter(field => !formModel.value[field as keyof typeof formModel.value]);
+  if (missingFields.length > 0) {
+    const fieldNames = {
+      username: '手机号',
+      email: '邮箱',
+      password: '密码',
+      confirmPassword: '确认密码'
+    };
+    await modal(`${missingFields.map(f => fieldNames[f as keyof typeof fieldNames]).join('、')}为必填项`);
     loading.value = false;
     return;
   }

@@ -27,8 +27,7 @@
                             <view class="form-item">
                                 <text class="required-star">*</text>
                                 <input class="input-item h-[80rpx]" v-model="formModel.nickname" placeholder="姓名
-Name" required
-                                    placeholder-style="color: #d1d5db; white-space: pre-line;" />
+Name" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
                             </view>
 
                             <!-- 邮箱 -->
@@ -66,12 +65,11 @@ Name" required
                                     @change="onGenderChange">
                                     <view
                                         class="input-item border-gray-300 rounded px-4 flex items-center justify-center cursor-pointer text-gray-900 h-[80rpx]"
-                                        :style="{ color: formModel.gender ? '#111' : '#d1d5db' }"
-                                    >
+                                        :style="{ color: formModel.gender ? '#111' : '#d1d5db' }">
                                         <view v-if="formModel.gender" class="text-center">{{ formModel.gender }}</view>
                                         <view v-else class="text-center leading-tight">
                                             <view>性 別</view>
-                                            <view >M/F</view>
+                                            <view>M/F</view>
                                         </view>
                                     </view>
                                 </picker>
@@ -83,12 +81,11 @@ Name" required
                                 <picker mode="date" :value="formModel.birth" @change="onBirthChange">
                                     <view
                                         class="input-item border-gray-300 rounded px-4 flex items-center justify-center cursor-pointer text-gray-900 h-[80rpx]"
-                                        :style="{ color: formModel.birth ? '#111' : '#d1d5db' }"
-                                    >
+                                        :style="{ color: formModel.birth ? '#111' : '#d1d5db' }">
                                         <view v-if="formModel.birth" class="text-center">{{ formModel.birth }}</view>
                                         <view v-else class="text-center leading-tight">
                                             <view>请选择出生年月</view>
-                                            <view >Age</view>
+                                            <view>Age</view>
                                         </view>
                                     </view>
                                 </picker>
@@ -98,36 +95,33 @@ Name" required
                             <view class="form-item">
                                 <text class="required-star">*</text>
                                 <input class="input-item h-[80rpx]" v-model="formModel.nationality" placeholder="国籍
-Nationality" required
-                                    placeholder-style="color: #d1d5db; white-space: pre-line;" />
+Nationality" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
                             </view>
 
                             <!-- 常居地 -->
                             <view class="form-item">
                                 <text class="required-star">*</text>
                                 <input class="input-item h-[80rpx]" v-model="formModel.residence" placeholder="常居地
-Residence" required
-                                    placeholder-style="color: #d1d5db; white-space: pre-line;" />
+Residence" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
                             </view>
 
                             <!-- 现有中文水平 -->
                             <view class="form-item">
                                 <text class="required-star">*</text>
                                 <input class="input-item h-[80rpx]" v-model="formModel.chinese_level" placeholder="现有中文水平
-Your Chinese Level"
-                                    required placeholder-style="color: #d1d5db; white-space: pre-line;" />
+Your Chinese Level" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
                             </view>
 
                             <!-- 想要学的课程 -->
                             <view class="form-item">
                                 <text class="required-star">*</text>
-                                <picker mode="selector" :range="courseOptions"
-                                    @change="handleCourseChange" :value="courseIndex">
+                                <picker mode="selector" :range="courseOptions" @change="handleCourseChange"
+                                    :value="courseIndex">
                                     <view
                                         class="input-item border-gray-300 rounded px-4 flex items-center justify-center cursor-pointer text-gray-900 h-[80rpx]"
-                                        :style="{ color: formModel.desired_courses ? '#111' : '#d1d5db' }"
-                                    >
-                                        <view v-if="formModel.desired_courses" class="text-center">{{ formModel.desired_courses }}</view>
+                                        :style="{ color: formModel.desired_courses ? '#111' : '#d1d5db' }">
+                                        <view v-if="formModel.desired_courses" class="text-center">{{
+                                            formModel.desired_courses }}</view>
                                         <view v-else class="text-center leading-tight">
                                             <view>想要学的课程</view>
                                             <view class="text-xs">The course you want to study</view>
@@ -138,8 +132,11 @@ Your Chinese Level"
 
                             <!-- 对授课老师的要求 -->
                             <view class="form-item relative">
-                                <input class="input-item h-[80rpx] z-10 bg-transparent" v-model="formModel.teacher_requirements" />
-                                <view v-if="!formModel.teacher_requirements" class="absolute inset-0 flex items-center justify-center pointer-events-none" style="color: #d1d5db;">
+                                <input class="input-item h-[80rpx] z-10 bg-transparent"
+                                    v-model="formModel.teacher_requirements" />
+                                <view v-if="!formModel.teacher_requirements"
+                                    class="absolute inset-0 flex items-center justify-center pointer-events-none"
+                                    style="color: #d1d5db;">
                                     <view class="text-center leading-tight">
                                         <view>对授课老师的要求</view>
                                         <view class="text-xs">Any requirements for your teacher?</view>
@@ -150,7 +147,9 @@ Your Chinese Level"
                             <!-- 联系方式 -->
                             <view class="form-item relative">
                                 <input class="input-item h-[80rpx] z-10 bg-transparent" v-model="formModel.contact" />
-                                <view v-if="!formModel.contact" class="absolute inset-0 flex items-center justify-center pointer-events-none" style="color: #d1d5db;">
+                                <view v-if="!formModel.contact"
+                                    class="absolute inset-0 flex items-center justify-center pointer-events-none"
+                                    style="color: #d1d5db;">
                                     <view class="text-center leading-tight">
                                         <view>联系方式</view>
                                         <view class="text-xs">Email address/Phone Number</view>
@@ -301,12 +300,12 @@ const submitForm = async () => {
                 } catch (messageErr) {
                     console.error("发送站内信失败:", messageErr);
                 }
-               
+
                 // 更新authStore中的re_registered状态
                 authStore.re_registered = true;
                 go("/sign-up-finish?role=student");
                 // 返回上一页
-               
+
             } else {
                 await modal("更新失败！");
             }
