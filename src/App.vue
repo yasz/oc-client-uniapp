@@ -57,13 +57,13 @@ onHide(() => {
 @font-face {
   font-family: "DIN-Regular";
   src: local("DIN-Regular"), local("DIN"),
-    url("/static/fonts/din-regular.ttf") format("truetype");
+    url("@/static/fonts/din-regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "SourceHanSansSC";
   src: local("思源黑体"), local("SourceHanSansSC-Regular"),
-    url("/static/fonts/SourceHanSansSC-Regular.otf") format("opentype");
+    url("@/static/fonts/SourceHanSansSC-Regular.otf") format("opentype");
 }
 
 body,
