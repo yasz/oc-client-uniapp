@@ -381,8 +381,7 @@ export const associateStudentTeacher = async (
 };
 export const getUserInfoWithSpecialToken = async (userId: number) => {
   return axios.get(
-    `${
-      import.meta.env.VITE_API_ENDPOINT
+    `${import.meta.env.VITE_API_ENDPOINT
     }/users:get?appends[]=avatar&appends[]=user_courses&filterByTk=${userId}`,
     {
       headers: {
