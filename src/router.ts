@@ -111,14 +111,26 @@ const soliRoutes = [
     path: `/my/contact`,
     component: __dynamicImportComponent__(`@/pages/my/contact.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "favorites",
+        navigationBarTitleText: `联系我们`,
+      },
     }),
   },
   {
     path: `/my/messages`,
     component: __dynamicImportComponent__(`@/pages/my/messages.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "favorites",
+        navigationBarTitleText: ` `,
+      },
     }),
   },
   {
@@ -194,14 +206,26 @@ const soliRoutes = [
     path: `/my/admin-teachers`,
     component: __dynamicImportComponent__(`@/pages/my/admin-teachers.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "favorites",
+        navigationBarTitleText: ` `,
+      },
     }),
   },
   {
     path: `/my/admin-courses`,
     component: __dynamicImportComponent__(`@/pages/my/admin-courses.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: {
+        navigationStyle: "default",
+        navigationBarBackgroundColor: `#F8AE3D`,
+        navigationBarTextStyle: `white`,
+        name: "favorites",
+        navigationBarTitleText: ` `,
+      },
     }),
   },
   {
