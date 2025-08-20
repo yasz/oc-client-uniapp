@@ -59,36 +59,10 @@
                 <view class="flex flex-col items-center justify-center py-2 px-2">
                     <view class="bg-white rounded-2xl p-4 shadow-sm mx-auto">
                         <view class="text-center mb-6">
-                            <text class="text-xl font-bold text-[#f9b33b] mb-2 block">欢迎来到Lifefun乐凡中文！</text>
+                            <text class="text-xl font-bold text-[#f9b33b] mb-2 block">{{ welcomeTitle }}</text>
                         </view>
-
-                        <!-- Teacher Welcome Message -->
-                        <view v-if="authStore.roles.includes('teacher')" class="space-y-4 text-center text-gray-700 leading-relaxed">
-                            <text class="block text-base">
-                                我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
-                            </text>
-                            <text class="block text-base">
-                                我们的教师学习课程，对中文教学感兴趣的朋友免费开放，请点击上方“教师课程”标签观看。
-                            </text>
-                            <text class="block text-base">
-                                更加期待您点击左上方“成为本平台教师”按钮，加入授课团队。
-                            </text>
-                        </view>
-
-                        <!-- Student Welcome Message -->
-                        <view v-else class="space-y-4 text-center text-gray-700 leading-relaxed">
-                            <text class="block text-base">
-                                我们致力于打造快乐的中文学习，使中文学习更有效、更轻松。
-                            </text>
-                            <text class="block text-base">
-                                本平台的学生资源，面向对中文学习有兴趣/有需求的成人、青少年及孩童。
-                            </text>
-                            <text class="block text-base">
-                                欢迎使用免费资源，并咨询私教课的相关信息。
-                            </text>
-                            <text class="block text-base">
-                                免费资源可点击上方不同的课程标签浏览，需要私教课请点击左上角“我需要老师授课”按钮。
-                            </text>
+                        <view class="space-y-4 text-center text-gray-700 leading-relaxed">
+                            <text class="block text-base" v-html="welcomeContent"></text>
                         </view>
                     </view>
                 </view>
@@ -101,13 +75,16 @@
 </template>
 
 <script lang="ts" setup>
-
 import CourseCard from '@/components/CourseCard.vue';
-import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses, listCourseFavorites, createCourseFavorite, deleteCourseFavorite } from '@/utils/api';
+import { listRecommendedCourseSessions, listCourseById, listCourseSessions, listCourses, listCourseFavorites, createCourseFavorite, deleteCourseFavorite, listCMSByIds } from '@/utils/api';
 import { go } from '@/utils/common';
 import { onMounted, reactive, ref, computed } from 'vue';
 import Layout from '../layout.vue';
 import { useAuthStore } from '@/stores/authStore';
+const welcomeTitle = ref('');
+const welcomeContent = ref('');
+
+
 interface MenuItem {
     id: number;
     line1: string;
@@ -217,9 +194,9 @@ const toggleSelection = async (id: number) => {
 };
 const selectedItem = ref<number | undefined>(undefined); // 当前选中的菜单项
 const menuItems = ref<MenuItem[]>([
-{ id: 11, line1: 'YCT', line2: '标准课程' },
-{ id: 13, line1: 'HSK', line2: '标准课程' },
-{ id: 12, line1: '小学语文', line2: '（部编版）' },
+    { id: 11, line1: 'YCT', line2: '标准课程' },
+    { id: 13, line1: 'HSK', line2: '标准课程' },
+    { id: 12, line1: '小学语文', line2: '（部编版）' },
     { id: 14, line1: '教师', line2: '课程' }
 ]);
 
@@ -260,7 +237,7 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
 };
 onMounted(async () => {
     const authStore = useAuthStore();
-    if (!authStore.roles.includes('teacher') ) { //学生隐藏，老师隐藏未注册的
+    if (!authStore.roles.includes('teacher')) { //学生隐藏，老师隐藏未注册的
         menuItems.value = menuItems.value.filter(item => item.id !== 14);
     }
 
@@ -279,6 +256,18 @@ onMounted(async () => {
     await loadUserFavorites();
 
     await fetchCoursesByMenuId(0);
+
+    // 获取欢迎词内容
+    let cmsId = authStore.roles.includes('teacher') ? 20 : 19;
+    try {
+        const res = await listCMSByIds([cmsId]);
+        if (res.data && res.data[0]) {
+            welcomeTitle.value = res.data[0].title;
+            welcomeContent.value = res.data[0].content;
+        }
+    } catch (e) {
+        console.error('欢迎词获取失败', e);
+    }
 });
 
 const handleReregisterClick = () => {
