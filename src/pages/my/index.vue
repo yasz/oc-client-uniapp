@@ -186,12 +186,12 @@ const getVisibleMenuItems = () => {
 
   // 如果是管理员，添加管理员专属菜单
   if (isAdmin) {
-    return [...baseItems, 10, 11];
+    return [...baseItems, 4, 6, 10, 11];
   }
 
   // 如果是教师且有学生，添加教师专属菜单
   if (isTeacher && hasStudents.value) {
-    return [...baseItems, 4, 5, 6];
+    return [...baseItems, 4, 6];
   } else if (!isTeacher) {
     // #ifdef H5
     const systemInfo = uni.getSystemInfoSync();

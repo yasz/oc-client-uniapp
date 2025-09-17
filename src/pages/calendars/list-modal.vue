@@ -1,33 +1,15 @@
 <template>
-  <u-popup
-    :show="localShow"
-    @close="localShow = false"
-    mode="bottom"
-    :overlay="false"
-  >
+  <u-popup :show="localShow" @close="localShow = false" mode="bottom" :overlay="false">
     <view>
       <view class="rounded-t-[48rpx] p-[30rpx] bg-white">
         <view v-if="meetings.length" class="pt-[20rpx]">
-          <view
-            v-for="meeting in meetings"
-            :key="meeting.id"
+          <view v-for="meeting in meetings" :key="meeting.id"
             class="relative rounded-[26rpx] py-[20rpx] pl-[120rpx] pr-[20rpx] mb-[16rpx] overflow-hidden"
-            style="border: 2px solid #f0f0f0"
-          >
+            style="border: 2px solid #f0f0f0">
             <!-- 模拟 ::before 标记色条 -->
-            <view
-              class="absolute top-0 bottom-0 left-0 w-[100rpx]"
-              :style="{ backgroundColor: meeting.color }"
-            >
-              <view
-                v-if="isTeacher"
-                class="pl-10"
-                @click="handleDelete(meeting)"
-              >
-                <view
-                  class="absolute top-0 bottom-0 left-0 w-[100rpx]"
-                  :style="{ backgroundColor: meeting.color }"
-                >
+            <view class="absolute top-0 bottom-0 left-0 w-[100rpx]" :style="{ backgroundColor: meeting.color }">
+              <view v-if="isTeacher" class="pl-10" @click="handleDelete(meeting)">
+                <view class="absolute top-0 bottom-0 left-0 w-[100rpx]" :style="{ backgroundColor: meeting.color }">
                   <view class="pl-2 pt-1" @click="handleDelete(meeting)">
                     <text class="text-[10px] text-[#fff]">×</text>
                   </view>
@@ -38,25 +20,19 @@
             <view class="flex justify-between">
               <view>
                 <view class="flex">
-                  <text class="text-[32rpx] font-bold"
-                    >{{ meeting.title }}
+                  <text class="text-[32rpx] font-bold">{{ meeting.title }}
                   </text>
-                  <view
-                    class="pl-[12px] baseline text-[16px] text-blue-500"
-                    @click="handleLinkClick(meeting)"
-                  >
+                  <view class="pl-[12px] baseline text-[16px] text-blue-500" @click="handleLinkClick(meeting)">
                     <uni-icons size="20" color="blue" type="link"></uni-icons>
                   </view>
                 </view>
 
                 <view class="pt-4 flex flex-col text-[32rpx] mt-[6rpx]">
-                  <text
-                    >{{ formatDateTime(meeting.start) }}-{{
-                      dayjs(meeting.start)
-                        .add(meeting.duration, "minute")
-                        .format("HH:mm")
-                    }}</text
-                  >
+                  <text>{{ formatDateTime(meeting.start) }}-{{
+                    dayjs(meeting.start)
+                      .add(meeting.duration, "minute")
+                      .format("HH:mm")
+                  }}</text>
                   <view class="pt-4 text-[10px] max-w-[40ch]">{{
                     meeting.timezone_id.name
                   }}</view>
@@ -64,21 +40,16 @@
               </view>
 
               <view class="flex flex-col items-center justify-start">
-                <image
-                  class="w-[48px] h-[48px] rounded-full"
-                  mode="aspectFill"
-                  :src="
-                    getAvatarUrl(
-                      isTeacher
-                        ? meeting.student.avatar
-                        : meeting.host_user_id.avatar
-                    )
-                  "
-                />
+                <image class="w-[48px] h-[48px] rounded-full" mode="aspectFill" :src="getAvatarUrl(
+                  isTeacher
+                    ? meeting.student.avatar
+                    : meeting.host_user_id.avatar
+                )
+                  " />
                 <text class="text-[24rpx] text-gray-500 mt-[4rpx]">{{
                   isTeacher
-                    ? meeting.student.nickname
-                    : meeting.host_user_id.nickname
+                    ? (meeting.student.nickname || meeting.student.username)
+                    : (meeting.host_user_id.nickname || meeting.host_user_id.username)
                 }}</text>
               </view>
             </view>

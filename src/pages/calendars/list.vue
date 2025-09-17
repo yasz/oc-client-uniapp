@@ -2,16 +2,9 @@
   <view class="student-selector">
     <view class="student-list">
       <!-- 教师本人卡片 -->
-      <view
-        v-if="authStore.roles.includes('teacher')"
-        class="student-item bg-primary"
-        @click="handleTeacherClick"
-      >
-        <image
-          class="student-avatar"
-          mode="aspectFill"
-          :src="authStore.avatar || '/static/avatars/wechat/defaultAvatar.png'"
-        />
+      <view v-if="authStore.roles.includes('teacher')" class="student-item bg-primary" @click="handleTeacherClick">
+        <image class="student-avatar" mode="aspectFill"
+          :src="authStore.avatar || '/static/avatars/wechat/defaultAvatar.png'" />
         <text class="student-name text-white">{{ authStore.nickname }}</text>
         <view class="progress-info">
           <text class="text-white">教学日程查询</text>
@@ -20,19 +13,10 @@
       </view>
 
       <!-- 学生列表 -->
-      <view
-        v-for="student in students"
-        :key="student.id"
-        class="student-item"
-        :class="{ 'student-item--active': selectedId === student.id }"
-        @click="handleStudentClick(student)"
-      >
-        <image
-          class="student-avatar"
-          mode="aspectFill"
-          :src="student.avatarUrl"
-        />
-        <text class="student-name">{{ student.nickname }}</text>
+      <view v-for="student in students" :key="student.id" class="student-item"
+        :class="{ 'student-item--active': selectedId === student.id }" @click="handleStudentClick(student)">
+        <image class="student-avatar" mode="aspectFill" :src="student.avatarUrl" />
+        <text class="student-name">{{ student.nickname || student.username }}</text>
         <view class="progress-info">
           <text class="">日程添加</text>
           <text class="arrow pl-6"> ＞</text>
@@ -84,17 +68,15 @@ const selectedId = ref<number>();
 
 const handleTeacherClick = () => {
   uni.navigateTo({
-    url: `/my/calendars?studentId=${
-      authStore.userId
-    }&nickname=${encodeURIComponent(authStore.nickname || "")}&self=true`,
+    url: `/my/calendars?studentId=${authStore.userId
+      }&nickname=${encodeURIComponent(authStore.nickname || "")}&self=true`,
   });
 };
 
 const handleStudentClick = (student: any) => {
+  const displayName = student.nickname || student.username || '';
   uni.navigateTo({
-    url: `/my/calendars?studentId=${student.id}&nickname=${encodeURIComponent(
-      student.nickname
-    )}`,
+    url: `/my/calendars?studentId=${student.id}&nickname=${encodeURIComponent(displayName)}`,
   });
 };
 </script>
