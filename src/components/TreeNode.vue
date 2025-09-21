@@ -3,12 +3,15 @@
         <uni-collapse-item v-if="node.children && node.children.length > 0" :title="node.name" :open="false"
             :style="{ paddingLeft: indentStyle }">
             <TreeNode v-for="child in node.children" :key="child.path" :node="child" :level="level + 1"
-                @open-attachment="$emit('open-attachment', $event)" />
+                @download="$emit('download', $event)" @preview="$emit('preview', $event)" />
         </uni-collapse-item>
         <view v-else-if="node.isFile" class="flex items-center" :style="{ paddingLeft: indentStyle }"
-            @click="$emit('open-attachment', node.path)">
+            @click="$emit('download', node.path)">
             <text class="children-item py-2 pl-2 flex-1">{{ node.name }}</text>
-            <up-icon :name="getIconByType(node.path)" size="22" color="#9298a5" class="ml-auto pr-3" />
+            <up-icon name="download" size="22" color="#9298a5" class="ml-auto pr-3"
+                @click.stop="$emit('download', node.path)" />
+            <up-icon v-if="showPreviewIcon(node.path)" name="eye" size="22" color="#4f8cff" class="pr-3"
+                @click.stop="$emit('preview', node.path)" />
         </view>
         <view v-else class="flex items-center" :style="{ paddingLeft: indentStyle }">
             <text class="children-item py-2 pl-2 flex-1">{{ node.name }}</text>
@@ -28,7 +31,8 @@ const props = withDefaults(defineProps<{
 });
 
 defineEmits<{
-    'open-attachment': [path: string];
+    'download': [path: string];
+    'preview': [path: string];
 }>();
 
 // 计算缩进样式，每个层级增加微妙的视觉差异
@@ -38,12 +42,10 @@ const indentStyle = computed(() => {
     return `${baseIndent + levelIndent}px`;
 });
 
-const getIconByType = (url: string): string => {
+// 判断是否显示预览图标
+const showPreviewIcon = (url: string): boolean => {
     const ext = url.split('.').pop()?.toLowerCase() || '';
-    if (['mp3', 'wav'].includes(ext)) return 'volume';
-    if (['mp4', 'mov'].includes(ext)) return 'play-circle';
-    if (['pdf', 'doc', 'docx'].includes(ext)) return 'file-text';
-    return 'download';
+    return ['mp3', 'mp4', 'pdf'].includes(ext);
 };
 </script>
 
