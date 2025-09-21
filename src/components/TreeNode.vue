@@ -5,13 +5,12 @@
             <TreeNode v-for="child in node.children" :key="child.path" :node="child" :level="level + 1"
                 @download="$emit('download', $event)" @preview="$emit('preview', $event)" />
         </uni-collapse-item>
-        <view v-else-if="node.isFile" class="flex items-center" :style="{ paddingLeft: indentStyle }"
-            @click="$emit('download', node.path)">
+        <view v-else-if="node.isFile" class="flex items-center" :style="{ paddingLeft: indentStyle }">
             <text class="children-item py-2 pl-2 flex-1">{{ node.name }}</text>
             <up-icon name="download" size="22" color="#9298a5" class="ml-auto pr-3"
-                @click.stop="$emit('download', node.path)" />
-            <up-icon v-if="showPreviewIcon(node.path)" name="eye" size="22" color="#4f8cff" class="pr-3"
-                @click.stop="$emit('preview', node.path)" />
+                @click="$emit('download', node.path)" />
+            <up-icon v-if="showPreviewIcon(node.path)" name="eye" size="22" class="pr-3"
+                @click="$emit('preview', node.path)" />
         </view>
         <view v-else class="flex items-center" :style="{ paddingLeft: indentStyle }">
             <text class="children-item py-2 pl-2 flex-1">{{ node.name }}</text>

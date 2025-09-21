@@ -2,7 +2,8 @@
   <view class="bg-white p-1 rounded-lg shadow">
     <template v-if="filteredTree.length > 0">
       <uni-collapse>
-        <TreeNode v-for="item in filteredTree" :key="item.path" :node="item" @preview="previewAttachment" />
+        <TreeNode v-for="item in filteredTree" :key="item.path" :node="item" @download="downloadAttachment"
+          @preview="previewAttachment" />
       </uni-collapse>
     </template>
     <view v-else class="text-center py-4 text-gray-500">
@@ -89,6 +90,43 @@ const checkCourseAccess = (): boolean => {
   return false;
 };
 
+const downloadAttachment = (path: string) => {
+  // 这里可以添加下载逻辑
+  uni.showLoading({ title: '准备下载...' });
+  let encodedPath = path;
+
+  // 如果路径已经被编码过，先解码再重新编码
+  try {
+    const decodedPath = decodeURIComponent(path);
+    // 对路径的每个部分分别编码，保留路径分隔符
+    encodedPath = decodedPath.split('/').map(part => encodeURIComponent(part)).join('/');
+  } catch (e) {
+    // 如果解码失败，说明原路径可能没有编码，直接编码
+    encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
+  }
+  const fullUrl = `${import.meta.env.VITE_CDN_URL}/${encodedPath}`;
+
+
+  let downloadStarted = false;
+  const a = document.createElement('a');
+  a.href = fullUrl;
+  a.download = '';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  downloadStarted = true;
+  setTimeout(() => {
+    if (!downloadStarted) {
+      uni.hideLoading();
+      uni.showToast({ title: '下载超时', icon: 'none' });
+    } else {
+      uni.hideLoading();
+    }
+  }, 1000);
+
+
+
+};
 // --- 文件处理逻辑 ---
 const previewAttachment = (path: string) => {
   // 对路径进行正确的编码处理
@@ -103,14 +141,8 @@ const previewAttachment = (path: string) => {
     // 如果解码失败，说明原路径可能没有编码，直接编码
     encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
   }
-
   const fullUrl = `${import.meta.env.VITE_CDN_URL}/${encodedPath}`;
-
-  // console.log('原始路径:', path);
-  // console.log('编码后路径:', encodedPath);
-  // console.log('完整URL:', fullUrl);
-
-  uni.showLoading({ title: '正在准备...' });
+  uni.showLoading({ title: '准备预览...' });
   uni.downloadFile({
     url: fullUrl,
     success: res => {
