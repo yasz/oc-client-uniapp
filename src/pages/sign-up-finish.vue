@@ -32,9 +32,12 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;近期请留意您的邮箱，或保持电话畅通（基于您提供的联系方式）。<br />
                         <br />
                         <span class="text-sm text-gray-500">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for applying to Lifefunner’s private classes!<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will reply to you manually after reviewing the information you provided.<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kindly pay attention to your email or ensure your phone normal working in the coming days.
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thank you for applying to Lifefunner’s private
+                            classes!<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We will reply to you manually after reviewing the
+                            information you provided.<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kindly pay attention to your email or ensure your phone
+                            normal working in the coming days.
                         </span>
                     </div>
                 </template>
@@ -52,7 +55,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
-
+import { go } from '@/utils/common';
 const route = useRoute();
 const isTeacher = ref(false);
 
@@ -69,6 +72,6 @@ onMounted(() => {
 
 function goCourses() {
     // uniapp跳转
-    uni.switchTab({ url: '/courses' });
+    go('/courses');
 }
 </script>
