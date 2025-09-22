@@ -2,11 +2,7 @@
   <view class="" style="height: calc(100vh - 44px)">
     <view>
       <view class="flex flex-center-row">
-        <view
-          v-if="isTeacher && !self"
-          class="create-btn mt-40"
-          @click="handleCreateClick"
-        >
+        <view v-if="isTeacher && !self" class="create-btn mt-40" @click="handleCreateClick">
           <text class="create-icon">+</text>
         </view>
       </view>
@@ -15,24 +11,13 @@
         <view class="calendar-header">
           <text class="student-name">{{ studentNickname }}的日程</text>
         </view>
-        <wn-calendar
-          :modelValue="calendarList"
-          :isBorder="true"
-          :isEn="false"
-          @choose="handleDateChoose"
-        />
+        <wn-calendar :modelValue="calendarList" :isBorder="true" :isEn="false" @choose="handleDateChoose" />
       </view>
     </view>
 
     <!-- 会议详情弹窗 -->
-    <calendar-modal
-      v-model:show="showModal"
-      :date="selectedDate"
-      :meetings="selectedDateMeetings"
-      :isTeacher="isTeacher"
-      @linkClick="handleMeetingLinkClick"
-      @delete="handleMeetingDelete"
-    />
+    <calendar-modal v-model:show="showModal" :date="selectedDate" :meetings="selectedDateMeetings"
+      :isTeacher="isTeacher" @linkClick="handleMeetingLinkClick" @delete="handleMeetingDelete" />
   </view>
 </template>
 
@@ -91,9 +76,8 @@ const isTeacher = ref(false);
 // 处理创建按钮点击
 const handleCreateClick = () => {
   uni.navigateTo({
-    url: `/my/calendars/create?studentId=${
-      studentId.value
-    }&nickname=${encodeURIComponent(studentNickname.value)}`,
+    url: `/my/calendars/create?studentId=${studentId.value
+      }&nickname=${encodeURIComponent(studentNickname.value)}`,
   });
 };
 

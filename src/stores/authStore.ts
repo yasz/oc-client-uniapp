@@ -10,6 +10,7 @@ export const useAuthStore = defineStore("authStore", {
     token: null as string | null, // token
     userId: null as string | null, // 用户 ID
     nickname: null as string | null, // 昵称
+    username: null as string | null, // 用户名
     roles: [] as string[], // 改为 roles 数组
     avatar: null as string | null, // 用户头像
     createdAt: null as string | null, // 用户创建时间
@@ -36,9 +37,11 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
-          const { id, nickname, roles, re_registered } = response.data.data;
+          const { id, nickname, roles, re_registered, username } = response.data.data;
+          debugger
           this.userId = id;
           this.nickname = nickname;
+          this.username = username;
           this.roles = roles.map((e: any) => e.name);
           this.re_registered = re_registered || false;
 
@@ -49,10 +52,10 @@ export const useAuthStore = defineStore("authStore", {
                 Number(this.userId)
               );
               const userInfo = userInfoResponse.data.data;
-              
+
               // 存储完整的用户信息
               this.userInfo = userInfo;
-              
+
               if (userInfo?.avatar?.[0]?.url) {
                 this.avatar =
                   import.meta.env.VITE_BUCKET_ENDPOINT +

@@ -13,7 +13,7 @@
           <view class="text-white">
             <view class="text-[36rpx] font-bold mb-2">{{
               useAuthStore().token ? useAuthStore().nickname || "新用户" : "新用户"
-            }}</view>
+              }}</view>
             <view class="text-[24rpx] opacity-90" v-if="day !== null">加入Lifefunner的第{{ day }}天</view>
           </view>
         </view>
@@ -34,7 +34,7 @@
         </view>
         <text class="flex-1 text-[28rpx] text-[#333]">{{
           getMenuText(i)
-        }}</text>
+          }}</text>
         <view class="flex items-center gap-[8rpx] text-[#bbbbbb] text-[22rpx]">
           <template v-if="i === 2">
             <view v-if="unreadCount > 0" class="w-[16rpx] h-[16rpx] bg-red-500 rounded-full"></view>
@@ -197,10 +197,10 @@ const getVisibleMenuItems = () => {
     const systemInfo = uni.getSystemInfoSync();
     const isPC = !["ios", "android"].includes(systemInfo.platform);
     if (isPC && systemInfo.windowWidth > 500) {
-      return [...baseItems, 7, 8]; // PC端宽屏，隐藏我的拼图账户
+      return [...baseItems, 7]; // PC端宽屏，隐藏我的拼图账户
     }
     // #endif
-    return [...baseItems, 7, 8, 9];
+    return [...baseItems, 7, 9];
   }
 
   return baseItems;
