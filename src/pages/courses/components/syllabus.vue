@@ -131,17 +131,32 @@ const downloadAttachment = (path: string) => {
 const previewAttachment = (path: string) => {
   // 对路径进行正确的编码处理
   let encodedPath = path;
-
-  // 如果路径已经被编码过，先解码再重新编码
   try {
     const decodedPath = decodeURIComponent(path);
-    // 对路径的每个部分分别编码，保留路径分隔符
     encodedPath = decodedPath.split('/').map(part => encodeURIComponent(part)).join('/');
   } catch (e) {
-    // 如果解码失败，说明原路径可能没有编码，直接编码
     encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
   }
   const fullUrl = `${import.meta.env.VITE_CDN_URL}/${encodedPath}`;
+  // 判断文件类型
+  const ext = path.split('.').pop()?.toLowerCase() || '';
+  // 支持微软Office在线预览的类型
+  if (["doc", "docx", "ppt", "pptx"].includes(ext)) {
+    // 微软Office在线预览链接
+    const officeUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(fullUrl)}`;
+    // #ifdef H5
+    window.open(officeUrl, '_blank');
+    // #endif
+    // #ifndef H5
+    uni.showModal({
+      title: '请在浏览器中预览',
+      content: '该文档类型建议在PC端浏览器中预览',
+      showCancel: false
+    });
+    // #endif
+    return;
+  }
+  // 其它类型走原有预览逻辑
   uni.showLoading({ title: '准备预览...' });
   uni.downloadFile({
     url: fullUrl,
