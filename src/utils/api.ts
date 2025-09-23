@@ -31,7 +31,7 @@ export const listCourseSessions = async () => {
 
 export const listCourses = async (filter?: string) => {
   const url =
-    "courses:list?pageSize=20&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1";
+    "courses:list?pageSize=20&sort=seq&tree=true&appends[]=file_id&appends[]=cover&page=1&enable=true";
 
   try {
     const response = await getAPI(url, null);
@@ -132,8 +132,9 @@ export const listCourseById = async (id: any) => {
     return Promise.reject("Missing required parameter 'id'");
   }
 
-  const filter = `{"$or":[{"parentId":{"$eq":${id}}},{"parent":{"parentId":{"$eq":${id}}}},{"parent":{"parent":{"parentId":{"$eq":${id}}}}}]}`;
-  const url = `courses:list?sort=seq&appends[]=cover&tree=true&appends[]=file_id&filter=${filter}`; //&appends[]=children
+  // 拼接 filter，增加 enable=true 条件
+  const filter = `{"$and":[{"enable":{"$eq":true}}, {"$or":[{"parentId":{"$eq":${id}}},{"parent":{"parentId":{"$eq":${id}}}},{"parent":{"parent":{"parentId":{"$eq":${id}}}}}]}]}`;
+  const url = `courses:list?sort=seq&appends[]=cover&tree=true&appends[]=file_id&enable=true&filter=${filter}`; //&appends[]=children
 
   try {
     const response = await getAPIAxios(url, null);
@@ -381,7 +382,8 @@ export const associateStudentTeacher = async (
 };
 export const getUserInfoWithSpecialToken = async (userId: number) => {
   return axios.get(
-    `${import.meta.env.VITE_API_ENDPOINT
+    `${
+      import.meta.env.VITE_API_ENDPOINT
     }/users:get?appends[]=avatar&appends[]=user_courses&filterByTk=${userId}`,
     {
       headers: {

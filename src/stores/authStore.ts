@@ -37,8 +37,9 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.data) {
           // 更新 store 数据
-          const { id, nickname, roles, re_registered, username } = response.data.data;
-          debugger
+          const { id, nickname, roles, re_registered, username } =
+            response.data.data;
+
           this.userId = id;
           this.nickname = nickname;
           this.username = username;
@@ -58,8 +59,7 @@ export const useAuthStore = defineStore("authStore", {
 
               if (userInfo?.avatar?.[0]?.url) {
                 this.avatar =
-                  import.meta.env.VITE_BUCKET_ENDPOINT +
-                  userInfo.avatar[0].url;
+                  import.meta.env.VITE_BUCKET_ENDPOINT + userInfo.avatar[0].url;
               }
               // 存储用户创建时间
               if (userInfo?.createdAt) {

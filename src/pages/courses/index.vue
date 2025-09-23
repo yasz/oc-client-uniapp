@@ -126,37 +126,6 @@ const loadUserFavorites = async () => {
     }
 };
 
-// 处理课程点击
-const handleCourseClick = (course: Course) => {
-    go(`/courses/details?id=${course.id}`);
-};
-
-// 切换收藏状态
-const toggleFavorite = async (courseId: number, event: Event) => {
-    if (!authStore.userId) {
-        uni.showToast({ title: '请先登录', icon: 'none' });
-        return;
-    }
-
-    try {
-        const isFavorited = userFavorites.value.includes(courseId);
-
-        if (isFavorited) {
-            // 取消收藏
-            await deleteCourseFavorite(Number(authStore.userId), courseId);
-            userFavorites.value = userFavorites.value.filter(id => id !== courseId);
-            uni.showToast({ title: '已取消收藏', icon: 'success' });
-        } else {
-            // 添加收藏
-            await createCourseFavorite(Number(authStore.userId), courseId);
-            userFavorites.value.push(courseId);
-            uni.showToast({ title: '收藏成功', icon: 'success' });
-        }
-    } catch (error) {
-        console.error('收藏操作失败:', error);
-        uni.showToast({ title: '操作失败，请重试', icon: 'none' });
-    }
-};
 
 // 检查课程是否已收藏
 const isCourseFavorited = (courseId: number) => {
@@ -215,10 +184,7 @@ const fetchCoursesByMenuId = async (id: number | undefined) => {
     }
 
     if (response.data) {
-        const authStore = useAuthStore();
         let courseData = response.data;
-
-
         const temp = courseData.filter((e: any) => e.children).flatMap((e: any) => {
             return e.children.map((child: any) => {
                 return {

@@ -44,7 +44,7 @@ const indentStyle = computed(() => {
 // 判断是否显示预览图标
 const showPreviewIcon = (url: string): boolean => {
     const ext = url.split('.').pop()?.toLowerCase() || '';
-    return ['mp3', 'mp4', 'pdf'].includes(ext);
+    return ['doc', 'docx', 'mp3', 'mp4', 'pdf'].includes(ext);
 };
 </script>
 
