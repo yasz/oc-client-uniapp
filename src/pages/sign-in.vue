@@ -9,8 +9,8 @@
       <img class="w-40" src="@/static/index/signin/logo.png" alt="logo" />
     </view>
     <!-- 第三层 立即注册框 -->
-    <view class="absolute inset-0 flex flex-col items-center justify-center z-1">
-      <view class="relative w-[80%] h-[50vh] bg-white rounded-2xl flex items-center justify-center">
+    <view class="absolute bottom-[30vh] w-full flex flex-col items-center justify-center z-1">
+      <view class="relative w-[80%] h-[30vh] bg-white rounded-2xl flex items-center justify-center">
         <text class="bottom-[30rpx] t-14 absolute text-base text-gray-400 text-center">
           还没有登录账号？
           <text class="text-primary" @click="go('/sign-up')">立即注册</text>
@@ -18,8 +18,8 @@
       </view>
     </view>
     <!-- 第四层 登录层 -->
-    <view class="relative inset-0 flex-col items-center justify-center z-3">
-      <view class="w-[90%] h-[40vh] mt-[-103vh] bg-white rounded-2xl shadow-lg px-6 py-8 flex flex-col items-stretch">
+    <view class="absolute bottom-[calc(30vh+110rpx)] w-full flex-col items-center justify-center z-3">
+      <view class="w-[90%] h-[40vh] bg-white rounded-2xl shadow-lg px-6 py-8 flex flex-col items-stretch">
         <!-- 手机号输入框 -->
         <view class="flex w-[80%] mx-auto mt-20 items-center bg-gray-100 rounded-full py-10 px-10">
           <u-icon name="account" color="#F9B33B" size="22" class="ml-1"></u-icon>
