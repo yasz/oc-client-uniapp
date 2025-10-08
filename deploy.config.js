@@ -6,7 +6,7 @@ export const deployConfig = {
     password: 'PQ)g!bC6{4-}*', // 服务器密码
 
     // 远端路径
-    remotePath: '/www/wwwroot/lifefunchinese.cc',
+    remotePath: '/www/wwwroot/origin-www.lifefunchinese.cc',
 
     // 本地构建路径
     localBuildPath: './dist/build/h5',

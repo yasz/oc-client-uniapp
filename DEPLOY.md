@@ -9,7 +9,6 @@
 - `deploy.config.js` - 生产环境配置
 - 使用 SSH 密钥认证
 - 目标服务器: `112.124.70.72`
-- 部署路径: `/www/wwwroot/lifefunchinese.cc`
 
 ### 部署命令
 
