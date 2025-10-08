@@ -52,6 +52,7 @@
             <template v-if="filteredCourses.length > 0">
                 <CourseCard v-for="(course, index) in filteredCourses" :key="index" :course="course"
                     :is-favorited="isCourseFavorited(course.id)" :show-subject="false" />
+
             </template>
 
             <!-- 空状态提示 -->
@@ -119,7 +120,7 @@ const loadUserFavorites = async () => {
     try {
         const response: any = await listCourseFavorites(Number(authStore.userId));
         if (response.data) {
-            userFavorites.value = response.data.map((item: any) => Number(item.course_id.id));
+            userFavorites.value = response.data.map((item: any) => Number(item.fk_course_id));
         }
     } catch (error) {
         console.error('加载收藏列表失败:', error);
@@ -207,21 +208,21 @@ onMounted(async () => {
         menuItems.value = menuItems.value.filter(item => item.id !== 14);
     }
 
-    const recommandSessionsResponse: any = await listRecommendedCourseSessions()
-    if (recommandSessionsResponse.data) {
-        swiperData.push(
-            ...recommandSessionsResponse.data.map((item: any) => ({
-                image: import.meta.env.VITE_BUCKET_ENDPOINT + item.course_session_id.cover?.[0]?.url || '/static/images/default-cover.jpg',
-                title: item.course_session_id.name,
-                id: item.course_session_id.id,
-            }))
-        );
-    }
+    // const recommandSessionsResponse: any = await listRecommendedCourseSessions()
+    // if (recommandSessionsResponse.data) {
+    //     swiperData.push(
+    //         ...recommandSessionsResponse.data.map((item: any) => ({
+    //             image: import.meta.env.VITE_BUCKET_ENDPOINT + item.course_session_id.cover?.[0]?.url || '/static/images/default-cover.jpg',
+    //             title: item.course_session_id.name,
+    //             id: item.course_session_id.id,
+    //         }))
+    //     );
+    // }
 
     // 加载用户收藏列表
     await loadUserFavorites();
 
-    await fetchCoursesByMenuId(0);
+    // await fetchCoursesByMenuId(0);
 
     // 获取欢迎词内容
     let cmsId = authStore.roles.includes('teacher') ? 20 : 19;
