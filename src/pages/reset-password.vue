@@ -10,22 +10,16 @@
                     <text class="text-xl font-bold text-gray-700">重置密码</text>
                 </view>
 
-                <form @submit="submitForm">
-                    <input class="input-item" v-model="formModel.username" placeholder="请输入手机号" required
+                <view>
+                    <input class="input-item" v-model="formModel.email" placeholder="请输入注册时使用的邮箱" required type="email"
                         placeholder-style="color: #d1d5db;" />
-                    <input class="input-item" v-model="formModel.email" placeholder="请输入邮箱" required type="email"
-                        placeholder-style="color: #d1d5db;" />
-                    <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入新密码" required
-                        placeholder-style="color: #d1d5db;" />
-                    <input class="input-item" v-model="formModel.confirmPassword" type="password" placeholder="请确认新密码"
-                        required placeholder-style="color: #d1d5db;" />
 
-                    <button form-type="submit" @click="submitForm"
+                    <button @click="submitForm"
                         class="w-full py-6 mt-8 rounded-full text-white font-bold text-base"
                         style="background: linear-gradient(90deg, #f9b33b 0%, #f59743 100%)" :disabled="loading">
-                        重置密码
+                        发送重置邮件
                     </button>
-                </form>
+                </view>
 
 
             </view>
@@ -39,18 +33,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { resetPassword } from "@/utils/api";
 import useModal from "@/hooks/useModal";
 import { go } from "@/utils/common";
+import axios from "axios";
 
 const modal = useModal().modal;
 const loading = ref(false);
 
 const formModel = ref({
-    username: "",
     email: "",
-    password: "",
-    confirmPassword: "",
 });
 
 function validateEmail(email: string) {
@@ -59,41 +50,26 @@ function validateEmail(email: string) {
 
 const submitForm = async () => {
     if (loading.value) return;
+    const { email } = formModel.value;
+
+    if (!email || !validateEmail(email)) {
+        await modal("请输入有效的邮箱地址。");
+        return;
+    }
+
     loading.value = true;
-
-    const { username, email, password, confirmPassword } = formModel.value;
-
-    if (!username || !email || !password || !confirmPassword) {
-        await modal("所有字段均为必填项");
-        loading.value = false;
-        return;
-    }
-
-    if (!validateEmail(email)) {
-        await modal("邮箱格式不正确");
-        loading.value = false;
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        await modal("两次输入的密码不一致");
-        loading.value = false;
-        return;
-    }
-
     try {
-        const resetRes = await resetPassword({ username, email, password });
+        await axios.get('https://id.lifefunchinese.cc/api/reset-password-request', {
+            params: { email }
+        });
 
-        if (resetRes.data) {
-            await modal("若账号邮箱验证通过，密码将重置为您输入的密码！");
-            go("/sign-in");
-        } else {
-            await modal("密码重置失败，请检查账号和邮箱是否正确");
-        }
+        await modal("如果该邮箱已注册，您将会收到一封包含重置密码链接的邮件，请注意查收。");
+        go("/sign-in");
+
     } catch (err: any) {
-        await modal(
-            `操作失败！${err.response?.data?.errors?.[0]?.message || err.message}`
-        );
+        const errorMessage = err.response?.data?.message || err.message || '请稍后再试';
+        await modal(`操作失败: ${errorMessage}`);
+        console.error('Password reset request failed:', err);
     } finally {
         loading.value = false;
     }
