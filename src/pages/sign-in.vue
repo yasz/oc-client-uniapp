@@ -100,7 +100,7 @@ const handleSignIn = async () => {
         console.error("获取用户信息失败:", error);
       }
     }
-    go("/index");
+    go("/courses");
   } catch (err: any) {
     if (err.response?.status === 401) {
       useModal().modal("密码错误，请检查手机号/邮箱与密码是否匹配！");
