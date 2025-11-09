@@ -39,7 +39,7 @@
           <form @submit="submitForm">
             <input class="input-item" v-model="formModel.username" placeholder="手机号(必填)" required
               placeholder-style="color: #d1d5db;" type="number" />
-            <input class="input-item" v-model="formModel.email" placeholder="邮箱(选填)" required type="email"
+            <input class="input-item" v-model="formModel.email" placeholder="邮箱(必填)" required type="email"
               placeholder-style="color: #d1d5db;" />
             <input class="input-item" v-model="formModel.password" type="password" placeholder="请输入密码(必填)" required
               placeholder-style="color: #d1d5db;" />

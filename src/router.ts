@@ -7,21 +7,21 @@ const soliRoutes = [
     path: `/index`,
     component: __dynamicImportComponent__(`@/pages/index/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/courses`,
     component: __dynamicImportComponent__(`@/pages/courses/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my`,
     component: __dynamicImportComponent__(`@/pages/my/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
@@ -39,72 +39,81 @@ const soliRoutes = [
   },
   {
     path: `/courses/sessionDetails`,
-    component: __dynamicImportComponent__(`@/pages/courses/sessionDetails.vue`, {
-      pageType: `top`,
-      style: { navigationStyle: "custom" }
-    }),
+    component: __dynamicImportComponent__(
+      `@/pages/courses/sessionDetails.vue`,
+      {
+        pageType: `top`,
+        style: { navigationStyle: "custom" },
+      }
+    ),
   },
   {
     path: `/courses/assignmentDetails`,
-    component: __dynamicImportComponent__(`@/pages/courses/assignmentDetails.vue`, {
-      pageType: `top`,
-      style: { navigationStyle: "custom" }
-    }),
+    component: __dynamicImportComponent__(
+      `@/pages/courses/assignmentDetails.vue`,
+      {
+        pageType: `top`,
+        style: { navigationStyle: "custom" },
+      }
+    ),
   },
   {
     path: `/courses/discussionDetails`,
-    component: __dynamicImportComponent__(`@/pages/courses/discussionDetails.vue`, {
-      pageType: `top`,
-      style: { navigationStyle: "custom" }
-    }),
+    component: __dynamicImportComponent__(
+      `@/pages/courses/discussionDetails.vue`,
+      {
+        pageType: `top`,
+        style: { navigationStyle: "custom" },
+      }
+    ),
   },
   {
     path: `/sign-in`,
     component: __dynamicImportComponent__(`@/pages/sign-in.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/sign-up`,
     component: __dynamicImportComponent__(`@/pages/sign-up.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/reset-password`,
     component: __dynamicImportComponent__(`@/pages/reset-password.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/student-sign-up`,
     component: __dynamicImportComponent__(`@/pages/student-sign-up.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/teacher-sign-up`,
     component: __dynamicImportComponent__(`@/pages/teacher-sign-up.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/sign-up-finish`,
     component: __dynamicImportComponent__(`@/pages/sign-up-finish.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/profile`,
     component: __dynamicImportComponent__(`@/pages/my/profile.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
@@ -150,56 +159,56 @@ const soliRoutes = [
     path: `/my/puzzle-list`,
     component: __dynamicImportComponent__(`@/pages/puzzles/list.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/puzzle-teacher`,
     component: __dynamicImportComponent__(`@/pages/puzzles/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/puzzle-student`,
     component: __dynamicImportComponent__(`@/pages/puzzles/student.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/puzzle-treasure`,
     component: __dynamicImportComponent__(`@/pages/puzzles/treasure.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/calendar-list`,
     component: __dynamicImportComponent__(`@/pages/calendars/list.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/calendars`,
     component: __dynamicImportComponent__(`@/pages/calendars/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/calendars/create`,
     component: __dynamicImportComponent__(`@/pages/calendars/create.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
     path: `/my/assignment-list`,
     component: __dynamicImportComponent__(`@/pages/assignments/list.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
   {
@@ -232,7 +241,7 @@ const soliRoutes = [
     path: `/my/assignments`,
     component: __dynamicImportComponent__(`@/pages/assignments/index.vue`, {
       pageType: `top`,
-      style: { navigationStyle: "custom" }
+      style: { navigationStyle: "custom" },
     }),
   },
 ];
@@ -242,14 +251,15 @@ const router = createRouter({
   routes: [...soliRoutes],
   routeNotFound: (to) => {
     console.log(to);
-    return {
-      path: `/index`,
-    };
+    const token = uni.getStorageSync("authToken");
+    if (token && token !== "") {
+      return { path: "/courses" };
+    } else {
+      return { path: "/index" };
+    }
   },
 });
 router.beforeEach((to, from) => {
-  // console.log("【调试】:【", "路由拦截进入", "】");
-
   if (!checkAuth(to.path)) {
     //如果目表页未通过验证，则跳向登录页
     return { path: "/sign-in" };
