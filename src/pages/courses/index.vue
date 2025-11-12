@@ -222,7 +222,15 @@ onMounted(async () => {
     // 加载用户收藏列表
     await loadUserFavorites();
 
-    // await fetchCoursesByMenuId(0);
+    if (authStore.re_registered) {
+        if (authStore.roles.includes('teacher')) {
+            selectedItem.value = 14; // 教师课程
+            await fetchCoursesByMenuId(14);
+        } else {
+            selectedItem.value = 12; // 小学语文（部编版）
+            await fetchCoursesByMenuId(12);
+        }
+    }
 
     // 获取欢迎词内容
     let cmsId = authStore.roles.includes('teacher') ? 20 : 19;

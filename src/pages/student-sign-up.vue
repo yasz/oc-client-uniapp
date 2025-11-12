@@ -92,11 +92,11 @@ Name" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
                             </view>
 
                             <!-- 国籍 -->
-                            <view class="form-item">
+                            <!-- <view class="form-item">
                                 <text class="required-star">*</text>
                                 <input class="input-item h-[80rpx]" v-model="formModel.nationality" placeholder="国籍
 Nationality" required placeholder-style="color: #d1d5db; white-space: pre-line;" />
-                            </view>
+                            </view> -->
 
                             <!-- 常居地 -->
                             <view class="form-item">
@@ -256,7 +256,7 @@ const submitForm = async () => {
             { field: 'nickname', name: '姓名' },
             { field: 'gender', name: '性别' },
             { field: 'birth', name: '出生年月' },
-            { field: 'nationality', name: '国籍' },
+            // { field: 'nationality', name: '国籍' },
             { field: 'residence', name: '常居地' },
             { field: 'chinese_level', name: '现有中文水平' },
             { field: 'desired_courses', name: '想要学的课程' },
@@ -328,7 +328,7 @@ const submitForm = async () => {
         { field: 'nickname', name: '姓名' },
         { field: 'gender', name: '性别' },
         { field: 'birth', name: '出生年月' },
-        { field: 'nationality', name: '国籍' },
+        // { field: 'nationality', name: '国籍' },
         { field: 'residence', name: '常居地' },
         { field: 'chinese_level', name: '现有中文水平' },
         { field: 'desired_courses', name: '想要学的课程' },

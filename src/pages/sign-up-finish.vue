@@ -18,7 +18,7 @@
     <view class="flex z-0 mt-[-10vh] justify-center items-center">
         <view class="w-[90vw] pt-56">
             <view
-                class="bg-white rounded-3xl shadow-lg p-6 w-[90%] text-center text-base leading-relaxed max-h-[40vh] overflow-y-auto">
+                class="bg-white rounded-3xl shadow-lg p-6  text-center text-base leading-relaxed max-h-[40vh] overflow-y-auto">
                 <template v-if="isTeacher">
                     <div class="text-left">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢您申请成为Lifefunner“乐凡中文”的授课教师！<br />
